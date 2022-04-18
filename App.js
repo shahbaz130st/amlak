@@ -8,7 +8,7 @@
 
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
-import { StatusBar,View,Text } from 'react-native';
+import { StatusBar, View, Text } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
@@ -24,13 +24,13 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      networkStatus: false
+      networkStatus: true
     }
     Common.Translations.initConfig();
     console.log('Constants.API.Language', Constants.API.Language);
   }
   componentDidMount = () => {
-    const unsubscribe = NetInfo.addEventListener(state => {
+    NetInfo.addEventListener(state => {
       this.setState({ networkStatus: state.isConnected })
       console.log("Connection type", state.type);
       console.log("Is connected?", state.isConnected);

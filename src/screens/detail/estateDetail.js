@@ -236,6 +236,10 @@ class EstateDetail extends Component {
   }
 
   showReport() {
+    if (Constants.API.Token == null) {
+      this.loginAlert();
+      return;
+    }
     Alert.alert(
       Common.Translations.translate('title_report'),
       Common.Translations.translate('message_report'),

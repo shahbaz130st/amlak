@@ -23,13 +23,18 @@ class AddNew extends Component {
   state = { accept: false, showAlert: false };
 
   componentDidMount() {
-    this.props.navigation.addListener(
-      'focus',
-      () => this.setState({ accept: false }),
-      Constants.API.Token == null ? this.loginAlert() : null,
-    );
+    this.unsubscribe = this.props.navigation.addListener('focus', () => {
+      //do your api call
+      this.setState({ accept: false })
+        // Constants.API.Token == null ? this.loginAlert() : null
+    });
     Common.Helper.logEvent('addProperty', {});
   }
+  componentWillUnmount() {
+    if (this.unsubscribe)
+      this.unsubscribe();
+  }
+
   loginAlert = () => {
     this.setState({ showAlert: true })
   }
@@ -122,11 +127,20 @@ class AddNew extends Component {
                 : 'rgba(0,111,235,0.5)',
             }}
             onClick={() => {
-              this.state.accept
-                ? this.props.navigation.push(
-                  Constants.Navigations.Property.Category,
-                )
-                : null;
+
+              if (this.state.accept) {
+                if (Constants.API.Token == null) {
+                  this.loginAlert()
+                  return true
+                }
+                else {
+                  this.props.navigation.push(
+                    Constants.Navigations.Property.Category,
+                  )
+                }
+              } else {
+                null;
+              }
             }}
           />
         </View>
@@ -166,6 +180,13 @@ class AddNew extends Component {
                   <TouchableOpacity
                     onPress={() => {
                       this.setState({ showAlert: false })
+                      // setTimeout(() => {
+
+                      //   this.props.navigation.push(
+                      //     Constants.Navigations.Onboarding.DASHBOARD,
+                      //   );
+                      // }, 1000);
+
                     }}
                     style={{
                       width: "50%",

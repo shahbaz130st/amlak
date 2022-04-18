@@ -22,7 +22,7 @@ const AmlakHeader = (props) => (
         }}>
         {props.leftButton != undefined ? (
           <TouchableOpacity
-            style={{ right: 0, paddingTop: '2%', paddingHorizontal: 20, }}
+            style={{ right: 5, paddingTop: '2%', paddingHorizontal: 30, }}
             onPress={props.onSettingClick}>
             <Image source={props.leftButton} />
           </TouchableOpacity>
@@ -31,7 +31,7 @@ const AmlakHeader = (props) => (
         )}
 
         <TouchableOpacity
-          style={{ right: 0, paddingTop: '2%', paddingHorizontal: 20 }}
+          style={{ right: 5, paddingTop: '2%', paddingHorizontal: 30 }}
           onPress={props.onBackButtonClick}>
           <Image source={Constants.Images.rightArrow} />
         </TouchableOpacity>

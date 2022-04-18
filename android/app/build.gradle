@@ -78,12 +78,12 @@ import com.android.build.OutputFile
  * ]
  */
 project.ext.react = [
-        // bundleAssetName: "index.android.bundle",
-        // entryFile: "index.js",
+        bundleAssetName: "index.android.bundle",
+        entryFile: "index.js",
         enableHermes: false,
         bundleInDebug: true, // set false if you want to load js from server
         // bundleInRelease: true,
-        // root: "../../",
+        root: "../../",
         // jsBundleDirDebug:    "$buildDir/intermediates/merged_assets/debug/out",
         // resourcesDirDebug:   "$buildDir/intermediates/res/merged/debug",
         // jsBundleDirRelease:  "$buildDir/intermediates/merged_assets/release/out",
@@ -147,9 +147,9 @@ android {
         applicationId "com.app.amlak"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 3
-        versionName "1.2"
-         multiDexEnabled true 
+        versionCode 5
+        versionName "1.0"
+        multiDexEnabled true 
     }
     splits {
         abi {

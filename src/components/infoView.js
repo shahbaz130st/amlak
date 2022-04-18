@@ -580,14 +580,17 @@ const renderProerties = (item) => {
 };
 
 const AmlakInfoView = (props) => {
-  let Image_Http_URL =
-    props.markerInfo.product.picture.length > 0
-      ? {
-        uri: Constants.API.ImageBaseURL(
-          props.markerInfo.product.picture[0].picture,
-        ),
-      }
-      : Constants.Images.cover;
+  console.log('check for market info====>', props.markerInfo.product.picture);
+  let Image_Http_URL = Constants.API.ImageBaseURL(
+    props.markerInfo.product.picture[0].picture
+  )
+  // props.markerInfo.product.picture.length > 0
+  //   ? /* {
+  //   uri: */ Constants.API.ImageBaseURL(
+  //     props.markerInfo.product.picture[0].picture,
+  //   )
+  //   /* } */
+  //   : Constants.Images.cover;
   return (
     <View
       style={[styles.container, props.containerStyle]}
@@ -700,6 +703,7 @@ const AmlakInfoView = (props) => {
             <View style={{ width: '100%', height: hp('20%') }}>
               <AvatarComponent
                 size={'large'}
+                disabled={true}
                 defaultSource={Constants.Images.cover}
                 source={Image_Http_URL}
                 style={{ width: '100%', height: hp('20%') }}

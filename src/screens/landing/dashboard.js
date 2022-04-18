@@ -1556,10 +1556,10 @@ class Dashboard extends Component {
                 sortActive: false,
                 markerInfo: null,
               });
-              if (Constants.API.Token == null) {
-                this.loginAlert();
-                return;
-              }
+              // if (Constants.API.Token == null) {
+              //   this.loginAlert();
+              //   return;
+              // }
               this.props.navigation.navigate(
                 Constants.Navigations.Dashboard.DETAIL,
                 { id: this.state.markerInfo.product.id },
