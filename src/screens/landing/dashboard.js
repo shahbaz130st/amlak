@@ -780,8 +780,11 @@ class Dashboard extends Component {
       },
     ]);
 
-  renderItem = (value) => {
-    let Image_Http_URL = Constants.API.ImageBaseURL(value.item.picture[0].picture)
+  renderItem =  (value) => {
+     let Image_Http_URL = value.item.picture.length > 0
+      ? Constants.API.ImageBaseURL(value.item.picture[0].picture) 
+      : Constants.Images.cover;
+    //  Constants.API.ImageBaseURL(value.item.picture[0].picture)
     // value.item.picture.length > 0
     //   ? { uri: Constants.API.ImageBaseURL(value.item.picture[0].picture) }
     //   : Constants.Images.cover;

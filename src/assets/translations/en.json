@@ -285,5 +285,6 @@
   "tapu": "Officially Registered",
   "optional": "optional",
   "login_required": "Please Login first to explore more information.",
-  "no_internet": "No Internet connection"
+  "no_internet": "No Internet connection",
+  "version": "Version"
 }

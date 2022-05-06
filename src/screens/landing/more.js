@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 import { Actions } from '../../redux/index';
 import { CommonActions } from '@react-navigation/native';
 import Share from 'react-native-share';
+import VersionInfo from 'react-native-version-info';
 const url = Platform.OS === "android" ? "https://play.google.com/store/apps/details?id=com.app.amlak" : "https://apps.apple.com/il/app/%D8%A3%D9%85%D9%84%D8%A7%D9%83-%D8%A8%D9%8A%D8%B9-%D9%88%D8%AA%D8%A7%D8%AC%D9%8A%D8%B1-%D8%B9%D9%82%D8%A7%D8%B1%D8%A7%D8%AA/id1553908741?l=iw";
 const options = {
   url
@@ -479,6 +480,20 @@ class More extends Component {
               </TouchableOpacity>
             </View>
           )}
+
+        </View>
+        <View style={{
+          justifyContent: "center",
+          marginVertical: 20,
+          flexDirection: "row",
+        }}>
+        {
+          Platform.OS==="ios"?
+          <Text style={{ textAlign: "center", marginHorizontal: 20 }}>{`${VersionInfo.appVersion} (${VersionInfo.buildVersion})`}</Text>:
+          <Text style={{ textAlign: "center", marginHorizontal: 20 }}>{`${VersionInfo.buildVersion} (${VersionInfo.appVersion})`}</Text>
+        }
+          
+          <Text style={{ textAlign: "center" }}>{Common.Translations.translate('version')}</Text>
         </View>
       </View>
     );
