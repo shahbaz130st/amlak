@@ -20,6 +20,15 @@ import * as Constants from './src/constants/index';
 import { navigationRef } from './src/services/navigationServices';
 import NetInfo from "@react-native-community/netinfo";
 import { checkVersion } from './src/constants/AppUtil';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+import * as Sentry from "@sentry/react-native";
+
+Sentry.init({
+  dsn:
+    // "https://6fd3e74226f14b2aaee5b13464ff2816@o990431.ingest.sentry.io/5946962",
+  "https://1afcff59a3f843349713c6b402b3a782@o1238590.ingest.sentry.io/6389407",
+  enableNative: true,
+});
 
 class App extends Component {
   constructor(props) {
@@ -38,7 +47,25 @@ class App extends Component {
       console.log("Connection type", state.type);
       console.log("Is connected?", state.isConnected);
     });
+    this.unsubscribe = dynamicLinks().onLink(this.handleDynamicLink);
+    dynamicLinks()
+      .getInitialLink()
+      .then(this.handleDynamicLink);
   }
+
+  handleDynamicLink = (link) => {
+    // Handle dynamic link inside your own application
+    // if (link.url === "https://invertase.io/offer") {
+    //   // ...navigate to your offers screen
+    // }
+    
+    console.log(JSON.stringify(link), "link123");
+
+    console.log(link, "link.url");
+
+    // }
+  };
+
   render() {
     return (
       <Provider store={Store}>

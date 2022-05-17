@@ -1,6 +1,7 @@
 // const BaseURL = "http://amlakps.herokuapp.com/api/";
 // const BaseURL = 'http://3.14.19.113/property/public/api/';
-const BaseURL = 'http://amlakbuyandsell.com/property/public/api/';
+// const BaseURL = 'http://amlakbuyandsell.com/property/public/api/';
+const BaseURL = 'http://49.12.234.75/api/';
 const Token = null;
 const FirebaseToken = null;
 const Language = 'ar';

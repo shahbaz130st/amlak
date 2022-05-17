@@ -215,6 +215,7 @@ class Dashboard extends Component {
   }
 
   showProperties(estateRes, add) {
+    console.log('check is add====>',estateRes);
     if (add) {
       this.setState({ arrayEstates: [...this.state.arrayEstates, ...estateRes] }); //another array
     } else {
