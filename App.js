@@ -20,7 +20,7 @@ import * as Constants from './src/constants/index';
 import { navigationRef } from './src/services/navigationServices';
 import NetInfo from "@react-native-community/netinfo";
 import { checkVersion } from './src/constants/AppUtil';
-import dynamicLinks from '@react-native-firebase/dynamic-links';
+// import dynamicLinks from '@react-native-firebase/dynamic-links';
 import * as Sentry from "@sentry/react-native";
 
 Sentry.init({
@@ -47,24 +47,24 @@ class App extends Component {
       console.log("Connection type", state.type);
       console.log("Is connected?", state.isConnected);
     });
-    this.unsubscribe = dynamicLinks().onLink(this.handleDynamicLink);
-    dynamicLinks()
-      .getInitialLink()
-      .then(this.handleDynamicLink);
+    // this.unsubscribe = dynamicLinks().onLink(this.handleDynamicLink);
+    // dynamicLinks()
+    //   .getInitialLink()
+    //   .then(this.handleDynamicLink);
   }
 
-  handleDynamicLink = (link) => {
-    // Handle dynamic link inside your own application
-    // if (link.url === "https://invertase.io/offer") {
-    //   // ...navigate to your offers screen
-    // }
+  // handleDynamicLink = (link) => {
+  //   // Handle dynamic link inside your own application
+  //   // if (link.url === "https://invertase.io/offer") {
+  //   //   // ...navigate to your offers screen
+  //   // }
     
-    console.log(JSON.stringify(link), "link123");
+  //   console.log(JSON.stringify(link), "link123");
 
-    console.log(link, "link.url");
+  //   console.log(link, "link.url");
 
-    // }
-  };
+  //   // }
+  // };
 
   render() {
     return (

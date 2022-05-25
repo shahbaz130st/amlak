@@ -13,7 +13,6 @@
 		2355F263F9CF4603AA687167 /* ArbFONTS-FFShamelFamily-SansOneBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D7086C0081C34D03B228AD5F /* ArbFONTS-FFShamelFamily-SansOneBold.ttf */; };
 		35F50D749D0742E29093CD71 /* SF Pro Text Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CC6C65A7E3584B44BBDB74F6 /* SF Pro Text Bold.ttf */; };
 		5284C88226F9C93C00741DF6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5284C88426F9C93C00741DF6 /* InfoPlist.strings */; };
-		52BAC7AE26FCA60C00B6B2E2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52BAC7AD26FCA60B00B6B2E2 /* GoogleService-Info.plist */; };
 		5CD9CF5F71EE43A29926C0C8 /* SF Pro Text Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEB1271414D04EC9BACF17F0 /* SF Pro Text Regular.ttf */; };
 		5D62FD4E69B54BF6B868513F /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B49884251164ED0A3DEB265 /* Feather.ttf */; };
 		5F618FFAEACA4EAD8F9F9047 /* SF Pro Text Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E18E0E92393A4FF3BFA51441 /* SF Pro Text Semibold.ttf */; };
@@ -23,6 +22,7 @@
 		965AF3D4E5A94CDDB63AF44E /* ArbFONTS-FFShamelFamily-SansOneBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B6F8308C68F43379F9CBDD9 /* ArbFONTS-FFShamelFamily-SansOneBook.ttf */; };
 		9E48168D3C20CFF3A0E70874 /* libPods-Amlak.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85CB1A792F80DC7B75D91AB0 /* libPods-Amlak.a */; };
 		A87EFD92C0E44EF2BA03C043 /* SF-Pro-Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B12302B748F429B8D360D05 /* SF-Pro-Display-Bold.ttf */; };
+		CB8CD129283A58F100981053 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB8CD128283A58F100981053 /* GoogleService-Info.plist */; };
 		D0450A373ECA47A3AB30DB2C /* FF-Shamel-Family-Sans-One-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EA03FF38B7E4C4A8A9E61BE /* FF-Shamel-Family-Sans-One-Book.ttf */; };
 /* End PBXBuildFile section */
 
@@ -43,13 +43,14 @@
 		4B12302B748F429B8D360D05 /* SF-Pro-Display-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF-Pro-Display-Bold.ttf"; path = "../src/assets/fonts/SF-Pro-Display-Bold.ttf"; sourceTree = "<group>"; };
 		5284C88326F9C93C00741DF6 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5284C88626F9C94600741DF6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		52BAC7AD26FCA60B00B6B2E2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6B6F8308C68F43379F9CBDD9 /* ArbFONTS-FFShamelFamily-SansOneBook.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ArbFONTS-FFShamelFamily-SansOneBook.ttf"; path = "../src/assets/fonts/ArbFONTS-FFShamelFamily-SansOneBook.ttf"; sourceTree = "<group>"; };
 		78A2D139EC4F5770EABE7582 /* Pods-Amlak.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amlak.debug.xcconfig"; path = "Target Support Files/Pods-Amlak/Pods-Amlak.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Amlak/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		85CB1A792F80DC7B75D91AB0 /* libPods-Amlak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Amlak.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EA03FF38B7E4C4A8A9E61BE /* FF-Shamel-Family-Sans-One-Book.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "FF-Shamel-Family-Sans-One-Book.ttf"; path = "../src/assets/fonts/FF-Shamel-Family-Sans-One-Book.ttf"; sourceTree = "<group>"; };
 		B9B57D70B537A6DDD1D42D21 /* Pods-Amlak.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amlak.release.xcconfig"; path = "Target Support Files/Pods-Amlak/Pods-Amlak.release.xcconfig"; sourceTree = "<group>"; };
+		CB8CD128283A58F100981053 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../amlak plist/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CBD9CE3128374E23002668B1 /* AmlakRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AmlakRelease.entitlements; path = Amlak/AmlakRelease.entitlements; sourceTree = "<group>"; };
 		CC6C65A7E3584B44BBDB74F6 /* SF Pro Text Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF Pro Text Bold.ttf"; path = "../src/assets/fonts/SF Pro Text Bold.ttf"; sourceTree = "<group>"; };
 		D7086C0081C34D03B228AD5F /* ArbFONTS-FFShamelFamily-SansOneBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ArbFONTS-FFShamelFamily-SansOneBold.ttf"; path = "../src/assets/fonts/ArbFONTS-FFShamelFamily-SansOneBold.ttf"; sourceTree = "<group>"; };
 		E18E0E92393A4FF3BFA51441 /* SF Pro Text Semibold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF Pro Text Semibold.ttf"; path = "../src/assets/fonts/SF Pro Text Semibold.ttf"; sourceTree = "<group>"; };
@@ -90,9 +91,10 @@
 		13B07FAE1A68108700A75B9A /* Amlak */ = {
 			isa = PBXGroup;
 			children = (
-				52BAC7AD26FCA60B00B6B2E2 /* GoogleService-Info.plist */,
+				CBD9CE3128374E23002668B1 /* AmlakRelease.entitlements */,
 				28B22A2A26EBDE6300DEBF1A /* Amlak.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
+				CB8CD128283A58F100981053 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -203,7 +205,7 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1300;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = XL2NNZKQXQ;
@@ -237,7 +239,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5284C88226F9C93C00741DF6 /* InfoPlist.strings in Resources */,
-				52BAC7AE26FCA60C00B6B2E2 /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				D0450A373ECA47A3AB30DB2C /* FF-Shamel-Family-Sans-One-Book.ttf in Resources */,
@@ -250,6 +251,7 @@
 				2355F263F9CF4603AA687167 /* ArbFONTS-FFShamelFamily-SansOneBold.ttf in Resources */,
 				965AF3D4E5A94CDDB63AF44E /* ArbFONTS-FFShamelFamily-SansOneBook.ttf in Resources */,
 				5D62FD4E69B54BF6B868513F /* Feather.ttf in Resources */,
+				CB8CD129283A58F100981053 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,14 +398,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Amlak/Amlak.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.0;
+				CURRENT_PROJECT_VERSION = 1.4;
 				DEVELOPMENT_TEAM = XL2NNZKQXQ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Amlak/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 3;
 				OTHER_LDFLAGS = (
@@ -413,7 +415,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.amlak.aeliasoft;
 				PRODUCT_NAME = Amlak;
-				PROVISIONING_PROFILE_SPECIFIER = Shahbaz;
+				PROVISIONING_PROFILE_SPECIFIER = "shahbaz New Development Profile";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -426,14 +428,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = Amlak/Amlak.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Amlak/AmlakRelease.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.0;
+				CURRENT_PROJECT_VERSION = 1.4;
 				DEVELOPMENT_TEAM = XL2NNZKQXQ;
 				INFOPLIST_FILE = Amlak/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 3;
 				OTHER_LDFLAGS = (
@@ -443,7 +445,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.amlak.aeliasoft;
 				PRODUCT_NAME = Amlak;
-				PROVISIONING_PROFILE_SPECIFIER = Shahbaz;
+				PROVISIONING_PROFILE_SPECIFIER = "Shahbaz Associated Domain";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -472,6 +474,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -496,7 +499,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",
@@ -532,6 +535,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -549,7 +553,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "/usr/lib/swift $(inherited)";
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)\"",

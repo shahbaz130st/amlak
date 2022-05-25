@@ -7,7 +7,8 @@ import {
   Text,
   TouchableOpacity,
   FlatList,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -36,9 +37,11 @@ class Dashboard extends Component {
       selectedFilter: null,
       showPicker: false,
       showBottomPicker: false,
+      showFooterLoader: false,
       searchKeyword: '',
       arrayEstates: [],
       items: [],
+      initialPageToRender: 1,
       markers: [],
       markerInfo: {},
       sortActive: false,
@@ -115,7 +118,7 @@ class Dashboard extends Component {
       }
     } catch (error) { }
 
-    this.showItems(10);
+    this.showItems(this.state.initialPageToRender);
 
 
     this.configureListener();
@@ -142,7 +145,7 @@ class Dashboard extends Component {
         //   latitudeDelta: 3,
         //   longitudeDelta: 3
         // })
-        this.showItems(10);
+        this.showItems(this.state.initialPageToRender);
       }
     } catch (error) {
       console.log('error', error);
@@ -183,10 +186,12 @@ class Dashboard extends Component {
       latitude: this.state.currentLocation.latitude,
       longitude: this.state.currentLocation.longitude,
       zoom: size,
+      page: size
     });
     this.props.toggleLoader(false);
-    if (estateRes.data) {
-      this.showProperties(estateRes.data);
+    this.setState({ showFooterLoader: false })
+    if (estateRes.data.data) {
+      this.showProperties(estateRes.data.data,true);
     }
   };
 
@@ -215,7 +220,6 @@ class Dashboard extends Component {
   }
 
   showProperties(estateRes, add) {
-    console.log('check is add====>',estateRes);
     if (add) {
       this.setState({ arrayEstates: [...this.state.arrayEstates, ...estateRes] }); //another array
     } else {
@@ -781,9 +785,9 @@ class Dashboard extends Component {
       },
     ]);
 
-  renderItem =  (value) => {
-     let Image_Http_URL = value.item.picture.length > 0
-      ? Constants.API.ImageBaseURL(value.item.picture[0].picture) 
+  renderItem = (value) => {
+    let Image_Http_URL = value.item.picture.length > 0
+      ? Constants.API.ImageBaseURL(value.item.picture[0].picture)
       : Constants.Images.cover;
     //  Constants.API.ImageBaseURL(value.item.picture[0].picture)
     // value.item.picture.length > 0
@@ -1036,11 +1040,12 @@ class Dashboard extends Component {
       latitude: this.state.currentLocation.latitude,
       longitude: this.state.currentLocation.longitude,
       zoom: this.page,
+      page: this.state.initialPageToRender
     });
     this.setState({ refreshing: false });
-    if (estateRes.data) {
+    if (estateRes.data.data) {
       console.log('Listing Response', estateRes.data);
-      this.showProperties(estateRes.data);
+      this.showProperties(estateRes.data.data);
     }
   };
 
@@ -1082,10 +1087,41 @@ class Dashboard extends Component {
             }}
             onEndReached={() => {
               if (!this.onEndReachedCalledDuringMomentum) {
-                this.handleLoadMore(); // LOAD MORE DATA
+                this.setState({ showFooterLoader: true, loadMore: true })
+                this.handleLoadMore()
                 this.onEndReachedCalledDuringMomentum = true;
               }
             }}
+
+            ListFooterComponent={
+              this.state.showFooterLoader ?
+                <View
+                  animationType='slide'
+                  style={
+                    {
+                      margin: 10,
+                      padding: 10,
+                      alignItems: "center",
+                      alignSelf: "center",
+                      shadowOffset: {
+                        width: 0,
+                        height: 2
+                      },
+                      shadowOpacity: 0.25,
+                      shadowRadius: 3.84,
+                      elevation: 5,
+                      position: 'relative',
+                      width: '80%'
+                    }
+                  } >
+
+                  <ActivityIndicator
+                    size={'large'}
+                    color="#007AFF" />
+
+                </View>
+                : null
+            }
           />
         )}
       </View>
@@ -1232,45 +1268,31 @@ class Dashboard extends Component {
       this.props.toggleLoader(false);
       if (results) {
         this.showProperties(results);
-        // let arrayMarkers = [];
-        // for (let i = 0; i < results.length; i++) {
-        //   if (results[i].price) {
-        //     let marker = {};
-        //     marker.price =
-        //       `${Common.Helper.sign(results[i].currancy)}` + results[i].price;
-        //     marker.latitude = results[i].latitude;
-        //     marker.longitude = results[i].longitude;
-        //     marker.key = `${results[i].id}`;
-        //     arrayMarkers.push(marker);
-        //   }
-        // }
-        // console.log('markers------>', arrayMarkers);
-        // if (arrayMarkers.length == 0) {
-        //   setTimeout(() => {
-        //     Common.Alert.show('no_record_found');
-        //   }, 2000);
-        // }
-        // this.setState({ markers: arrayMarkers });
-        // this.setState({ arrayEstates: results });
       }
     } else {
       let estateRes = await Services.EstateServices.defaultEstates({
         latitude: this.state.currentLocation.latitude,
         longitude: this.state.currentLocation.longitude,
         zoom: this.page,
+        page: this.state.initialPageToRender
       });
-      if (estateRes.data) {
-        console.log('Listing Response', estateRes.data);
-        this.showProperties(estateRes.data);
+      if (estateRes.data.data) {
+        console.log('Listing Response', estateRes?.data?.data?.length);
+        this.showProperties(estateRes.data.data);
       }
     }
   }
   handleLoadMore = () => {
-    if (this.state.loadMore == true && this.state.isList == true) {
-      this.page = this.page + 5; // increase page by 1
-      console.log('next----->', this.page);
-      this.showItems(this.page);
-    }
+    console.log('i m here');
+    // if (this.state.isList == true) {
+      
+      // this.page = this.page + 5; // increase page by 1
+      this.setState({ initialPageToRender: this.state.initialPageToRender + 1 }, () => {
+        console.log('i m hereeeee',this.state.initialPageToRender);
+        this.showItems(this.state.initialPageToRender);
+      })
+
+    // }
   };
 
   onClosePicker() {

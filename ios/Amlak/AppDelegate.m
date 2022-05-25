@@ -7,6 +7,7 @@
 #import <Firebase.h>
 #import <FirebaseMessaging.h>
 #import <UserNotifications/UserNotifications.h>
+#import <RNFBDynamicLinksAppDelegateInterceptor.h>
 //#import "RNFirebaseNotifications.h"
 //#import "RNFirebaseMessaging.h"
 
@@ -32,6 +33,12 @@ static void InitializeFlipper(UIApplication *application) {
 
 @implementation AppDelegate
 
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+return [[RNFBDynamicLinksAppDelegateInterceptor sharedInstance] application:app openURL:url options:options];
+}
+- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id> * _Nullable))restorationHandler {
+return [[RNFBDynamicLinksAppDelegateInterceptor sharedInstance] application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
+}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [GMSServices provideAPIKey:@"AIzaSyDuig9JF6G0maKvfO_hHC1mLzuupz6Zj4E"];

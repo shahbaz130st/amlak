@@ -5,23 +5,56 @@ import Screens from '../../constants/navigations';
 import * as Constants from '../../constants/index';
 import * as Common from '../../common/index';
 import * as Services from '../../services/index';
+import dynamicLinks from '@react-native-firebase/dynamic-links';
+import { CommonActions } from '@react-navigation/native';
 
 class Splash extends Component {
   async componentDidMount() {
-    let token = await Common.KeyChain.get('authToken');
-    this.checkPermission();
-    setTimeout(() => {
-      if (token != null) {
-        Constants.API.Token = token;
-        console.log('token--->', token);
-        this.props.navigation.navigate(Screens.Onboarding.DASHBOARD);
-      } else {
-        // this.props.navigation.push(Screens.Onboarding.WELCOME);
-        this.props.navigation.navigate(Screens.Onboarding.DASHBOARD);
-      }
-    }, 3000)
-
+    await dynamicLinks().onLink(this.handleDynamicLink);
+    await dynamicLinks()
+      .getInitialLink()
+      .then(this.handleDynamicLink);
   }
+
+  handleDynamicLink = async (link) => {
+    console.log(JSON.stringify(link), "link123");
+    console.log(link, "link.url");
+    if (link !== null) {
+      let stringArray = link.url.split("/")
+      console.log(stringArray[stringArray.length - 2])
+      console.log(Constants.Navigations.Dashboard.DETAIL)
+      this.props.navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            { name: Screens.Onboarding.DASHBOARD },
+            {
+              name: Constants.Navigations.Dashboard.DETAIL,
+              params: { id: stringArray[stringArray.length - 2] },
+            },
+          ],
+        })
+      );
+      // this.props.navigation.navigate(
+      //   Constants.Navigations.Dashboard.DETAIL,
+      //   { id: stringArray[stringArray.length - 2] },
+      // );
+    }
+    else {
+      let token = await Common.KeyChain.get('authToken');
+      this.checkPermission();
+      setTimeout(() => {
+        if (token != null) {
+          Constants.API.Token = token;
+          console.log('token--->', token);
+          this.props.navigation.navigate(Screens.Onboarding.DASHBOARD);
+        } else {
+          // this.props.navigation.push(Screens.Onboarding.WELCOME);
+          this.props.navigation.navigate(Screens.Onboarding.DASHBOARD);
+        }
+      }, 3000)
+    }
+  };
 
   async checkPermission() {
     this.requestUserPermission();

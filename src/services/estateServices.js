@@ -162,9 +162,10 @@ const defaultEstates = async (data) => {
       longitude: data.longitude,
       zoom: data.zoom,
     };
-    console.log("urlasd",Constants.API.Dashboard.ESTATES_SEACRH,body)
+    console.log("urlasd",`${Constants.API.Dashboard.ESTATES_SEACRH}/page=${data.page}`)
+    console.log("urlasd=====data",data)
     const response = await Common.axios.post(
-      Constants.API.Dashboard.ESTATES_SEACRH,
+      `${Constants.API.Dashboard.ESTATES_SEACRH}?page=${data.page}`,
       body,
     );
     if (response && response.status == 200) {

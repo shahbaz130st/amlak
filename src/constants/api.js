@@ -1,7 +1,7 @@
 // const BaseURL = "http://amlakps.herokuapp.com/api/";
 // const BaseURL = 'http://3.14.19.113/property/public/api/';
-// const BaseURL = 'http://amlakbuyandsell.com/property/public/api/';
-const BaseURL = 'http://49.12.234.75/api/';
+const BaseURL = 'http://amlakbuyandsell.com/property/public/api/';
+// const BaseURL = 'http://49.12.234.75/api/';
 const Token = null;
 const FirebaseToken = null;
 const Language = 'ar';
@@ -25,7 +25,8 @@ const Onboarding = {
 };
 const Dashboard = {
   CITIES: 'cities',
-  ESTATES_SEACRH: 'estates/search',
+  // ESTATES_SEACRH: 'estates/search',
+  ESTATES_SEACRH: 'estates/temp-search',
   ESTATES_SEACRH_AREA: 'estates/search-by-area',
   ESTATES_DETAIL: 'estates/',
   ESTATES_CATEGORY: 'estates/by-category/',
