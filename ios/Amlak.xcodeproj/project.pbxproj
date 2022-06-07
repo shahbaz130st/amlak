@@ -17,12 +17,12 @@
 		5CD9CF5F71EE43A29926C0C8 /* SF Pro Text Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FEB1271414D04EC9BACF17F0 /* SF Pro Text Regular.ttf */; };
 		5D62FD4E69B54BF6B868513F /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B49884251164ED0A3DEB265 /* Feather.ttf */; };
 		5F618FFAEACA4EAD8F9F9047 /* SF Pro Text Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E18E0E92393A4FF3BFA51441 /* SF Pro Text Semibold.ttf */; };
+		60C51B6E284FB36B0006252F /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 60C51B6D284FB36B0006252F /* GoogleService-Info.plist */; };
 		6FD078FBD8A0422E9546A6D3 /* SF Pro Text Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 037EC1F52E70489C8D48D3F7 /* SF Pro Text Medium.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8D3E3AAD4D25496D8B20F908 /* SF Pro Display Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0AACC69C9EF04775B25B172D /* SF Pro Display Semibold.ttf */; };
 		965AF3D4E5A94CDDB63AF44E /* ArbFONTS-FFShamelFamily-SansOneBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B6F8308C68F43379F9CBDD9 /* ArbFONTS-FFShamelFamily-SansOneBook.ttf */; };
 		A87EFD92C0E44EF2BA03C043 /* SF-Pro-Display-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B12302B748F429B8D360D05 /* SF-Pro-Display-Bold.ttf */; };
-		CB8CD129283A58F100981053 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CB8CD128283A58F100981053 /* GoogleService-Info.plist */; };
 		D0450A373ECA47A3AB30DB2C /* FF-Shamel-Family-Sans-One-Book.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EA03FF38B7E4C4A8A9E61BE /* FF-Shamel-Family-Sans-One-Book.ttf */; };
 /* End PBXBuildFile section */
 
@@ -45,11 +45,11 @@
 		5284C88326F9C93C00741DF6 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5284C88626F9C94600741DF6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5801EE383ED1D5D7095CFA19 /* Pods-Amlak.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Amlak.release.xcconfig"; path = "Target Support Files/Pods-Amlak/Pods-Amlak.release.xcconfig"; sourceTree = "<group>"; };
+		60C51B6D284FB36B0006252F /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6B6F8308C68F43379F9CBDD9 /* ArbFONTS-FFShamelFamily-SansOneBook.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ArbFONTS-FFShamelFamily-SansOneBook.ttf"; path = "../src/assets/fonts/ArbFONTS-FFShamelFamily-SansOneBook.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = Amlak/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8EA03FF38B7E4C4A8A9E61BE /* FF-Shamel-Family-Sans-One-Book.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "FF-Shamel-Family-Sans-One-Book.ttf"; path = "../src/assets/fonts/FF-Shamel-Family-Sans-One-Book.ttf"; sourceTree = "<group>"; };
 		C18B9140F98451C2CFBD72D1 /* libPods-Amlak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Amlak.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB8CD128283A58F100981053 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../amlak plist/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBD9CE3128374E23002668B1 /* AmlakRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = AmlakRelease.entitlements; path = Amlak/AmlakRelease.entitlements; sourceTree = "<group>"; };
 		CC6C65A7E3584B44BBDB74F6 /* SF Pro Text Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "SF Pro Text Bold.ttf"; path = "../src/assets/fonts/SF Pro Text Bold.ttf"; sourceTree = "<group>"; };
 		D7086C0081C34D03B228AD5F /* ArbFONTS-FFShamelFamily-SansOneBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "ArbFONTS-FFShamelFamily-SansOneBold.ttf"; path = "../src/assets/fonts/ArbFONTS-FFShamelFamily-SansOneBold.ttf"; sourceTree = "<group>"; };
@@ -91,10 +91,10 @@
 		13B07FAE1A68108700A75B9A /* Amlak */ = {
 			isa = PBXGroup;
 			children = (
+				60C51B6D284FB36B0006252F /* GoogleService-Info.plist */,
 				CBD9CE3128374E23002668B1 /* AmlakRelease.entitlements */,
 				28B22A2A26EBDE6300DEBF1A /* Amlak.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
-				CB8CD128283A58F100981053 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -240,6 +240,7 @@
 			files = (
 				5284C88226F9C93C00741DF6 /* InfoPlist.strings in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
+				60C51B6E284FB36B0006252F /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				D0450A373ECA47A3AB30DB2C /* FF-Shamel-Family-Sans-One-Book.ttf in Resources */,
 				8D3E3AAD4D25496D8B20F908 /* SF Pro Display Semibold.ttf in Resources */,
@@ -251,7 +252,6 @@
 				2355F263F9CF4603AA687167 /* ArbFONTS-FFShamelFamily-SansOneBold.ttf in Resources */,
 				965AF3D4E5A94CDDB63AF44E /* ArbFONTS-FFShamelFamily-SansOneBook.ttf in Resources */,
 				5D62FD4E69B54BF6B868513F /* Feather.ttf in Resources */,
-				CB8CD129283A58F100981053 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

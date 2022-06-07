@@ -18,6 +18,7 @@ import {
 import { SliderBox } from 'react-native-image-slider-box';
 import moment from 'moment';
 import StarRating from 'react-native-star-rating';
+import Share from 'react-native-share';
 
 import * as Components from '../../components/index';
 import * as Constants from '../../constants/index';
@@ -59,6 +60,7 @@ class EstateDetail extends Component {
     marker: null,
     forceRefresh: '333',
     isShowLocation: false,
+    shortLink: ''
   };
 
   async componentDidMount() {
@@ -2493,6 +2495,79 @@ class EstateDetail extends Component {
                   }
                 />
               </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            width: '90%',
+            marginTop: hp('4%'),
+            flexDirection: 'column',
+          }}>
+          <Text
+            style={{
+              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
+              color: '#444040',
+              fontSize: wp('4%'),
+              marginBottom: 3,
+              textAlign: 'right',
+            }}>
+            {Common.Translations.translate('Marketting')}
+          </Text>
+          <View
+            style={{
+            }}>
+            <TouchableOpacity
+              onPress={() => {
+                Share.open({url:this.state.propertyDetail.short_link})
+                  .then((res) => {
+                    console.log(res);
+                  })
+                  .catch((err) => {
+                    err && console.log(err);
+                  });
+              }}
+              style={{
+                width: wp('10%'),
+                height: wp('10%'),
+                backgroundColor: '#05B433',
+                borderRadius: wp('10%') / 2,
+                marginLeft: wp('2%'),
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Image
+                style={{
+                  width: wp('5%'),
+                  height: wp('5%'),
+                }}
+                source={Constants.Images.share}
+              />
+            </TouchableOpacity>
+            <View
+              style={{
+                flexDirection: 'column',
+                // backgroundColor: 'red'
+              }}>
+              <Text
+                onPress={() => {
+                  if (this.state.propertyDetail.owner.user_info.id) {
+                    this.props.navigation.push(
+                      Constants.Navigations.Setting.PROFILE,
+                      { id: this.state.propertyDetail.owner.user_info.id },
+                    );
+                  }
+                }}
+                style={{
+                  marginRight: wp('1%'),
+                  fontFamily: Constants.Fonts.shamel,
+                  color: '#444040',
+                  fontSize: wp('3%'),
+                  marginLeft: wp('4%'),
+                  marginTop: 20
+                }}>
+                {this.state.propertyDetail.short_link}
+              </Text>
             </View>
           </View>
         </View>
