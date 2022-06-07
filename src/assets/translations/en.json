@@ -286,5 +286,6 @@
   "optional": "optional",
   "login_required": "Please Login first to explore more information.",
   "no_internet": "No Internet connection",
-  "version": "Version"
+  "version": "Version",
+  "listingPage":"To explore listing without login, please click here"
 }

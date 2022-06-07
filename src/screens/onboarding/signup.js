@@ -290,7 +290,7 @@ class Signup extends Component {
                         borderStartWidth: 0.7,
                         borderStartColor: '#E1E1E1',
                         borderRadius: hp('5%') / 2,
-                        justifyContent:"center"
+                        justifyContent: "center"
                       },
                     }}
                     // disableArrowIcon={true}
@@ -471,6 +471,21 @@ class Signup extends Component {
                   {Common.Translations.translate('loginhere')}
                 </Text>
               </View>
+              <Text
+                style={{
+                  textAlign: 'right',
+                  fontFamily: Constants.Fonts.shamelBold,
+                  fontSize: wp('3%'),
+                  color: Constants.Colors.buttonBackground,
+                  marginRight: wp('4%'),
+                }}
+                onPress={() => {
+                  this.props.navigation.push(
+                    Constants.Navigations.Onboarding.DASHBOARD,
+                  );
+                }}>
+                {Common.Translations.translate('listingPage')}
+              </Text>
             </View>
           </KeyboardAwareScrollView>
         </View>

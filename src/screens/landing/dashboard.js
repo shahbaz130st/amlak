@@ -1077,7 +1077,7 @@ class Dashboard extends Component {
           <FlatList
             data={array}
             renderItem={this.renderItem}
-            keyExtractor={(item) => `${item.id}`}
+            keyExtractor={(item,index) => index.toString()/* `${item.id}` */}
             extraData={this.state.selectedFilter}
             onRefresh={this.refreshList}
             refreshing={this.state.refreshing}
