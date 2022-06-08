@@ -2519,7 +2519,7 @@ class EstateDetail extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                Share.open({url:this.state.propertyDetail.short_link})
+                Share.open({ url: this.state.propertyDetail.short_link })
                   .then((res) => {
                     console.log(res);
                   })
@@ -2540,6 +2540,7 @@ class EstateDetail extends Component {
                 style={{
                   width: wp('5%'),
                   height: wp('5%'),
+                  tintColor: "white"
                 }}
                 source={Constants.Images.share}
               />
@@ -2550,14 +2551,6 @@ class EstateDetail extends Component {
                 // backgroundColor: 'red'
               }}>
               <Text
-                onPress={() => {
-                  if (this.state.propertyDetail.owner.user_info.id) {
-                    this.props.navigation.push(
-                      Constants.Navigations.Setting.PROFILE,
-                      { id: this.state.propertyDetail.owner.user_info.id },
-                    );
-                  }
-                }}
                 style={{
                   marginRight: wp('1%'),
                   fontFamily: Constants.Fonts.shamel,
