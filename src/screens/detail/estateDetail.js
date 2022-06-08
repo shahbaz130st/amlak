@@ -2405,25 +2405,58 @@ class EstateDetail extends Component {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <TouchableOpacity
-              onPress={() => this.onCall()}
-              style={{
-                width: wp('10%'),
-                height: wp('10%'),
-                backgroundColor: '#05B433',
-                borderRadius: wp('10%') / 2,
-                marginLeft: wp('2%'),
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Image
+            <View style={{
+              flexDirection: 'row'
+            }}>
+              <TouchableOpacity
+                onPress={() => this.onCall()}
                 style={{
-                  width: wp('5%'),
-                  height: wp('5%'),
+                  width: wp('10%'),
+                  height: wp('10%'),
+                  backgroundColor: '#05B433',
+                  borderRadius: wp('10%') / 2,
+                  marginLeft: wp('2%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Image
+                  style={{
+                    width: wp('5%'),
+                    height: wp('5%'),
+                  }}
+                  source={Constants.Images.phone}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  Share.open({ url: this.state.propertyDetail.short_link })
+                    .then((res) => {
+                      console.log(res);
+                    })
+                    .catch((err) => {
+                      err && console.log(err);
+                    });
                 }}
-                source={Constants.Images.phone}
-              />
-            </TouchableOpacity>
+                style={{
+                  width: wp('10%'),
+                  height: wp('10%'),
+                  backgroundColor: '#05B433',
+                  borderRadius: wp('10%') / 2,
+                  marginLeft: wp('1%'),
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Image
+                  style={{
+                    width: wp('6%'),
+                    height: wp('6%'),
+                    tintColor: "white",
+                    resizeMode: 'contain'
+                  }}
+                  source={Constants.Images.shareIcon}
+                />
+              </TouchableOpacity>
+            </View>
             <View
               style={{
                 flexDirection: 'row',
@@ -2495,72 +2528,6 @@ class EstateDetail extends Component {
                   }
                 />
               </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-        <View
-          style={{
-            width: '90%',
-            marginTop: hp('4%'),
-            flexDirection: 'column',
-          }}>
-          <Text
-            style={{
-              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-              color: '#444040',
-              fontSize: wp('4%'),
-              marginBottom: 3,
-              textAlign: 'right',
-            }}>
-            {Common.Translations.translate('Marketting')}
-          </Text>
-          <View
-            style={{
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                Share.open({ url: this.state.propertyDetail.short_link })
-                  .then((res) => {
-                    console.log(res);
-                  })
-                  .catch((err) => {
-                    err && console.log(err);
-                  });
-              }}
-              style={{
-                width: wp('10%'),
-                height: wp('10%'),
-                backgroundColor: '#05B433',
-                borderRadius: wp('10%') / 2,
-                marginLeft: wp('2%'),
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Image
-                style={{
-                  width: wp('5%'),
-                  height: wp('5%'),
-                  tintColor: "white"
-                }}
-                source={Constants.Images.share}
-              />
-            </TouchableOpacity>
-            <View
-              style={{
-                flexDirection: 'column',
-                // backgroundColor: 'red'
-              }}>
-              <Text
-                style={{
-                  marginRight: wp('1%'),
-                  fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('3%'),
-                  marginLeft: wp('4%'),
-                  marginTop: 20
-                }}>
-                {this.state.propertyDetail.short_link}
-              </Text>
             </View>
           </View>
         </View>
