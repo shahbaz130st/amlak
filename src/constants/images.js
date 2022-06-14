@@ -91,6 +91,7 @@ export default (() => {
     contact_us:require('../assets/images/contactUs.png'),
     contactByEmail:require('../assets/images/contactByEmail.png'),
     contactByPhone:require('../assets/images/contactByPhone.png'),
+    shareIcon:require('../assets/images/share_icon.png'),
 
 
   };
