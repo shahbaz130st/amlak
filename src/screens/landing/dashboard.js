@@ -41,6 +41,7 @@ class Dashboard extends Component {
       searchKeyword: '',
       arrayEstates: [],
       items: [],
+      propertyCount: 0,
       initialPageToRender: 1,
       markers: [],
       markerInfo: {},
@@ -188,6 +189,7 @@ class Dashboard extends Component {
       zoom: size,
       page: size
     });
+    this.setState({propertyCount: estateRes?.proparty_count})
     this.props.toggleLoader(false);
     this.setState({ showFooterLoader: false })
     if (estateRes.data.data) {
@@ -1545,7 +1547,7 @@ class Dashboard extends Component {
                     fontSize: wp('3'),
                     color: '#E1E1E1',
                   }}>
-                  {this.state.markers.length}{' '}
+                  {this.state.propertyCount}{' '}
                   {Common.Translations.translate('alone')}
                 </Text>
               </View>
