@@ -116,7 +116,7 @@ class EstateDetail extends Component {
       let images = [];
 
       for (let i = 0; i < detailRes.picture.length; i++) {
-        let picture = Constants.API.ImageBaseURL(detailRes.picture[i].picture);
+        let picture = detailRes.picture[i].picture;
         images.push(picture);
       }
       this.setState({ images: images });
@@ -148,7 +148,7 @@ class EstateDetail extends Component {
       let images = [];
 
       for (let i = 0; i < detailRes.picture.length; i++) {
-        let picture = Constants.API.ImageBaseURL(detailRes.picture[i].picture);
+        let picture = detailRes.picture[i].picture;
         images.push(picture);
       }
       this.setState({ images: images });
@@ -3073,7 +3073,7 @@ class EstateDetail extends Component {
     try {
       Image_Http_URL =
         value.item.picture.length > 0
-          ? { uri: Constants.API.ImageBaseURL(value.item.picture[0].picture) }
+          ? { uri: value.item.picture[0].picture }
           : Constants.Images.cover;
     } catch (error) {
       return <View />;

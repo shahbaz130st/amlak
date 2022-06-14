@@ -66,7 +66,7 @@ class MyAds extends Component {
     try {
       Image_Http_URL =
         value.item.picture.length > 0
-          ? { uri: Constants.API.ImageBaseURL(value.item.picture[0].picture) }
+          ? { uri: value.item.picture[0].picture }
           : Constants.Images.cover;
     } catch (error) {
       return <View />

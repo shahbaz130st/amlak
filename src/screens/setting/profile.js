@@ -52,7 +52,7 @@ class Profile extends Component {
         if (user) {
           console.log(user);
           this.setState({ userInfo: user });
-          this.setState({userInfo:{...user, profile_pic:userInstance.getUser().info.profile_pic}})
+          this.setState({ userInfo: { ...user, profile_pic: userInstance.getUser().info.profile_pic } })
           this.setState({ DATA: user.reviews });
         }
       }
@@ -259,10 +259,10 @@ class Profile extends Component {
                     }}>
                     {item?.details?.door_type == undefined
                       ? ''
-                      :Constants.API.Language == 'ar' ? item?.details?.door_type_arabic: item?.details?.door_type
-                     }
+                      : Constants.API.Language == 'ar' ? item?.details?.door_type_arabic : item?.details?.door_type
+                    }
                   </Text>
-                  <Image style = {{width:wp('3%'),height:wp('3.5%')}} source={Constants.Images.door} />
+                  <Image style={{ width: wp('3%'), height: wp('3.5%') }} source={Constants.Images.door} />
                 </View>
                 <View
                   style={{
@@ -292,293 +292,293 @@ class Profile extends Component {
           </React.Fragment>
         )
         break;
-        case 30:
-          return (
-            <React.Fragment>
-              {item?.details?.land_area && item?.details?.land_area != undefined ? (
+      case 30:
+        return (
+          <React.Fragment>
+            {item?.details?.land_area && item?.details?.land_area != undefined ? (
+              <View
+                style={{
+                  width: wp('90%'),
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  paddingRight: wp('6%'),
+                  backgroundColor: 'transparent',
+                }}>
+
                 <View
                   style={{
-                    width: wp('90%'),
+                    marginRight: wp('2%'),
+                    height: hp('2%'),
                     flexDirection: 'row',
+                    justifyContent: 'center',
                     alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    paddingRight: wp('6%'),
-                    backgroundColor: 'transparent',
                   }}>
-  
-                  <View
+                  <Text
                     style={{
+                      color: '#444040',
+                      fontFamily: Constants.Fonts.shamel,
+                      fontSize: wp('3%'),
                       marginRight: wp('2%'),
-                      height: hp('2%'),
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
                     }}>
-                    <Text
-                      style={{
-                        color: '#444040',
-                        fontFamily: Constants.Fonts.shamel,
-                        fontSize: wp('3%'),
-                        marginRight: wp('2%'),
-                      }}>
-                      {item?.details?.land_type == undefined
-                        ? ''
-                        :Constants.API.Language == 'ar' ? item?.details?.land_type_arabic : item?.details?.land_type
-                        }
-                    </Text>
-                    <Image source={Constants.Images.typeBlack} />
-                  </View>
-                  <View
-                    style={{
-                      marginRight: wp('2%'),
-                      height: hp('2%'),
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: '#444040',
-                        fontFamily: Constants.Fonts.shamel,
-                        fontSize: wp('3%'),
-                        marginRight: wp('2%'),
-                      }}>
-                      {item?.details?.land_area == undefined
-                        ? ''
-                        : item?.details?.land_area +
-                        ' '}
-                    </Text>
-                    <Image source={Constants.Images.expand} />
-                  </View>
+                    {item?.details?.land_type == undefined
+                      ? ''
+                      : Constants.API.Language == 'ar' ? item?.details?.land_type_arabic : item?.details?.land_type
+                    }
+                  </Text>
+                  <Image source={Constants.Images.typeBlack} />
                 </View>
-              ) : null}
-            </React.Fragment>
-          )
-          break;
-        case 50:
-          return (
-            <React.Fragment>
-              {item?.details?.warehouse_area != undefined ? (
                 <View
                   style={{
-                    width: wp('90%'),
+                    marginRight: wp('2%'),
+                    height: hp('2%'),
                     flexDirection: 'row',
+                    justifyContent: 'center',
                     alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    paddingRight: wp('6%'),
-                    backgroundColor: 'transparent',
                   }}>
-
-                  <View
+                  <Text
                     style={{
+                      color: '#444040',
+                      fontFamily: Constants.Fonts.shamel,
+                      fontSize: wp('3%'),
                       marginRight: wp('2%'),
-                      height: hp('2%'),
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
                     }}>
-                    <Text
-                      style={{
-                        color: '#444040',
-                        fontFamily: Constants.Fonts.shamel,
-                        fontSize: wp('3%'),
-                        marginRight: wp('2%'),
-                      }}>
-                      {item?.details?.no_of_bath == undefined
-                        ? ''
-                        : item?.details?.no_of_bath +
-                        ' ' +
-                        Common.Translations.translate('bathRoom')}
-                    </Text>
-                    <Image source={Constants.Images.bathroom} />
-                  </View>
-
-                  <View
-                    style={{
-                      marginRight: wp('2%'),
-                      height: hp('2%'),
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: '#444040',
-                        fontFamily: Constants.Fonts.shamel,
-                        fontSize: wp('3%'),
-                        marginRight: wp('2%'),
-                      }}>
-                      {item?.details?.door_type == undefined
-                        ? ''
-                        :Constants.API.Language == 'ar' ? item?.details?.door_type_arabic: item?.details?.door_type}
-                    </Text>
-                    <Image style = {{width:wp('3%'),height:wp('3.5%')}} source={Constants.Images.door} />
-                  </View>
-
-                  <View
-                    style={{
-                      marginRight: wp('2%'),
-                      height: hp('2%'),
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: '#444040',
-                        fontFamily: Constants.Fonts.shamel,
-                        fontSize: wp('3%'),
-                        marginRight: wp('2%'),
-                      }}>
-                      {item?.details?.warehouse_street_width == undefined
-                        ? ''
-                        : item?.details?.warehouse_street_width +
-                        ' ' +
-                        Common.Translations.translate('m2')}
-                    </Text>
-                    <Image style = {{width:wp('3%'),height:wp('3.5%')}} source={Constants.Images.road} />
-                  </View>
-
-                  <View
-                    style={{
-                      marginRight: wp('2%'),
-                      height: hp('2%'),
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        color: '#444040',
-                        fontFamily: Constants.Fonts.shamel,
-                        fontSize: wp('3%'),
-                        marginRight: wp('2%'),
-                      }}>
-                      {item?.details?.warehouse_area == undefined
-                        ? ''
-                        : item?.details?.warehouse_area +
-                        ' ' +
-                        Common.Translations.translate('m2')}
-                    </Text>
-                    <Image source={Constants.Images.expand} />
-                  </View>
+                    {item?.details?.land_area == undefined
+                      ? ''
+                      : item?.details?.land_area +
+                      ' '}
+                  </Text>
+                  <Image source={Constants.Images.expand} />
                 </View>
-              ) : null}
-            </React.Fragment>
-          )
-          break;
-          case 40:
-            return (
-              <React.Fragment>
-                {
-                //item?.details?.warehouse_area != undefined ? (
-                  <View
+              </View>
+            ) : null}
+          </React.Fragment>
+        )
+        break;
+      case 50:
+        return (
+          <React.Fragment>
+            {item?.details?.warehouse_area != undefined ? (
+              <View
+                style={{
+                  width: wp('90%'),
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  paddingRight: wp('6%'),
+                  backgroundColor: 'transparent',
+                }}>
+
+                <View
+                  style={{
+                    marginRight: wp('2%'),
+                    height: hp('2%'),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
                     style={{
-                      width: wp('90%'),
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      justifyContent: 'flex-end',
-                      paddingRight: wp('6%'),
-                      backgroundColor: 'transparent',
+                      color: '#444040',
+                      fontFamily: Constants.Fonts.shamel,
+                      fontSize: wp('3%'),
+                      marginRight: wp('2%'),
                     }}>
-  
-                    <View
-                      style={{
-                        marginRight: wp('2%'),
-                        height: hp('2%'),
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Text
-                        style={{
-                          color: '#444040',
-                          fontFamily: Constants.Fonts.shamel,
-                          fontSize: wp('3%'),
-                          marginRight: wp('2%'),
-                        }}>
-                        {Constants.API.Language == 'ar' ? item?.details?.door_type_arabic : item?.details?.door_type}
-                      </Text>
-                      <Image style = {{width:wp('3%'),height:wp('3.5%')}} source={Constants.Images.door} />
-                    </View>
+                    {item?.details?.no_of_bath == undefined
+                      ? ''
+                      : item?.details?.no_of_bath +
+                      ' ' +
+                      Common.Translations.translate('bathRoom')}
+                  </Text>
+                  <Image source={Constants.Images.bathroom} />
+                </View>
 
-                    <View
-                      style={{
-                        marginRight: wp('2%'),
-                        height: hp('2%'),
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Text
-                        style={{
-                          color: '#444040',
-                          fontFamily: Constants.Fonts.shamel,
-                          fontSize: wp('3%'),
-                          marginRight: wp('2%'),
-                        }}>
-                        {item?.details?.shop_street_width + ' ' +
-                        Common.Translations.translate('m2')}
-                      </Text>
-                      <Image style = {{width:wp('3%'),height:wp('3.5%')}} source={Constants.Images.road} />
-                    </View>
+                <View
+                  style={{
+                    marginRight: wp('2%'),
+                    height: hp('2%'),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#444040',
+                      fontFamily: Constants.Fonts.shamel,
+                      fontSize: wp('3%'),
+                      marginRight: wp('2%'),
+                    }}>
+                    {item?.details?.door_type == undefined
+                      ? ''
+                      : Constants.API.Language == 'ar' ? item?.details?.door_type_arabic : item?.details?.door_type}
+                  </Text>
+                  <Image style={{ width: wp('3%'), height: wp('3.5%') }} source={Constants.Images.door} />
+                </View>
 
-                    <View
-                      style={{
-                        marginRight: wp('2%'),
-                        height: hp('2%'),
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Text
-                        style={{
-                          color: '#444040',
-                          fontFamily: Constants.Fonts.shamel,
-                          fontSize: wp('3%'),
-                          marginRight: wp('2%'),
-                        }}>
-                        {item?.details?.bath == undefined
-                          ? '':
-                          '1' +
-                          Common.Translations.translate('bathRoom')}
-                      </Text>
-                      <Image source={Constants.Images.bathroom} />
-                    </View>
-  
-  
-                    <View
-                      style={{
-                        marginRight: wp('2%'),
-                        height: hp('2%'),
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Text
-                        style={{
-                          color: '#444040',
-                          fontFamily: Constants.Fonts.shamel,
-                          fontSize: wp('3%'),
-                          marginRight: wp('2%'),
-                        }}>
-                        {item?.details?.shop_area == undefined
-                          ? ''
-                          : item?.details?.shop_area +
-                          ' ' +
-                          Common.Translations.translate('m2')}
-                      </Text>
-                      <Image style={{width:10, height:10}} source={Constants.Images.provinces} />
-                    </View>
-                  </View>
-                //) : null
-                }
-              </React.Fragment>
-            )
-            break;
-        
-      
-          default:
+                <View
+                  style={{
+                    marginRight: wp('2%'),
+                    height: hp('2%'),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#444040',
+                      fontFamily: Constants.Fonts.shamel,
+                      fontSize: wp('3%'),
+                      marginRight: wp('2%'),
+                    }}>
+                    {item?.details?.warehouse_street_width == undefined
+                      ? ''
+                      : item?.details?.warehouse_street_width +
+                      ' ' +
+                      Common.Translations.translate('m2')}
+                  </Text>
+                  <Image style={{ width: wp('3%'), height: wp('3.5%') }} source={Constants.Images.road} />
+                </View>
+
+                <View
+                  style={{
+                    marginRight: wp('2%'),
+                    height: hp('2%'),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#444040',
+                      fontFamily: Constants.Fonts.shamel,
+                      fontSize: wp('3%'),
+                      marginRight: wp('2%'),
+                    }}>
+                    {item?.details?.warehouse_area == undefined
+                      ? ''
+                      : item?.details?.warehouse_area +
+                      ' ' +
+                      Common.Translations.translate('m2')}
+                  </Text>
+                  <Image source={Constants.Images.expand} />
+                </View>
+              </View>
+            ) : null}
+          </React.Fragment>
+        )
+        break;
+      case 40:
+        return (
+          <React.Fragment>
+            {
+              //item?.details?.warehouse_area != undefined ? (
+              <View
+                style={{
+                  width: wp('90%'),
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  paddingRight: wp('6%'),
+                  backgroundColor: 'transparent',
+                }}>
+
+                <View
+                  style={{
+                    marginRight: wp('2%'),
+                    height: hp('2%'),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#444040',
+                      fontFamily: Constants.Fonts.shamel,
+                      fontSize: wp('3%'),
+                      marginRight: wp('2%'),
+                    }}>
+                    {Constants.API.Language == 'ar' ? item?.details?.door_type_arabic : item?.details?.door_type}
+                  </Text>
+                  <Image style={{ width: wp('3%'), height: wp('3.5%') }} source={Constants.Images.door} />
+                </View>
+
+                <View
+                  style={{
+                    marginRight: wp('2%'),
+                    height: hp('2%'),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#444040',
+                      fontFamily: Constants.Fonts.shamel,
+                      fontSize: wp('3%'),
+                      marginRight: wp('2%'),
+                    }}>
+                    {item?.details?.shop_street_width + ' ' +
+                      Common.Translations.translate('m2')}
+                  </Text>
+                  <Image style={{ width: wp('3%'), height: wp('3.5%') }} source={Constants.Images.road} />
+                </View>
+
+                <View
+                  style={{
+                    marginRight: wp('2%'),
+                    height: hp('2%'),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#444040',
+                      fontFamily: Constants.Fonts.shamel,
+                      fontSize: wp('3%'),
+                      marginRight: wp('2%'),
+                    }}>
+                    {item?.details?.bath == undefined
+                      ? '' :
+                      '1' +
+                      Common.Translations.translate('bathRoom')}
+                  </Text>
+                  <Image source={Constants.Images.bathroom} />
+                </View>
+
+
+                <View
+                  style={{
+                    marginRight: wp('2%'),
+                    height: hp('2%'),
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text
+                    style={{
+                      color: '#444040',
+                      fontFamily: Constants.Fonts.shamel,
+                      fontSize: wp('3%'),
+                      marginRight: wp('2%'),
+                    }}>
+                    {item?.details?.shop_area == undefined
+                      ? ''
+                      : item?.details?.shop_area +
+                      ' ' +
+                      Common.Translations.translate('m2')}
+                  </Text>
+                  <Image style={{ width: 10, height: 10 }} source={Constants.Images.provinces} />
+                </View>
+              </View>
+              //) : null
+            }
+          </React.Fragment>
+        )
+        break;
+
+
+      default:
         return (
           <React.Fragment>
             {item?.details?.number_of_baths != undefined ? (
@@ -697,7 +697,7 @@ class Profile extends Component {
     try {
       Image_Http_URL =
         value.item.picture.length > 0
-          ? { uri: Constants.API.ImageBaseURL(value.item.picture[0].picture) }
+          ? { uri: value.item.picture[0].picture }
           : Constants.Images.cover;
     } catch (error) {
       return <View />
@@ -834,7 +834,7 @@ class Profile extends Component {
                     fontSize: wp('2.5%'),
                     marginRight: wp('2%'),
                   }}>
-                  {`${value.item.region} ${Constants.API.Language == 'ar'? value.item.city_id_arabic : value.item.city_id} ${value.item.address}`}
+                  {`${value.item.region} ${Constants.API.Language == 'ar' ? value.item.city_id_arabic : value.item.city_id} ${value.item.address}`}
                 </Text>
                 <Image source={Constants.Images.locationBlack} />
               </View>
@@ -855,7 +855,7 @@ class Profile extends Component {
             left: wp('12%'),
           }}>
           <TouchableOpacity>
-            <Image source={ value.item.is_fav == false ? Constants.Images.heartGray:Constants.Images.heartRed} />
+            <Image source={value.item.is_fav == false ? Constants.Images.heartGray : Constants.Images.heartRed} />
           </TouchableOpacity>
         </View>
       </View>

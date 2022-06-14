@@ -95,6 +95,7 @@ class Provinces extends Component {
     this.props.toggleLoader(true);
     this.setState({markers: []});
     let estateRes = await Services.EstateServices.propertyByCity(city.id);
+    console.log(`estates rates======`,city);
     this.props.toggleLoader(false);
     if (estateRes) {
       this.renderPropertyByCity(estateRes);

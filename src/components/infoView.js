@@ -580,9 +580,8 @@ const renderProerties = (item) => {
 };
 
 const AmlakInfoView = (props) => {
-  console.log('check for market info====>', props.markerInfo.product.picture);
-  let Image_Http_URL = props.markerInfo.product.picture.length > 0 ? Constants.API.ImageBaseURL(
-    props.markerInfo.product.picture[0].picture) : Constants.Images.cover;
+  let Image_Http_URL = props.markerInfo.product.picture.length > 0 ?
+    props.markerInfo.product.picture[0].picture : Constants.Images.cover;
 
   // props.markerInfo.product.picture.length > 0
   //   ? /* {
