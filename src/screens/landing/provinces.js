@@ -1,8 +1,10 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image,StatusBar,
-  SafeAreaView} from 'react-native';
-import {connect} from 'react-redux';
-import {Actions} from '../../redux/index';
+import React, { Component } from 'react';
+import {
+  View, Text, StyleSheet, TouchableOpacity, Image, StatusBar,
+  SafeAreaView
+} from 'react-native';
+import { connect } from 'react-redux';
+import { Actions } from '../../redux/index';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -12,7 +14,7 @@ import * as Constants from '../../constants/index';
 import * as Common from '../../common/index';
 import * as Services from '../../services/index';
 
-const MyStatusBar = ({backgroundColor, ...props}) => (
+const MyStatusBar = ({ backgroundColor, ...props }) => (
   <View style={[styles.statusBar, { backgroundColor }]}>
     <SafeAreaView>
       <StatusBar translucent backgroundColor={backgroundColor} {...props} />
@@ -22,13 +24,13 @@ const MyStatusBar = ({backgroundColor, ...props}) => (
 
 class Provinces extends Component {
   state = {
-    currentLocation: {latitude: 25.2048, longitude: 55.2708},
+    currentLocation: { latitude: 25.2048, longitude: 55.2708 },
     markers: [],
     arrayCity: [],
     cityMap: true,
     info: null,
-    isShowLocation:false,
-    forceRefresh:'333'
+    isShowLocation: false,
+    forceRefresh: '333'
   };
   async componentDidMount() {
     try {
@@ -41,11 +43,11 @@ class Provinces extends Component {
           },
         });
         this.setState({
-          isShowLocation:!this.state.isShowLocation,
+          isShowLocation: !this.state.isShowLocation,
           forceRefresh: `${Math.floor(Math.random() * 100)}`
-      })
+        })
       }
-    } catch (error) {}
+    } catch (error) { }
     this.getCityList();
     Common.Helper.logEvent('provinces', {
     });
@@ -56,7 +58,7 @@ class Provinces extends Component {
     let res = await Services.EstateServices.cityList();
     this.props.toggleLoader(false);
     if (res) {
-      this.setState({arrayCity: res});
+      this.setState({ arrayCity: res });
     }
   };
 
@@ -93,9 +95,9 @@ class Provinces extends Component {
 
   propertyByCity = async (city) => {
     this.props.toggleLoader(true);
-    this.setState({markers: []});
+    this.setState({ markers: [] });
     let estateRes = await Services.EstateServices.propertyByCity(city.id);
-    console.log(`estates rates======`,city);
+    console.log(`estates rates======`, city);
     this.props.toggleLoader(false);
     if (estateRes) {
       this.renderPropertyByCity(estateRes);
@@ -116,21 +118,21 @@ class Provinces extends Component {
     }
 
     if (add) {
-      this.setState({markers: [...this.state.markers, ...arrayMarkers]}); //another array
+      this.setState({ markers: [...this.state.markers, ...arrayMarkers] }); //another array
     } else {
-      this.setState({markers: arrayMarkers});
+      this.setState({ markers: arrayMarkers });
     }
     let uniqueMarkers = this.state.markers.filter(
       (v, i, a) => a.indexOf(v) === i,
     );
-    this.setState({cityMap: false});
-    this.setState({markers: uniqueMarkers});
+    this.setState({ cityMap: false });
+    this.setState({ markers: uniqueMarkers });
   }
 
   render() {
     return (
       <View style={styles.container}>
-      <MyStatusBar backgroundColor="white" barStyle="light-content" />
+        <MyStatusBar backgroundColor="white" barStyle="light-content" />
         <Components.AmlakProvincesMap
           provider={1}
           region={{
@@ -139,8 +141,8 @@ class Provinces extends Component {
             latitudeDelta: 3,
             longitudeDelta: 3,
           }}
-          forceRefresh = {this.state.forceRefresh}
-        showsUserLocation = {this.state.isShowLocation}
+          forceRefresh={this.state.forceRefresh}
+          showsUserLocation={this.state.isShowLocation}
           cityMap={this.state.cityMap}
           markers={
             this.state.cityMap == true
@@ -151,16 +153,16 @@ class Provinces extends Component {
             if (this.state.cityMap == true) {
               this.propertyByCity(e);
             } else {
-              this.setState({info: e});
+              this.setState({ info: e });
             }
           }}
-          regionChange={(e) => {}}
+          regionChange={(e) => { }}
         />
         {this.state.cityMap == false && (
           <TouchableOpacity
             onPress={() => {
-              this.setState({cityMap: true});
-              this.setState({info: null});
+              this.setState({ cityMap: true });
+              this.setState({ info: null });
             }}
             style={{
               width: wp('10%'),
@@ -184,7 +186,7 @@ class Provinces extends Component {
               });
               this.props.navigation.navigate(
                 Constants.Navigations.Dashboard.DETAIL,
-                {id: this.state.info.product.id},
+                { id: this.state.info.product.id },
               );
             }}
             containerStyle={{

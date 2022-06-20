@@ -186,14 +186,14 @@ class Dashboard extends Component {
     let estateRes = await Services.EstateServices.defaultEstates({
       latitude: this.state.currentLocation.latitude,
       longitude: this.state.currentLocation.longitude,
-      zoom: size,
+      zoom: 10/* size */,
       page: size
     });
-    this.setState({propertyCount: estateRes?.proparty_count})
+    this.setState({ propertyCount: estateRes?.proparty_count })
     this.props.toggleLoader(false);
     this.setState({ showFooterLoader: false })
     if (estateRes.data.data) {
-      this.showProperties(estateRes.data.data,true);
+      this.showProperties(estateRes.data.data, true);
     }
   };
 
@@ -787,7 +787,7 @@ class Dashboard extends Component {
       },
     ]);
 
-  renderItem = (value,index) => {
+  renderItem = (value, index) => {
     let Image_Http_URL = value.item.picture.length > 0
       // ? Constants.API.ImageBaseURL(value.item.picture[0].picture)
       ? value.item.picture[0].picture
@@ -1042,7 +1042,7 @@ class Dashboard extends Component {
     let estateRes = await Services.EstateServices.defaultEstates({
       latitude: this.state.currentLocation.latitude,
       longitude: this.state.currentLocation.longitude,
-      zoom: this.page,
+      zoom: 10/* this.page */,
       page: this.state.initialPageToRender
     });
     this.setState({ refreshing: false });
@@ -1080,7 +1080,7 @@ class Dashboard extends Component {
           <FlatList
             data={array}
             renderItem={this.renderItem}
-            keyExtractor={(item,index) => index.toString()/* `${item.id}` */}
+            keyExtractor={(item, index) => index.toString()/* `${item.id}` */}
             extraData={this.state.selectedFilter}
             onRefresh={this.refreshList}
             refreshing={this.state.refreshing}
@@ -1276,7 +1276,7 @@ class Dashboard extends Component {
       let estateRes = await Services.EstateServices.defaultEstates({
         latitude: this.state.currentLocation.latitude,
         longitude: this.state.currentLocation.longitude,
-        zoom: this.page,
+        zoom: 10/* this.page */,
         page: this.state.initialPageToRender
       });
       if (estateRes.data.data) {
@@ -1288,12 +1288,12 @@ class Dashboard extends Component {
   handleLoadMore = () => {
     console.log('i m here');
     // if (this.state.isList == true) {
-      
-      // this.page = this.page + 5; // increase page by 1
-      this.setState({ initialPageToRender: this.state.initialPageToRender + 1 }, () => {
-        console.log('i m hereeeee',this.state.initialPageToRender);
-        this.showItems(this.state.initialPageToRender);
-      })
+
+    // this.page = this.page + 5; // increase page by 1
+    this.setState({ initialPageToRender: this.state.initialPageToRender + 1 }, () => {
+      console.log('i m hereeeee', this.state.initialPageToRender);
+      this.showItems(this.state.initialPageToRender);
+    })
 
     // }
   };
