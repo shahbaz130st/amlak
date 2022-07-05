@@ -401,7 +401,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.3.1;
+				CURRENT_PROJECT_VERSION = 2.3.4;
 				DEVELOPMENT_TEAM = XL2NNZKQXQ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Amlak/Info.plist;
@@ -432,7 +432,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.3.1;
+				CURRENT_PROJECT_VERSION = 2.3.4;
 				DEVELOPMENT_TEAM = XL2NNZKQXQ;
 				INFOPLIST_FILE = Amlak/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

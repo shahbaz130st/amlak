@@ -1,24 +1,25 @@
-import React, {Component} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import {connect} from 'react-redux';
-import {EventRegister} from 'react-native-event-listeners';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { connect } from 'react-redux';
+import { EventRegister } from 'react-native-event-listeners';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import ModalDropdown from 'react-native-modal-dropdown-with-flatlist';
 import * as Services from '../../services/index';
 import User from '../../models/user';
 import * as Common from '../../common/index';
 import * as Constants from '../../constants/index';
-import {Actions} from '../../redux/index';
+import { Actions } from '../../redux/index';
 class Filter extends Component {
   state = {
     nonCollidingMultiSliderValue: [0, 1000000],
-    spaceValues: [100, 10000],
+    // spaceValues: [100, 10000],
+    spaceValues: [0, 10000],
     roadWidth: [100],
     sliderOneChanging: false,
     items: [],
@@ -49,7 +50,7 @@ class Filter extends Component {
       Common.Translations.translate('agriculture'),
     ],
     land_type: '',
-    categories:[]
+    categories: []
   };
 
   async componentDidMount() {
@@ -89,55 +90,55 @@ class Filter extends Component {
     });
   };
   checkAppliedCount = () => {
-    this.setState({appliedFilterCount: 1});
+    this.setState({ appliedFilterCount: 1 });
 
     if (this.state.currentRating > 1) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.numberOfRooms != 0) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.numberOfBathRooms != 0) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.numberOfHalls != 0) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.floors != '') {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.swimming_pool == true) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.maid_room == true) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
 
     if (this.state.varandas == true) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.paved_street == true) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.tabo == true) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.surrounded_wall == true) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.wareHouse_bathroom == true) {
-      this.setState({appliedFilterCount: this.state.appliedFilterCount + 1});
+      this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
   };
-  categroyList = async() => {
-    let values =  await Services.EstateServices.categories()
+  categroyList = async () => {
+    let values = await Services.EstateServices.categories()
     let items = [];
     let categories = [];
     for (let i = 0; i < values.length; i++) {
       items.push(values[i].name);
       categories.push(values[i]);
     }
-    this.setState({items: items,categories:categories});
+    this.setState({ items: items, categories: categories });
   };
 
   priceRange = async () => {
@@ -300,11 +301,11 @@ class Filter extends Component {
     console.log('parameter request', params);
 
     let res = await Services.EstateServices.sortList(params);
-    console.log('my response filter===>',res);
+    console.log('my response filter===>', res);
     this.props.toggleLoader(false);
     if (res && res.data) {
       console.log('res', res);
-      this.setState({properties: res.data});
+      this.setState({ properties: res.data });
       if (res.data.length > 0) {
         Common.KeyChain.save('isFilter', 'true');
         EventRegister.emit('filterProperties', res.data);
@@ -317,7 +318,7 @@ class Filter extends Component {
         }, 1000);
       }
     }
-    else if (res.status == false){
+    else if (res.status == false) {
       EventRegister.emit('filterProperties', []);
       this.props.navigation.pop();
       setTimeout(() => {
@@ -329,16 +330,16 @@ class Filter extends Component {
   dropdown_landType_onSelect = (idx, value) => {
     let items = this.state.landTypes[idx];
     if (idx == 0) {
-      this.setState({land_type: 'Building'});
+      this.setState({ land_type: 'Building' });
     }
     if (idx == 1) {
-      this.setState({land_type: 'Agriculture'});
+      this.setState({ land_type: 'Agriculture' });
     }
   };
 
   showVillas = () => {
     return (
-      <View style={{width: '90%', flexDirection: 'column'}}>
+      <View style={{ width: '90%', flexDirection: 'column' }}>
         <Text
           style={{
             marginTop: wp('6%'),
@@ -351,7 +352,7 @@ class Filter extends Component {
           }}>
           {Common.Translations.translate('roleNumber')}
         </Text>
-        <View style={{width: '100%', flexDirection: 'column'}}>
+        <View style={{ width: '100%', flexDirection: 'column' }}>
           <View
             style={{
               width: '95%',
@@ -361,7 +362,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({swimming_pool: !this.state.swimming_pool});
+                this.setState({ swimming_pool: !this.state.swimming_pool });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -374,7 +375,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -396,7 +397,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({maid_room: !this.state.maid_room});
+                this.setState({ maid_room: !this.state.maid_room });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -409,7 +410,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -432,7 +433,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({varandas: !this.state.varandas});
+                this.setState({ varandas: !this.state.varandas });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -445,7 +446,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -464,9 +465,9 @@ class Filter extends Component {
 
   showLands = () => {
     return (
-      <View style={{width: '90%', flexDirection: 'column'}}>
+      <View style={{ width: '90%', flexDirection: 'column' }}>
         <View
-          style={{width: '100%', flexDirection: 'column', marginTop: wp('6%')}}>
+          style={{ width: '100%', flexDirection: 'column', marginTop: wp('6%') }}>
           <View
             style={{
               width: '95%',
@@ -477,7 +478,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({tabo: !this.state.tabo});
+                this.setState({ tabo: !this.state.tabo });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -490,7 +491,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -513,7 +514,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({surrounded_wall: !this.state.surrounded_wall});
+                this.setState({ surrounded_wall: !this.state.surrounded_wall });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -526,7 +527,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -545,9 +546,9 @@ class Filter extends Component {
 
   showShop = () => {
     return (
-      <View style={{width: '90%', flexDirection: 'column'}}>
+      <View style={{ width: '90%', flexDirection: 'column' }}>
         <View
-          style={{width: '100%', flexDirection: 'column', marginTop: wp('6%')}}>
+          style={{ width: '100%', flexDirection: 'column', marginTop: wp('6%') }}>
           <View
             style={{
               width: '95%',
@@ -557,7 +558,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({electricity: !this.state.electricity});
+                this.setState({ electricity: !this.state.electricity });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -570,7 +571,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -592,7 +593,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({garage: !this.state.garage});
+                this.setState({ garage: !this.state.garage });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -605,7 +606,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -628,7 +629,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({elevator: !this.state.elevator});
+                this.setState({ elevator: !this.state.elevator });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -641,7 +642,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -660,9 +661,9 @@ class Filter extends Component {
 
   showOffice = () => {
     return (
-      <View style={{width: '90%', flexDirection: 'column'}}>
+      <View style={{ width: '90%', flexDirection: 'column' }}>
         <View
-          style={{width: '100%', flexDirection: 'column', marginTop: wp('6%')}}>
+          style={{ width: '100%', flexDirection: 'column', marginTop: wp('6%') }}>
           <View
             style={{
               width: '95%',
@@ -672,7 +673,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({electricity: !this.state.electricity});
+                this.setState({ electricity: !this.state.electricity });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -685,7 +686,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -707,7 +708,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({garage: !this.state.garage});
+                this.setState({ garage: !this.state.garage });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -720,7 +721,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -743,7 +744,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({elevator: !this.state.elevator});
+                this.setState({ elevator: !this.state.elevator });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -756,7 +757,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -779,7 +780,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({water: !this.state.water});
+                this.setState({ water: !this.state.water });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -792,7 +793,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -815,7 +816,7 @@ class Filter extends Component {
           }}>
           <TouchableOpacity
             onPress={() => {
-              this.setState({surrounded_wall: !this.state.surrounded_wall});
+              this.setState({ surrounded_wall: !this.state.surrounded_wall });
               setTimeout(() => {
                 this.checkAppliedCount();
               }, 1000);
@@ -828,7 +829,7 @@ class Filter extends Component {
               }
             />
           </TouchableOpacity>
-          <View style={{flexDirection: 'column'}}>
+          <View style={{ flexDirection: 'column' }}>
             <Text
               style={{
                 color: '#444040',
@@ -846,7 +847,7 @@ class Filter extends Component {
 
   showWarehouse = () => {
     return (
-      <View style={{width: '90%', flexDirection: 'column'}}>
+      <View style={{ width: '90%', flexDirection: 'column' }}>
         <Text
           style={{
             marginTop: wp('6%'),
@@ -859,7 +860,7 @@ class Filter extends Component {
           }}>
           {Common.Translations.translate('roleNumber')}
         </Text>
-        <View style={{width: '100%', flexDirection: 'column'}}>
+        <View style={{ width: '100%', flexDirection: 'column' }}>
           <View
             style={{
               width: '95%',
@@ -869,7 +870,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({floors: '1'});
+                this.setState({ floors: '1' });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -882,7 +883,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -914,7 +915,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({floors: '4'});
+                this.setState({ floors: '4' });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -927,7 +928,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -960,7 +961,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({floors: '10'});
+                this.setState({ floors: '10' });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -973,7 +974,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -1021,7 +1022,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -1054,7 +1055,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({garage: !this.state.garage});
+                this.setState({ garage: !this.state.garage });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -1067,7 +1068,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -1090,7 +1091,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({water: !this.state.water});
+                this.setState({ water: !this.state.water });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -1103,7 +1104,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -1121,7 +1122,7 @@ class Filter extends Component {
   };
   showApartments = () => {
     return (
-      <View style={{width: '90%', flexDirection: 'column'}}>
+      <View style={{ width: '90%', flexDirection: 'column' }}>
         <Text
           style={{
             marginTop: wp('6%'),
@@ -1134,7 +1135,7 @@ class Filter extends Component {
           }}>
           {Common.Translations.translate('roleNumber')}
         </Text>
-        <View style={{width: '100%', flexDirection: 'column'}}>
+        <View style={{ width: '100%', flexDirection: 'column' }}>
           <View
             style={{
               width: '95%',
@@ -1144,7 +1145,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({floors: '1'});
+                this.setState({ floors: '1' });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -1157,7 +1158,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -1189,7 +1190,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({floors: '4'});
+                this.setState({ floors: '4' });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -1202,7 +1203,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -1235,7 +1236,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({floors: '10'});
+                this.setState({ floors: '10' });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -1248,7 +1249,7 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{flexDirection: 'column'}}>
+            <View style={{ flexDirection: 'column' }}>
               <Text
                 style={{
                   color: '#444040',
@@ -1276,7 +1277,7 @@ class Filter extends Component {
   };
   showAttachments = () => {
     return (
-      <View style={{width: '100%'}}>
+      <View style={{ width: '100%' }}>
         <Text
           style={{
             marginTop: wp('10%'),
@@ -1289,7 +1290,7 @@ class Filter extends Component {
           {Common.Translations.translate('attachments')}
         </Text>
         <View
-          style={{width: '95%', flexDirection: 'column', alignItems: 'center'}}>
+          style={{ width: '95%', flexDirection: 'column', alignItems: 'center' }}>
           <View
             style={{
               flexDirection: 'row',
@@ -1339,7 +1340,7 @@ class Filter extends Component {
                   fontSize: wp('3.5%'),
                   marginHorizontal: wp('4%'),
                 }}>
-                {this.state.numberOfRooms == 0 ? "-" : this.state.numberOfRooms }
+                {this.state.numberOfRooms == 0 ? "-" : this.state.numberOfRooms}
               </Text>
               <View
                 style={{
@@ -1434,7 +1435,7 @@ class Filter extends Component {
                   fontSize: wp('3.5%'),
                   marginHorizontal: wp('4%'),
                 }}>
-                {this.state.numberOfHalls == 0 ? "-" : this.state.numberOfHalls }
+                {this.state.numberOfHalls == 0 ? "-" : this.state.numberOfHalls}
               </Text>
               <View
                 style={{
@@ -1529,7 +1530,7 @@ class Filter extends Component {
                   fontSize: wp('3.5%'),
                   marginHorizontal: wp('4%'),
                 }}>
-                {this.state.numberOfBathRooms == 0 ? "-" : this.state.numberOfBathRooms }
+                {this.state.numberOfBathRooms == 0 ? "-" : this.state.numberOfBathRooms}
               </Text>
               <View
                 style={{
@@ -1580,7 +1581,7 @@ class Filter extends Component {
   showRating = () => {
     return (
       <View
-        style={{flexDirection: 'column', alignItems: 'center', width: '100%'}}>
+        style={{ flexDirection: 'column', alignItems: 'center', width: '100%' }}>
         <Text
           style={{
             marginTop: wp('7%'),
@@ -1610,7 +1611,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({currentRating: 1});
+                this.setState({ currentRating: 1 });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -1651,7 +1652,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({currentRating: 2});
+                this.setState({ currentRating: 2 });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -1693,7 +1694,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({currentRating: 3});
+                this.setState({ currentRating: 3 });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -1734,7 +1735,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({currentRating: 4});
+                this.setState({ currentRating: 4 });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -1775,7 +1776,7 @@ class Filter extends Component {
             }}>
             <TouchableOpacity
               onPress={() => {
-                this.setState({currentRating: 5});
+                this.setState({ currentRating: 5 });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
@@ -1871,7 +1872,7 @@ class Filter extends Component {
               <MultiSlider
                 // containerStyle = {{backgroundColor:'trasparent'}}
                 imageBackgroundSource={null}
-                trackStyle={{backgroundColor: '#CDCDCD'}}
+                trackStyle={{ backgroundColor: '#CDCDCD' }}
                 markerStyle={{
                   backgroundColor: '#006FEB',
                   width: wp('5%'),
@@ -1953,7 +1954,7 @@ class Filter extends Component {
               <MultiSlider
                 // containerStyle = {{backgroundColor:'trasparent'}}
                 imageBackgroundSource={null}
-                trackStyle={{backgroundColor: '#CDCDCD'}}
+                trackStyle={{ backgroundColor: '#CDCDCD' }}
                 markerStyle={{
                   backgroundColor: '#006FEB',
                   width: wp('5%'),
@@ -2035,7 +2036,7 @@ class Filter extends Component {
               <MultiSlider
                 // containerStyle = {{backgroundColor:'trasparent'}}
                 imageBackgroundSource={null}
-                trackStyle={{backgroundColor: '#CDCDCD'}}
+                trackStyle={{ backgroundColor: '#CDCDCD' }}
                 markerStyle={{
                   backgroundColor: '#006FEB',
                   width: wp('5%'),
@@ -2117,7 +2118,7 @@ class Filter extends Component {
               <MultiSlider
                 // containerStyle = {{backgroundColor:'trasparent'}}
                 imageBackgroundSource={null}
-                trackStyle={{backgroundColor: '#CDCDCD'}}
+                trackStyle={{ backgroundColor: '#CDCDCD' }}
                 markerStyle={{
                   backgroundColor: '#006FEB',
                   width: wp('5%'),
@@ -2171,24 +2172,24 @@ class Filter extends Component {
     }
   };
   nonCollidingMultiSliderValuesChange = (values) => {
-    this.setState({nonCollidingMultiSliderValue: values});
+    this.setState({ nonCollidingMultiSliderValue: values });
   };
   spaceSlideValueChanged = (values) => {
-    this.setState({spaceValues: values});
+    this.setState({ spaceValues: values });
   };
   roadWidthSlideValueChanged = (values) => {
-    this.setState({roadWidth: values});
+    this.setState({ roadWidth: values });
   };
 
   dropdown_category_onSelect = (idx, value) => {
     let items = this.state.categories[idx];
-    this.setState({cat_id: items.id});
+    this.setState({ cat_id: items.id });
     setTimeout(() => {
       this.priceRange();
     }, 1000);
   };
   dropdown_propertyType_onSelect = (idx, value) => {
-    this.setState({sale_rent: value});
+    this.setState({ sale_rent: value });
     setTimeout(() => {
       this.priceRange();
     }, 1000);
@@ -2233,7 +2234,7 @@ class Filter extends Component {
             }}>
             <Image
               source={Constants.Images.closeIcon}
-              style={{width: wp('3%'), height: wp('3%'), marginRight: wp('2%')}}
+              style={{ width: wp('3%'), height: wp('3%'), marginRight: wp('2%') }}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -2307,7 +2308,7 @@ class Filter extends Component {
                   fontFamily: Constants.Fonts.shamelBold,
                   fontSize: wp('2.5%'),
                 }}
-                dropdownStyle={{width: '80%'}}
+                dropdownStyle={{ width: '80%' }}
                 dropdownTextStyle={{
                   textAlign: 'right',
                   color: 'black',
@@ -2375,7 +2376,7 @@ class Filter extends Component {
                   fontFamily: Constants.Fonts.shamelBold,
                   fontSize: wp('2.5%'),
                 }}
-                dropdownStyle={{width: '80%'}}
+                dropdownStyle={{ width: '80%' }}
                 dropdownTextStyle={{
                   textAlign: 'right',
                   color: 'black',
@@ -2448,7 +2449,7 @@ class Filter extends Component {
                       fontFamily: Constants.Fonts.shamelBold,
                       fontSize: wp('2.5%'),
                     }}
-                    dropdownStyle={{width: '80%'}}
+                    dropdownStyle={{ width: '80%' }}
                     dropdownTextStyle={{
                       textAlign: 'right',
                       color: 'black',
@@ -2492,7 +2493,7 @@ class Filter extends Component {
             <MultiSlider
               // containerStyle = {{backgroundColor:'trasparent'}}
               imageBackgroundSource={null}
-              trackStyle={{backgroundColor: '#CDCDCD'}}
+              trackStyle={{ backgroundColor: '#CDCDCD' }}
               markerStyle={{
                 backgroundColor: '#006FEB',
                 width: wp('5%'),
@@ -2572,7 +2573,7 @@ class Filter extends Component {
                   justifyContent: 'center',
                 }}>
                 <MultiSlider
-                  trackStyle={{backgroundColor: '#CDCDCD'}}
+                  trackStyle={{ backgroundColor: '#CDCDCD' }}
                   markerStyle={{
                     backgroundColor: '#006FEB',
                     width: wp('5%'),
@@ -2633,11 +2634,11 @@ class Filter extends Component {
                   fontFamily: Constants.Fonts.shamel,
                   color: 'white',
                   fontSize: wp('4.0%'),
-                  width:'100%',
-                  textAlign:'center',
+                  width: '100%',
+                  textAlign: 'center',
                   justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop:10
+                  alignItems: 'center',
+                  marginTop: 10
                 }}>
                 {Common.Translations.translate('view_results')}
               </Text>

@@ -29,6 +29,7 @@ import AvatarComponent from "../../components/AvatarComponent";
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.onEndReachedCalledDuringMomentum = true;
     this.page = 10;
     this.state = {
       showInfo: false,
@@ -64,6 +65,7 @@ class Dashboard extends Component {
       isFilterEvent: false,
       isShowLocation: false,
       forceRefresh: '333',
+      dataFromFilter: false
     };
   }
 
@@ -118,10 +120,7 @@ class Dashboard extends Component {
         });
       }
     } catch (error) { }
-
     this.showItems(this.state.initialPageToRender);
-
-
     this.configureListener();
     this.checkPermission();
   }
@@ -222,6 +221,7 @@ class Dashboard extends Component {
   }
 
   showProperties(estateRes, add) {
+    console.log("properties", add, estateRes.length)
     if (add) {
       this.setState({ arrayEstates: [...this.state.arrayEstates, ...estateRes] }); //another array
     } else {
@@ -235,18 +235,12 @@ class Dashboard extends Component {
   }
 
   configureListener() {
-    // this.props.navigation.addListener('focus', () => {
-    //   console.log('--->',this.state.isFilterEvent);
-    //   if (this.state.isFilterEvent == false) {
-    //     this.setState({ selectedFilter: null })
-    //     this.showItems(10)
-    //   }
-    // });
-
     this.listener = EventRegister.addEventListener(
       'filterProperties',
       (data) => {
-        this.setState({ isFilterEvent: true, loadMore: false });
+        this.onEndReachedCalledDuringMomentum = true;
+        console.log("datalength", data)
+        this.setState({ isFilterEvent: true, loadMore: false, dataFromFilter: true });
         this.showProperties(data);
         setTimeout(() => {
           this.setState({ isFilterEvent: false });
@@ -1038,7 +1032,7 @@ class Dashboard extends Component {
   };
   refreshList = async () => {
     this.page = 10;
-    this.setState({ refreshing: true });
+    this.setState({ refreshing: true, dataFromFilter: false });
     let estateRes = await Services.EstateServices.defaultEstates({
       latitude: this.state.currentLocation.latitude,
       longitude: this.state.currentLocation.longitude,
@@ -1089,7 +1083,7 @@ class Dashboard extends Component {
               this.onEndReachedCalledDuringMomentum = false;
             }}
             onEndReached={() => {
-              if (!this.onEndReachedCalledDuringMomentum) {
+              if (!this.onEndReachedCalledDuringMomentum && !this.state.dataFromFilter) {
                 this.setState({ showFooterLoader: true, loadMore: true })
                 this.handleLoadMore()
                 this.onEndReachedCalledDuringMomentum = true;
