@@ -1846,6 +1846,13 @@ anymatch@^3.0.3:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
+apisauce@^2.1.1:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/apisauce/-/apisauce-2.1.5.tgz#546229f8f145711b3b022065afb0f43bd304ecb3"
+  integrity sha512-bkMlz0ZUnyS8vDigej9UBYo5dne9/bQrkgIiIkGaiDHF6e5OxhYRLJDYu65V/Ox86tmWVwepIntAoTmk4Db0Hg==
+  dependencies:
+    axios "^0.21.4"
+
 aproba@^1.0.3:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/aproba/-/aproba-1.2.0.tgz#6802e6264efd18c790a1b0d517f0f2627bf2c94a"
@@ -1995,6 +2002,13 @@ axios@0.20.0:
   integrity sha512-ANA4rr2BDcmmAQLOKft2fufrtuvlqR+cXNNinUmvfeSNCOF98PZL+7M/v1zIdGo7OLjEA9J2gXJL+j4zGsl0bA==
   dependencies:
     follow-redirects "^1.10.0"
+
+axios@^0.21.4:
+  version "0.21.4"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.21.4.tgz#c67b90dc0568e5c1cf2b0b858c43ba28e2eda575"
+  integrity sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==
+  dependencies:
+    follow-redirects "^1.14.0"
 
 babel-eslint@10.1.0:
   version "10.1.0"
@@ -3636,6 +3650,11 @@ follow-redirects@^1.10.0:
   version "1.14.9"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.9.tgz#dd4ea157de7bfaf9ea9b3fbd85aa16951f78d8d7"
   integrity sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==
+
+follow-redirects@^1.14.0:
+  version "1.15.1"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.1.tgz#0ca6a452306c9b276e4d3127483e29575e207ad5"
+  integrity sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==
 
 for-in@^0.1.3:
   version "0.1.8"
@@ -6550,6 +6569,16 @@ react-native-dash@^0.0.11:
     prop-types "^15.5.10"
     react-native-measureme "0.0.2"
 
+react-native-device-info@^0.9.3:
+  version "0.9.9"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.9.9.tgz#42490719b8be2b8ffe689f3c74d56884ca05c0d7"
+  integrity sha512-BsRPImeOSPOioitx2OREwuyGRsXiqhcNMPrIJ79FFWB2kbANZk56VqoSxta/i/RB1v3Xws0YDLLSqz9kEeudcQ==
+
+react-native-device-info@^8.1.2:
+  version "8.7.1"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.7.1.tgz#fbb06f87dbbc4423abe713874699fb2e6e99fd15"
+  integrity sha512-cVMZztFa2Qn6qpQa601W61CtUwZQ1KXfqCOeltejAWEXmgIWivC692WGSdtGudj4upSi1UgMSaGcvKjfcpdGjg==
+
 react-native-device-info@^8.7.0:
   version "8.7.0"
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.7.0.tgz#0873d93950ac651b754f62965bb6f18059431c3c"
@@ -6704,6 +6733,14 @@ react-native-share@^7.3.7:
   version "7.3.9"
   resolved "https://registry.yarnpkg.com/react-native-share/-/react-native-share-7.3.9.tgz#e745421027b96e78ade9794bddaf441ff4c19718"
   integrity sha512-doPOUSQAkiIOZarFZvwrxVmfK3789CWsuZ6SNGzNCEGt7dA349vv2uSKDFUP5M7p+GIY+YqFaD3RSIt1Oct+PQ==
+
+react-native-siren@0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-siren/-/react-native-siren-0.0.5.tgz#cc32e62eda163d3ae28bb2cb1b342eb859c3bd1c"
+  integrity sha512-mOzjFpm8ASNI/vnc+uWcj4ogboRrzfzmueCMYavLvyz5QbLyDem2LI9vtsz7t9fxzw2tZzc8XPfRb0IjUJXfZw==
+  dependencies:
+    apisauce "^2.1.1"
+    react-native-device-info "^0.9.3"
 
 react-native-snap-carousel@latest:
   version "3.9.1"
@@ -7222,6 +7259,11 @@ semver@7.0.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
   integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
 
+semver@7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.2.1.tgz#d997aa36bdbb00b501ae4ac4c7d17e9f7a587ae5"
+  integrity sha512-aHhm1pD02jXXkyIpq25qBZjr3CQgg8KST8uX0OWXch3xE6jw+1bfbWnCjzMwojsTquroUmKFHNzU6x26mEiRxw==
+
 semver@^6.0.0, semver@^6.1.1, semver@^6.1.2, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
@@ -7475,6 +7517,16 @@ source-map@^0.7.3:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.7.3.tgz#5302f8169031735226544092e64981f751750383"
   integrity sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ==
+
+sp-react-native-in-app-updates@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/sp-react-native-in-app-updates/-/sp-react-native-in-app-updates-1.1.7.tgz#e233be398c704626e99d70e0953c4f8c79e232e5"
+  integrity sha512-ncEu6dhfXNCpn6qPETvdhSe4N6ViNTf5oUB9pct5i1+gSJOKuvXEmX7WG/xJrXEfFF0hkuDbJTPFWgzOIyb0Tw==
+  dependencies:
+    react-native-device-info "^8.1.2"
+    react-native-siren "0.0.5"
+    semver "7.2.1"
+    underscore "1.12.1"
 
 spdx-correct@^3.0.0:
   version "3.1.1"
@@ -8022,6 +8074,11 @@ unbox-primitive@^1.0.1:
     has-bigints "^1.0.1"
     has-symbols "^1.0.2"
     which-boxed-primitive "^1.0.2"
+
+underscore@1.12.1:
+  version "1.12.1"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.1.tgz#7bb8cc9b3d397e201cf8553336d262544ead829e"
+  integrity sha512-hEQt0+ZLDVUMhebKxL4x1BTtDY7bavVofhZ9KZ4aI26X9SRaE+Y3m83XUL1UP2jn8ynjndwCCpEHdUG+9pP1Tw==
 
 unicode-canonical-property-names-ecmascript@^2.0.0:
   version "2.0.0"

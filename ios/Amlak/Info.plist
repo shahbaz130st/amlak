@@ -43,6 +43,10 @@
 	<array>
 		<string>https://firebase.amlakbuyandsell.com</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>itms-apps</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>

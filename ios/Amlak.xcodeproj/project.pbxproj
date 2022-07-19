@@ -401,13 +401,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.3.4;
+				CURRENT_PROJECT_VERSION = 0.0.1;
 				DEVELOPMENT_TEAM = XL2NNZKQXQ;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Amlak/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3;
+				MARKETING_VERSION = 4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -432,12 +432,12 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 2.3.4;
+				CURRENT_PROJECT_VERSION = 0.0.1;
 				DEVELOPMENT_TEAM = XL2NNZKQXQ;
 				INFOPLIST_FILE = Amlak/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 3;
+				MARKETING_VERSION = 4;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
