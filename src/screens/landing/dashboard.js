@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -26,12 +26,64 @@ import User from '../../models/user';
 import messaging from '@react-native-firebase/messaging';
 import AvatarComponent from "../../components/AvatarComponent";
 
+const dataShops = [
+  {
+    id: 1,
+    name: 'Apar. for Rent.',
+  },
+  {
+    id: 2,
+    name: 'Apar. for Sale.',
+  },
+  {
+    id: 3,
+    name: 'Land for Sale.',
+  },
+  {
+    id: 4,
+    name: 'Shop for Rent',
+  },
+  {
+    id: 5,
+    name: 'Home for Sale',
+  },
+  {
+    id: 6,
+    name: 'Home for Rent ',
+  },
+  {
+    id: 7,
+    name: 'Warehouse for Sale ',
+  },
+  {
+    id: 8,
+    name: 'Warehouse for Rent',
+  },
+  {
+    id: 9,
+    name: 'Shop for Sale',
+  },
+  {
+    id: 10,
+    name: 'All',
+  },
+
+]
+
+
+
 class Dashboard extends Component {
+
+
+
+
+
   constructor(props) {
     super(props);
     this.onEndReachedCalledDuringMomentum = true;
     this.page = 10;
     this.state = {
+      itemtoggle : false,
       showInfo: false,
       isList: true,
       isFilter: true,
@@ -65,7 +117,8 @@ class Dashboard extends Component {
       isFilterEvent: false,
       isShowLocation: false,
       forceRefresh: '333',
-      dataFromFilter: false
+      dataFromFilter: false,
+      flagAdded: -1,
     };
   }
 
@@ -781,11 +834,14 @@ class Dashboard extends Component {
       },
     ]);
 
+
   renderItem = (value, index) => {
+    console.log("Show render item picture", value)
     let Image_Http_URL = value.item.picture.length > 0
       // ? Constants.API.ImageBaseURL(value.item.picture[0].picture)
       ? value.item.picture[0].picture
       : Constants.Images.cover;
+      
     //  Constants.API.ImageBaseURL(value.item.picture[0].picture)
     // value.item.picture.length > 0
     //   ? { uri: Constants.API.ImageBaseURL(value.item.picture[0].picture) }
@@ -1298,6 +1354,8 @@ class Dashboard extends Component {
     });
   }
 
+
+
   render() {
     return (
       <View style={styles.container}>
@@ -1318,7 +1376,7 @@ class Dashboard extends Component {
               alignItems: 'center',
               flexDirection: 'row',
             }}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{ marginRight: wp('3%') }}
               onPress={() => {
                 this.state.isList == true
@@ -1332,20 +1390,59 @@ class Dashboard extends Component {
                   : null;
               }}>
               {this.state.isList == true ? (
-                <Image source={Constants.Images.sort} />
+                 <Image source={Constants.Images.sort} />
               ) : null}
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <View
-              style={{
-                width: this.state.isList == true ? wp('83%') : wp('93%'),
-                height: hp('4%'),
-                backgroundColor: '#F3F3F3',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'row',
-              }}>
-              <TextInput
+               style={{
+                width: '95%',
+                //width: wp('100%'),
+              //  width: "100%"
+              //  width: this.state.isList == true ? wp('83%') : wp('93%'),
+              //   height: hp('4%'),
+              //   backgroundColor: '#F3F3F3',
+              //   justifyContent: 'center',
+              //   alignItems: 'center',
+              //   flexDirection: 'row',
+               }}
+              >
+
+              <FlatList
+
+                //renderItem={renderItem1}
+                data={dataShops}
+                showsHorizontalScrollIndicator={false}
+                horizontal={true}
+                keyExtractor={(item, index) => `${item.id}_${index}`}
+                // renderItem={({ item }) => (
+                  renderItem={({ item,index }) => (
+                  <View style={{ flexDirection: "row", justifyContent: "center", padding: 0, }}>
+                    <TouchableOpacity 
+                     onPress={()=>{this.setState({flagAdded:index})}}
+                     style={this.state.flagAdded === index ? styles.edittchableclicked : styles.edittchable}
+                     >
+
+                      <Text style={{ paddingHorizontal: 10 }}>
+                        {item.name}
+                      </Text>
+                    </TouchableOpacity>
+
+                  </View>
+                )}
+
+              />
+
+
+
+              {/* <FlatList
+                data={data}
+                renderItem={({ item }) => <ItemRender name={item.name} />}
+                keyExtractor={item => item.id}
+                //ItemSeparatorComponent={Separator}
+                horizontal={true}
+              /> */}
+              {/* <TextInput
                 style={{
                   backgroundColor: 'transparent',
                   width: this.state.isList == true ? wp('72%') : wp('78%'),
@@ -1360,14 +1457,15 @@ class Dashboard extends Component {
                 placeholder={Common.Translations.translate('looking_for')}
                 blurOnSubmit
                 onSubmitEditing={({ nativeEvent }) => this.searchResults()}
-              />
-              <Image
+              /> */}
+              {/* <Image
                 style={{
                   marginLeft: wp('2%'),
                 }}
                 source={Constants.Images.searchIcon}
-              />
+              /> */}
             </View>
+
           </View>
           <View
             style={{
@@ -1607,13 +1705,14 @@ class Dashboard extends Component {
                 : this.state.selectedFilter
             }
             listData={this.state.items}
-            onSelectOption={(option) =>
+            onSelectOption={(option) => {
+              console.log("what is option", option),
               this.setState({
                 selectedFilter: option,
                 showPicker: false,
                 sortActive: false,
               })
-            }
+            }}
             closePicker={() => this.onClosePicker()}
             onCross={() =>
               this.setState({
@@ -1637,6 +1736,7 @@ class Dashboard extends Component {
             item={this.state.selectedFilter}
             listData={this.state.sortOptions}
             onSelectOption={(option) => {
+              console.log("what is option", option)
               this.setState({
                 selectedFilter: option.id,
                 showPicker: false,
@@ -1667,11 +1767,35 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(null, mapDispatchToProps)(Dashboard);
 
-const styles = StyleSheet.create({
+const styles =  StyleSheet.create({
+
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
+  },
+
+  edittchable: {
+    //marginTop: 10,
+    //width: 100,
+    height: 30,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: Constants.Colors.buttonBackground,
+    justifyContent: 'center',
+    marginLeft: 5,
+  },
+
+  edittchableclicked: {
+    //marginTop: 10,
+    //width: 100,
+    height: 30,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#fff",
+    justifyContent: 'center',
+    marginLeft: 5,
+    backgroundColor: Constants.Colors.buttonBackground
   },
 });

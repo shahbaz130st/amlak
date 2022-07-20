@@ -73,6 +73,7 @@ const AmlakDropDown = (props) => {
             extraData={props}
             keyExtractor={(item, index) => `${item.id}`}
             renderItem={({item}) => (
+              console.log("responss all check", item ),
               <TouchableOpacity
                 activeOpacity={opacity}
                 onPress={() =>
