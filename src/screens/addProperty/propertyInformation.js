@@ -3321,7 +3321,7 @@ class PropertyInformation extends Component {
                   paddingRight: wp('2%'),
                   paddingVertical: 0,
                 }}
-                placeholder={'420 كم'}
+                placeholder={'420 م2'}
                 keyboardType="number-pad"
                 returnKeyType="done"
                 onChangeText={(text) => this.setState({area: text})}

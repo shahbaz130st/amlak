@@ -83,7 +83,7 @@ class Dashboard extends Component {
     this.onEndReachedCalledDuringMomentum = true;
     this.page = 10;
     this.state = {
-      itemtoggle : false,
+      itemtoggle: false,
       showInfo: false,
       isList: true,
       isFilter: true,
@@ -118,7 +118,7 @@ class Dashboard extends Component {
       isShowLocation: false,
       forceRefresh: '333',
       dataFromFilter: false,
-      flagAdded: -1,
+      flagAdded: 0,
     };
   }
 
@@ -841,7 +841,7 @@ class Dashboard extends Component {
       // ? Constants.API.ImageBaseURL(value.item.picture[0].picture)
       ? value.item.picture[0].picture
       : Constants.Images.cover;
-      
+
     //  Constants.API.ImageBaseURL(value.item.picture[0].picture)
     // value.item.picture.length > 0
     //   ? { uri: Constants.API.ImageBaseURL(value.item.picture[0].picture) }
@@ -1362,7 +1362,7 @@ class Dashboard extends Component {
         <View
           style={{
             width: wp('100%'),
-            height: hp('21%'),
+            height: hp('16%'),
             backgroundColor: 'white',
             justifyContent: 'center',
             alignItems: 'center',
@@ -1375,7 +1375,49 @@ class Dashboard extends Component {
               justifyContent: 'center',
               alignItems: 'center',
               flexDirection: 'row',
+              // borderColor:"red",
+              // borderWidth:1
             }}>
+            <TouchableOpacity
+              style={{ marginLeft: wp('5%') }}
+              onPress={() => {
+                this.state.isList == true
+                  ? this.setState({
+                    selectedFilter: this.state.sortActive
+                      ? this.state.selectedFilter
+                      : null,
+                    showPicker: false,
+                    showBottomPicker: !this.state.showBottomPicker,
+                  })
+                  : null;
+              }}>
+              {this.state.isList == true ? (
+                <Image source={Constants.Images.sort} />
+              ) : null}
+            </TouchableOpacity>
+            <FlatList
+              data={this.state.items}
+              showsHorizontalScrollIndicator={false}
+              horizontal={true}
+              keyExtractor={(item, index) => `${item.id}_${index}`}
+              renderItem={({ item, index }) => (
+                <TouchableOpacity
+                  onPress={() => {
+                    this.setState({
+                      selectedFilter: item,
+                      flagAdded: index,
+                      sortActive: false,
+                    })
+                  }}
+                  style={this.state.flagAdded === index ? styles.edittchableclicked : styles.edittchable}
+                >
+                  <Text style={{ color: this.state.flagAdded === index ? Constants.Colors.white : Constants.Colors.buttonBackground,  fontSize: wp('3'), textTransform: 'capitalize' }}>
+                    {item.name}
+                  </Text>
+                </TouchableOpacity>
+              )}
+
+            />
             {/* <TouchableOpacity
               style={{ marginRight: wp('3%') }}
               onPress={() => {
@@ -1390,59 +1432,20 @@ class Dashboard extends Component {
                   : null;
               }}>
               {this.state.isList == true ? (
-                 <Image source={Constants.Images.sort} />
+                <Image source={Constants.Images.sort} />
               ) : null}
             </TouchableOpacity> */}
 
-            <View
-               style={{
-                width: '95%',
-                //width: wp('100%'),
-              //  width: "100%"
-              //  width: this.state.isList == true ? wp('83%') : wp('93%'),
-              //   height: hp('4%'),
-              //   backgroundColor: '#F3F3F3',
-              //   justifyContent: 'center',
-              //   alignItems: 'center',
-              //   flexDirection: 'row',
-               }}
-              >
-
-              <FlatList
-
-                //renderItem={renderItem1}
-                data={dataShops}
-                showsHorizontalScrollIndicator={false}
-                horizontal={true}
-                keyExtractor={(item, index) => `${item.id}_${index}`}
-                // renderItem={({ item }) => (
-                  renderItem={({ item,index }) => (
-                  <View style={{ flexDirection: "row", justifyContent: "center", padding: 0, }}>
-                    <TouchableOpacity 
-                     onPress={()=>{this.setState({flagAdded:index})}}
-                     style={this.state.flagAdded === index ? styles.edittchableclicked : styles.edittchable}
-                     >
-
-                      <Text style={{ paddingHorizontal: 10 }}>
-                        {item.name}
-                      </Text>
-                    </TouchableOpacity>
-
-                  </View>
-                )}
-
-              />
-
-
-
-              {/* <FlatList
-                data={data}
-                renderItem={({ item }) => <ItemRender name={item.name} />}
-                keyExtractor={item => item.id}
-                //ItemSeparatorComponent={Separator}
-                horizontal={true}
-              /> */}
-              {/* <TextInput
+            {/* <View
+              style={{
+                width: this.state.isList == true ? wp('83%') : wp('93%'),
+                height: hp('4%'),
+                backgroundColor: '#F3F3F3',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'row',
+              }}>
+              <TextInput
                 style={{
                   backgroundColor: 'transparent',
                   width: this.state.isList == true ? wp('72%') : wp('78%'),
@@ -1457,15 +1460,14 @@ class Dashboard extends Component {
                 placeholder={Common.Translations.translate('looking_for')}
                 blurOnSubmit
                 onSubmitEditing={({ nativeEvent }) => this.searchResults()}
-              /> */}
-              {/* <Image
+              />
+              <Image
                 style={{
                   marginLeft: wp('2%'),
                 }}
                 source={Constants.Images.searchIcon}
-              /> */}
-            </View>
-
+              />
+            </View> */}
           </View>
           <View
             style={{
@@ -1475,7 +1477,7 @@ class Dashboard extends Component {
               backgroundColor: 'white',
               justifyContent: 'center',
               alignItems: 'center',
-              flexDirection: 'row',
+              flexDirection: 'row'
             }}>
             <TouchableOpacity
               onPress={() => {
@@ -1488,10 +1490,10 @@ class Dashboard extends Component {
                 style={{
                   flexDirection: 'row',
                   backgroundColor: 'white',
-                  width: wp('30%'),
+                  width: wp('33%'),
                   height: hp('4%'),
                   justifyContent: 'center',
-                  alignItems: 'center',
+                  alignItems: 'center'
                 }}>
                 <Text
                   style={{
@@ -1519,7 +1521,7 @@ class Dashboard extends Component {
                 width: 1,
                 height: hp('3%'),
                 backgroundColor: '#F3F3F3',
-                marginHorizontal: wp('6%'),
+                // marginHorizontal: wp('6%'),
               }}
             />
             <TouchableOpacity
@@ -1537,10 +1539,10 @@ class Dashboard extends Component {
                 style={{
                   flexDirection: 'row',
                   backgroundColor: 'white',
-                  width: wp('30%'),
+                  width: wp('33%'),
                   height: hp('4%'),
                   justifyContent: 'center',
-                  alignItems: 'center',
+                  alignItems: 'center'
                 }}>
                 <Text
                   style={{
@@ -1557,8 +1559,32 @@ class Dashboard extends Component {
                 />
               </View>
             </TouchableOpacity>
+            <TouchableOpacity
+            // onPress={() =>
+            //   this.setState({isFilter: false, showPicker: false})
+            // }
+            >
+              <View
+                style={{
+                  flexDirection: 'row',
+                  width: wp('33%'),
+                  height: hp('4%'),
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                <Text
+                  style={{
+                    // fontFamily: Constants.Fonts.shamel,
+                    fontSize: wp('3'),
+                    color: '#E1E1E1',
+                  }}>
+                  {this.state.propertyCount}{' '}
+                  {Common.Translations.translate('alone')}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
-          <View
+          {/* <View
             style={{
               marginTop: hp('1%'),
               width: wp('90%'),
@@ -1644,9 +1670,9 @@ class Dashboard extends Component {
                 </Text>
               </View>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
-        <View style={{ height: hp('70%'), width: wp('100%') }}>
+        <View style={{ height: hp('75%'), width: wp('100%') }}>
           {this.state.isList == true ? this.listView() : this.mapView()}
           {this.state.isList == false ? (
             <TouchableOpacity
@@ -1707,11 +1733,11 @@ class Dashboard extends Component {
             listData={this.state.items}
             onSelectOption={(option) => {
               console.log("what is option", option),
-              this.setState({
-                selectedFilter: option,
-                showPicker: false,
-                sortActive: false,
-              })
+                this.setState({
+                  selectedFilter: option,
+                  showPicker: false,
+                  sortActive: false,
+                })
             }}
             closePicker={() => this.onClosePicker()}
             onCross={() =>
@@ -1767,7 +1793,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(null, mapDispatchToProps)(Dashboard);
 
-const styles =  StyleSheet.create({
+const styles = StyleSheet.create({
 
   container: {
     flex: 1,
@@ -1777,25 +1803,23 @@ const styles =  StyleSheet.create({
   },
 
   edittchable: {
-    //marginTop: 10,
-    //width: 100,
-    height: 30,
+    height: hp('4%'),
+    paddingHorizontal: 15,
     borderRadius: 20,
     borderWidth: 1,
     borderColor: Constants.Colors.buttonBackground,
     justifyContent: 'center',
-    marginLeft: 5,
+    marginLeft: 15,
   },
 
   edittchableclicked: {
-    //marginTop: 10,
-    //width: 100,
-    height: 30,
+    height: hp('4%'),
+    paddingHorizontal: 15,
     borderRadius: 20,
     borderWidth: 1,
     borderColor: "#fff",
     justifyContent: 'center',
-    marginLeft: 5,
+    marginLeft: 15,
     backgroundColor: Constants.Colors.buttonBackground
   },
 });
