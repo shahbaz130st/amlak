@@ -400,7 +400,7 @@ class EstateDetail extends Component {
               </Text>
               <Image source={Constants.Images.bathRoomSelected} />
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
@@ -416,9 +416,9 @@ class EstateDetail extends Component {
                 style={{ width: wp('3%'), height: wp('3.5%') }}
                 source={Constants.Images.doorBlue}
               />
-            </View>
+            </View> */}
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
@@ -437,7 +437,7 @@ class EstateDetail extends Component {
                 style={{ width: wp('3%'), height: wp('3.5%') }}
                 source={Constants.Images.roadBlue}
               />
-            </View>
+            </View> */}
 
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text
@@ -2071,6 +2071,7 @@ class EstateDetail extends Component {
   };
   headerView = () => (
     <View style={{ alignItems: 'center', flexDirection: 'column' }}>
+      {console.log('check for property detail==== ', this.state.propertyDetail?.category_name)}
       <View
         style={{
           width: wp('100%'),
@@ -2079,7 +2080,17 @@ class EstateDetail extends Component {
           alignItems: 'center',
         }}>
         <SliderBox
-          images={this.state.images}
+          images={this.state.images.length != 0 ? this.state.images
+            // : [Constants.Images.cover]}
+            : this.state.propertyDetail?.category_name == 'land' ? [Constants.Images.landSale]
+              : this.state.propertyDetail?.category_name == 'shop' ? [Constants.Images.shopSale]
+                : this.state.propertyDetail?.category_name == 'apartment' ? [Constants.Images.appartmentSale]
+                  : this.state.propertyDetail?.category_name == 'office' ? [Constants.Images.officeSale]
+                    : this.state.propertyDetail?.category_name == 'Vialla / Home' ? [Constants.Images.homeSale] :
+                      [Constants.Images.buildingSale]
+          }
+          resizeMode={'contain'}
+          ImageComponentStyle={{ backgroundColor: "black" }}
           sliderBoxHeight={hp('33%')}
           onCurrentImagePressed={(index) =>
             console.log(`image ${index} pressed`)
@@ -3037,11 +3048,18 @@ class EstateDetail extends Component {
   };
   renderItem = (value) => {
     let Image_Http_URL = Constants.Images.cover;
+    const itemName = value?.item?.category_name;
     try {
       Image_Http_URL =
         value.item.picture.length > 0
           ? { uri: value.item.picture[0].picture }
-          : Constants.Images.cover;
+          // : Constants.Images.cover;
+          : itemName == 'land' ? Constants.Images.landSale
+            : itemName == 'shop' ? Constants.Images.shopSale
+              : itemName == 'apartment' ? Constants.Images.appartmentSale
+                : itemName == 'office' ? Constants.Images.officeSale
+                  : itemName == 'Vialla / Home' ? Constants.Images.homeSale :
+                    Constants.Images.buildingSale
     } catch (error) {
       return <View />;
     }
@@ -3193,7 +3211,7 @@ class EstateDetail extends Component {
           <TouchableOpacity>
             <Image
               source={
-                value.item.is_fav == false
+                value?.item?.is_fav == false || value?.item?.is_fav == undefined
                   ? Constants.Images.heartGray
                   : Constants.Images.heartRed
               }

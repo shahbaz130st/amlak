@@ -127,6 +127,7 @@ class Dashboard extends Component {
   }
 
   async componentDidMount() {
+    let tempArray = [];
     this.props.toggleLoader(true);
     let token = await Common.KeyChain.get('authToken');
     if (token != null) {
@@ -142,7 +143,18 @@ class Dashboard extends Component {
           ) {
             let allDict = { id: 0, name: Common.Translations.translate('all') };
             let array = [allDict, ...userInstance.getUser().categories];
-            this.setState({ items: array });
+            let tempArray = array.shift()
+            var duplicated = array.map(function (item) {
+              let tempItem = { ...item };
+              let tempItem2 = { ...item };
+              tempItem.type = Common.Translations.translate('sale');
+              tempItem.headerName = Common.Translations.translate('item_type_sale');
+              tempItem2.headerName = Common.Translations.translate('item_type_rent');
+              tempItem2.type = Common.Translations.translate('rent');
+              return [tempItem, tempItem2];
+            }).reduce(function (a, b) { return a.concat(b) });
+            duplicated.unshift(tempArray)
+            this.setState({ items: duplicated });
           }
           Common.Helper.logEvent('dashboard', {
             user: userInstance.getUser().info.name,
@@ -154,7 +166,18 @@ class Dashboard extends Component {
       if (values && values.length > 0) {
         let allDict = { id: 0, name: Common.Translations.translate('all') };
         let array = [allDict, ...values];
-        this.setState({ items: array });
+        let tempArray = array.shift()
+        var duplicated = array.map(function (item) {
+          let tempItem = { ...item };
+          let tempItem2 = { ...item };
+          tempItem.type = Common.Translations.translate('sale');
+          tempItem.headerName = Common.Translations.translate('item_type_sale');
+          tempItem2.headerName = Common.Translations.translate('item_type_rent');
+          tempItem2.type = Common.Translations.translate('rent');
+          return [tempItem, tempItem2];
+        }).reduce(function (a, b) { return a.concat(b) });
+        duplicated.unshift(tempArray)
+        this.setState({ items: duplicated });
       }
     }
 
@@ -836,12 +859,18 @@ class Dashboard extends Component {
 
 
   renderItem = (value, index) => {
-    console.log("Show render item picture", value)
+    const itemName = value?.item?.category_name;
+    // console.log("Show render item picture", value)
     let Image_Http_URL = value.item.picture.length > 0
       // ? Constants.API.ImageBaseURL(value.item.picture[0].picture)
       ? value.item.picture[0].picture
-      : Constants.Images.cover;
-
+      // : Constants.Images.cover;
+      : itemName == 'land' ? Constants.Images.landSale 
+      : itemName == 'shop' ? Constants.Images.shopSale 
+      : itemName == 'apartment' ? Constants.Images.appartmentSale 
+      : itemName == 'office' ? Constants.Images.officeSale  
+      : itemName == 'Vialla / Home' ? Constants.Images.homeSale : 
+      Constants.Images.buildingSale ;
     //  Constants.API.ImageBaseURL(value.item.picture[0].picture)
     // value.item.picture.length > 0
     //   ? { uri: Constants.API.ImageBaseURL(value.item.picture[0].picture) }
@@ -1095,6 +1124,7 @@ class Dashboard extends Component {
       zoom: 10/* this.page */,
       page: this.state.initialPageToRender
     });
+    this.props.toggleLoader(false)
     this.setState({ refreshing: false });
     if (estateRes.data.data) {
       console.log('Listing Response', estateRes.data);
@@ -1355,6 +1385,45 @@ class Dashboard extends Component {
   }
 
 
+  getFilterList = async (item) => {
+    console.log(item)
+    this.props.toggleLoader(true);
+    if (item.id == 0) {
+      this.refreshList();
+      // this.showItems(1);
+    }
+    else {
+      const params = {};
+      params.rent_or_sale = item?.type.toLowerCase();
+      params.type = item?.id;
+
+      // console.log('parameter request', params);
+
+      let res = await Services.EstateServices.sortList(params);
+      // console.log('my response filter===>', res);
+      this.props.toggleLoader(false);
+      if (res?.data) {
+        console.log('res', res);
+        // this.setState({ arrayEstates: res.data });
+        if (res.data.length > 0) {
+          Common.KeyChain.save('isFilter', 'true');
+          EventRegister.emit('filterProperties', res.data);
+        } else {
+          setTimeout(() => {
+            Common.Alert.show('no_result_found');
+          }, 1000);
+        }
+      }
+      else if (res?.status == false) {
+        EventRegister.emit('filterProperties', []);
+        // this.props.navigation.pop();
+        setTimeout(() => {
+          Common.Alert.show('no_result_found');
+        }, 1000);
+      }
+    }
+  };
+
 
   render() {
     return (
@@ -1408,11 +1477,13 @@ class Dashboard extends Component {
                       flagAdded: index,
                       sortActive: false,
                     })
+                    this.getFilterList(item);
+                    // this.sortList();
                   }}
                   style={this.state.flagAdded === index ? styles.edittchableclicked : styles.edittchable}
                 >
-                  <Text style={{ color: this.state.flagAdded === index ? Constants.Colors.white : Constants.Colors.buttonBackground,  fontSize: wp('3'), textTransform: 'capitalize' }}>
-                    {item.name}
+                  <Text style={{ color: this.state.flagAdded === index ? Constants.Colors.white : Constants.Colors.buttonBackground, fontSize: wp('3'), textTransform: 'capitalize' }}>
+                    {item?.type !== undefined ? `${item.name} ${item?.headerName}` : `${item.name}`}
                   </Text>
                 </TouchableOpacity>
               )}

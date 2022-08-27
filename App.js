@@ -8,7 +8,7 @@
 
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
-import { StatusBar, View, Text ,LogBox , Platform} from 'react-native';
+import { StatusBar, View, Text, LogBox, Platform, I18nManager } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
@@ -27,11 +27,11 @@ import SpInAppUpdates, {
   IAUUpdateKind,
   StartUpdateOptions,
 } from 'sp-react-native-in-app-updates';
-
+import RNRestart from 'react-native-restart';
 Sentry.init({
   dsn:
     // "https://6fd3e74226f14b2aaee5b13464ff2816@o990431.ingest.sentry.io/5946962",
-  "https://1afcff59a3f843349713c6b402b3a782@o1238590.ingest.sentry.io/6389407",
+    "https://1afcff59a3f843349713c6b402b3a782@o1238590.ingest.sentry.io/6389407",
   enableNative: true,
 });
 
@@ -48,7 +48,11 @@ class App extends Component {
     Common.Translations.initConfig();
     console.log('Constants.API.Language', Constants.API.Language);
   }
-  componentDidMount = () => {
+  componentDidMount = async () => {
+    if (I18nManager.isRTL == true) {
+      await Common.Translations.getDefaultLanguage();
+      RNRestart.Restart()
+    }
     this.checkAppUpdate();
     LogBox.ignoreAllLogs();
     // checkVersion();
@@ -63,7 +67,7 @@ class App extends Component {
     //   .then(this.handleDynamicLink);
   }
 
-   checkAppUpdate = () => {
+  checkAppUpdate = () => {
     // curVersion is optional if you don't provide it will automatically take from the app using react-native-device-info
     inAppUpdates.checkNeedsUpdate().then((result) => {
       // console.log("checkAppUpdate", result.shouldUpdate, result.storeVersion)
@@ -85,7 +89,7 @@ class App extends Component {
   //   // if (link.url === "https://invertase.io/offer") {
   //   //   // ...navigate to your offers screen
   //   // }
-    
+
   //   console.log(JSON.stringify(link), "link123");
 
   //   console.log(link, "link.url");

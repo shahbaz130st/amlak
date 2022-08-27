@@ -92,6 +92,13 @@ export default (() => {
     contactByEmail:require('../assets/images/contactByEmail.png'),
     contactByPhone:require('../assets/images/contactByPhone.png'),
     shareIcon:require('../assets/images/share_icon.png'),
+    appartmentSale:require('../assets/images/appartment_sale.jpeg'),
+    buildingSale:require('../assets/images/building_sale.jpeg'),
+    homeSale:require('../assets/images/home_sale.jpeg'),
+    landSale:require('../assets/images/land_sale.jpeg'),
+    officeSale:require('../assets/images/office_sale.jpeg'),
+    shopSale:require('../assets/images/shop_sale.jpeg'),
+    villaSale:require('../assets/images/villa_sale.jpeg'),
 
 
   };

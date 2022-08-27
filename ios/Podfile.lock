@@ -392,7 +392,9 @@ PODS:
     - React-Core
   - react-native-maps (0.28.1):
     - React-Core
-  - react-native-netinfo (8.3.0):
+  - react-native-netinfo (8.3.1):
+    - React-Core
+  - react-native-restart (0.0.24):
     - React-Core
   - react-native-safe-area-context (3.1.8):
     - React-Core
@@ -468,7 +470,7 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
-  - RNDeviceInfo (8.7.0):
+  - RNDeviceInfo (8.7.1):
     - React-Core
   - RNFastImage (8.5.11):
     - React-Core
@@ -481,7 +483,7 @@ PODS:
   - RNFBApp (12.9.3):
     - Firebase/CoreOnly (= 8.8.0)
     - React-Core
-  - RNFBDynamicLinks (14.9.2):
+  - RNFBDynamicLinks (14.11.1):
     - Firebase/DynamicLinks (= 8.8.0)
     - GoogleUtilities/AppDelegateSwizzler
     - React-Core
@@ -492,6 +494,15 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.8.0):
     - React
+  - RNImageCropPicker (0.38.0):
+    - React-Core
+    - React-RCTImage
+    - RNImageCropPicker/QBImagePickerController (= 0.38.0)
+    - TOCropViewController
+  - RNImageCropPicker/QBImagePickerController (0.38.0):
+    - React-Core
+    - React-RCTImage
+    - TOCropViewController
   - RNLocalize (1.4.2):
     - React-Core
   - RNRate (1.2.9):
@@ -500,10 +511,10 @@ PODS:
     - React
   - RNScreens (2.11.0):
     - React
-  - RNSentry (3.4.2):
+  - RNSentry (3.4.3):
     - React-Core
     - Sentry (= 7.11.0)
-  - RNShare (7.3.9):
+  - RNShare (7.6.6):
     - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -514,6 +525,7 @@ PODS:
   - Sentry (7.11.0):
     - Sentry/Core (= 7.11.0)
   - Sentry/Core (7.11.0)
+  - TOCropViewController (2.6.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -563,6 +575,7 @@ DEPENDENCIES:
   - react-native-image-resizer (from `../node_modules/react-native-image-resizer`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-restart (from `../node_modules/react-native-restart`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-spinkit (from `../node_modules/react-native-spinkit`)
   - react-native-version-info (from `../node_modules/react-native-version-info`)
@@ -587,6 +600,7 @@ DEPENDENCIES:
   - "RNFBDynamicLinks (from `../node_modules/@react-native-firebase/dynamic-links`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNImageCropPicker (from `../node_modules/react-native-image-crop-picker`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNRate (from `../node_modules/react-native-rate`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -626,6 +640,7 @@ SPEC REPOS:
     - SDWebImage
     - SDWebImageWebPCoder
     - Sentry
+    - TOCropViewController
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -671,6 +686,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-maps"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-restart:
+    :path: "../node_modules/react-native-restart"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   react-native-spinkit:
@@ -719,6 +736,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/messaging"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNImageCropPicker:
+    :path: "../node_modules/react-native-image-crop-picker"
   RNLocalize:
     :path: "../node_modules/react-native-localize"
   RNRate:
@@ -781,7 +800,8 @@ SPEC CHECKSUMS:
   react-native-image-picker: c6d75c4ab2cf46f9289f341242b219cb3c1180d3
   react-native-image-resizer: a79bcffdef1b52160ff91db0d6fa24816a4ff332
   react-native-maps: 60a75aa547d576fdb91be1f95113665215b59461
-  react-native-netinfo: 3671b091c4843fda5e153612866ef4024b8f5d62
+  react-native-netinfo: 1a6035d3b9780221d407c277ebfb5722ace00658
+  react-native-restart: 45c8dca02491980f2958595333cbccd6877cb57e
   react-native-safe-area-context: 79fea126c6830c85f65947c223a5e3058a666937
   react-native-spinkit: da294fd828216ad211fe36a5c14c1e09f09e62db
   react-native-version-info: a106f23009ac0db4ee00de39574eb546682579b9
@@ -799,22 +819,24 @@ SPEC CHECKSUMS:
   rn-fetch-blob: f065bb7ab7fb48dd002629f8bdcb0336602d3cba
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNDeviceInfo: 36286df381fcaf1933ff9d2d3c34ba2abeb2d8d8
+  RNDeviceInfo: aad3c663b25752a52bf8fce93f2354001dd185aa
   RNFastImage: 1f2cab428712a4baaf78d6169eaec7f622556dd7
   RNFBAnalytics: f76bfa164ac235b00505deb9fc1776634056898c
   RNFBApp: 729c0666395b1953198dc4a1ec6deb8fbe1c302e
-  RNFBDynamicLinks: 4eddd902beedc8e1235379fb3faf0260ff7db23d
+  RNFBDynamicLinks: 4bc63c31f217029512a924c08edba3f4e3ef3d21
   RNFBMessaging: 8415ec196e5c1196caa26ec0742cdb48ed4d0f97
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
+  RNImageCropPicker: ffbba608264885c241cbf3a8f78eb7aeeb978241
   RNLocalize: 452d4118e338dee1e5ca3fac4d5a11a4ab26a46a
   RNRate: 94f57c773e155ca0d0aeeba9c10a32bce9030daf
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
   RNScreens: 0e91da98ab26d5d04c7b59a9b6bd694124caf88c
-  RNSentry: 2cd1daa124b0d9fd0dfc2cb6094fdd168cb579bc
-  RNShare: 807d6f8231b8ebcf6dd839294b877342eb93d4e5
+  RNSentry: 85f6525b5fe8d2ada065858026b338605b3c09da
+  RNShare: d56424e3926cbc239db1cc1c168adcb051aad50b
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: f93010f3f6c031e2f8fb3081ca4ee6966c539815
   Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
+  TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 

@@ -20,7 +20,7 @@ import MapView, {
   PROVIDER_DEFAULT,
   PROVIDER_GOOGLE,
 } from 'react-native-maps';
-const {width, height} = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 37.78825;
@@ -35,7 +35,7 @@ const AmlakProvincesMap = (props) => (
     provider={props.provider == null ? PROVIDER_DEFAULT : PROVIDER_GOOGLE}
     style={styles.map}
     initialRegion={props.region}
-    key={ props.forceRefresh ?  props.forceRefresh:'33'}
+    key={props.forceRefresh ? props.forceRefresh : '33'}
     followsUserLocation={true}
     // zoomEnabled={true}
     // onRegionChange={this.onRegionChange.bind(this)}
@@ -46,52 +46,55 @@ const AmlakProvincesMap = (props) => (
     showsUserLocation={true}
     onRegionChange={props.regionChange}
 
-    // showsIndoors={true}
-    // onPress={(e) => props.onMapPress(e)}
+  // showsIndoors={true}
+  // onPress={(e) => props.onMapPress(e)}
   >
     {props.cityMap == true
       ? props.markers.map((marker) => (
-          <Marker
-            key={`${marker.id}`}
-            // image = {Constants.Images.pin}
-            coordinate={{
-              latitude: parseFloat(marker.latitude),
-              longitude: parseFloat(marker.longitude),
-            }}
-            onPress={() => props.onMapPress(marker)}
-            onSelect={() => {
-              props.onMapPress(marker);
-            }}
-            pinColor={'transparent'}>
-            <View style={styles.pinCircle}>
-              <Text style={styles.pinTextCircle}>
-                {Constants.API.Language == 'ar' ? marker.name_ar : marker.name}
-              </Text>
-            </View>
-          </Marker>
-        ))
+        <Marker
+          key={`${marker.id}`}
+          // image = {Constants.Images.pin}
+          coordinate={{
+            latitude: parseFloat(marker.latitude),
+            longitude: parseFloat(marker.longitude),
+          }}
+          onPress={() => props.onMapPress(marker)}
+          onSelect={() => {
+            props.onMapPress(marker);
+          }}
+          pinColor={'transparent'}>
+          <View style={styles.pinCircle}>
+            <Text style={styles.pinTextCircle}>
+              {Constants.API.Language == 'ar' ? marker.name_ar : marker.name}
+            </Text>
+          </View>
+        </Marker>
+      ))
       : props.markers.map((marker) => (
-          <Marker
-            key={marker.key}
-            // image = {Constants.Images.pin}
-            coordinate={{
-              latitude: parseFloat(marker.latitude),
-              longitude: parseFloat(marker.longitude),
-            }}
-            onPress={() => props.onMapPress(marker)}
-            onSelect={() => {
-              props.onMapPress(marker);
-            }}
-            pinColor={'transparent'}>
+        <Marker
+          key={marker.key}
+          // image = {Constants.Images.pin}
+          coordinate={{
+            latitude: parseFloat(marker.latitude),
+            longitude: parseFloat(marker.longitude),
+          }}
+          onPress={() => props.onMapPress(marker)}
+          onSelect={() => {
+            props.onMapPress(marker);
+          }}
+          pinColor={Constants.Colors.buttonBackground}>
+          {/* <View style={styles.circle}>
+              <Image style={styles.pinImage} source={Constants.Images.pin} />
+              <Text style={styles.pinText}>{marker.price}</Text>
+            </View> */}
+          <Callout>
             <View style={styles.circle}>
               <Image style={styles.pinImage} source={Constants.Images.pin} />
               <Text style={styles.pinText}>{marker.price}</Text>
             </View>
-            {/* <Callout>
-            <CustomCallout {...marker} />
-          </Callout> */}
-          </Marker>
-        ))}
+          </Callout>
+        </Marker>
+      ))}
   </MapView>
 );
 
@@ -103,7 +106,7 @@ AmlakProvincesMap.propTypes = {
 };
 
 AmlakProvincesMap.defaultProps = {
-  regionChange: () => {},
+  regionChange: () => { },
   markers: [],
 };
 
@@ -143,10 +146,10 @@ const styles = StyleSheet.create({
   },
 
   pinText: {
-    color: 'white',
+    color: 'black',
     textAlign: 'center',
     position: 'absolute',
-    fontSize: wp('2.8%'),
+    fontSize: wp('4.8%'),
     top: wp('2.5%'),
     fontFamily: Constants.Fonts.shamelBold,
   },
@@ -154,6 +157,7 @@ const styles = StyleSheet.create({
   pinImage: {
     width: wp('30%'),
     height: wp('13%'),
+    tintColor: 'white',
   },
   map: {
     ...StyleSheet.absoluteFillObject,

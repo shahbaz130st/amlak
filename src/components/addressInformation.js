@@ -101,9 +101,9 @@ class AddressInformation extends Component {
       Common.Alert.show('enter_region');
     } else if (this.state.street.trim() == '') {
       Common.Alert.show('enter_street');
-    } else if (this.state.building.trim() == '') {
+    } else if (this.state.building.trim() == '' && this.props.propertyType != 40  && this.props.propertyType != 30) {
       Common.Alert.show('enter_building');
-    } else if (this.state.mileStone.trim() == '') {
+    } else if (this.state.mileStone.trim() == '' && this.props.propertyType != 40) {
       Common.Alert.show('enter_milestone');
     } else if (this.state.city == null) {
       Common.Alert.show('select_city');
@@ -305,7 +305,7 @@ class AddressInformation extends Component {
                   justifyContent: 'space-between',
                   marginTop: wp('2%'),
                 }}>
-                <View style={{ flexDirection: 'column', width: '45%' }}>
+               { <View style={{ flexDirection: 'column', width: '45%' }}>
                   <Text
                     style={{
                       textAlign: 'right',
@@ -337,8 +337,8 @@ class AddressInformation extends Component {
                     onChangeText={(text) => this.setState({ mileStone: text })}
                     value={this.state.mileStone}
                   />
-                </View>
-                <View style={{ flexDirection: 'column', width: '45%' }}>
+                </View>}
+               {this.props.propertyType != 40 && this.props.propertyType != 30 && <View style={{ flexDirection: 'column', width: '45%' }}>
                   <Text
                     style={{
                       textAlign: 'right',
@@ -368,7 +368,7 @@ class AddressInformation extends Component {
                     onChangeText={(text) => this.setState({ building: text })}
                     value={this.state.building}
                   />
-                </View>
+                </View>}
               </View>
               <View
                 style={{

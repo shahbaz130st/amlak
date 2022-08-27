@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   FlatList,
   Image,
+  Modal,
+  Pressable
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -16,33 +18,41 @@ import * as Constants from '../../constants/index';
 import * as Common from '../../common/index';
 import * as Services from '../../services/index';
 import Dash from 'react-native-dash';
-import ImagePicker from 'react-native-image-picker';
+// import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
+import ImagePicker from 'react-native-image-crop-picker';
+import colors from '../../constants/colors';
 
 class Second extends Component {
   state = {
     images: ['1'],
+    modalVisible: false
   };
-componentDidMount() {
-  // let tem = this.state.images;
-  // let source = { uri: 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png'}
-  
-  // tem.push({imageURI: source})
-  // this.setState({images:tem});
-  // this.props.propertyAction(this.state.images);
+  componentDidMount() {
+    // let tem = this.state.images;
+    // let source = { uri: 'https://homepages.cae.wisc.edu/~ece533/images/airplane.png'}
 
-  // console.log('--->',this.state.images);
-}
+    // tem.push({imageURI: source})
+    // this.setState({images:tem});
+    // this.props.propertyAction(this.state.images);
+
+    // console.log('--->',this.state.images);
+  }
+
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+  }
+
   presentImagePicker = () => {
     const options = {
-      title: `${Common.Translations.translate('attach_photo')}`,
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
+      cropperToolbarTitle: `${Common.Translations.translate('attach_photo')}`,
+      multiple: true,
+      skipBackup: true,
+      path: 'images',
     };
 
-    ImagePicker.showImagePicker(options, async (response) => {
+    ImagePicker.openPicker(options).then((response) => {
+      this.setModalVisible(!this.state.modalVisible)
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -50,35 +60,76 @@ componentDidMount() {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-        // You can also display the image using data:
-        // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-        ImageResizer.createResizedImage(response.uri, 700, 700, 'JPEG', 30, 0)
-          .then((response) => {
-            const source = {uri: response.uri};
-            let array = this.state.images;
-            array.push({imageURI: source});
-            setTimeout(() => {
-              this.setState({images: array});
-            }, 1000);
-            setTimeout(() => {
-              this.props.propertyAction(this.state.images);
-            }, 1000);
-            // response.uri is the URI of the new image that can now be displayed, uploaded...
-            // response.path is the path of the new image
-            // response.name is the name of the new image with the extension
-            // response.size is the size of the new image
-          })
-          .catch((err) => {
-            // Oops, something went wrong. Check that the filename is correct and
-            // inspect err to get more details.
-          });
+
+        response.map((item, index) => {
+          ImageResizer.createResizedImage(item.sourceURL, 700, 700, 'JPEG', 30, 0)
+            .then((response) => {
+              const source = { uri: response.uri };
+              let array = this.state.images;
+              array.push({ imageURI: source });
+              setTimeout(() => {
+                this.setState({ images: array });
+              }, 1000);
+              setTimeout(() => {
+                this.props.propertyAction(this.state.images);
+              }, 1000);
+              // response.uri is the URI of the new image that can now be displayed, uploaded...
+              // response.path is the path of the new image
+              // response.name is the name of the new image with the extension
+              // response.size is the size of the new image
+            })
+            .catch((err) => {
+              // Oops, something went wrong. Check that the filename is correct and
+              // inspect err to get more details.
+            });
+        })
+      }
+    });
+  };
+  openImageCamera = () => {
+    const options = {
+      cropperToolbarTitle: `${Common.Translations.translate('attach_photo')}`,
+      multiple: true,
+      skipBackup: true,
+      path: 'images',
+    };
+
+    ImagePicker.openCamera(options).then((response) => {
+      this.setModalVisible(!this.state.modalVisible)
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+          ImageResizer.createResizedImage(response.sourceURL, 700, 700, 'JPEG', 30, 0)
+            .then((response) => {
+              const source = { uri: response.uri };
+              let array = this.state.images;
+              array.push({ imageURI: source });
+              setTimeout(() => {
+                this.setState({ images: array });
+              }, 1000);
+              setTimeout(() => {
+                this.props.propertyAction(this.state.images);
+              }, 1000);
+              // response.uri is the URI of the new image that can now be displayed, uploaded...
+              // response.path is the path of the new image
+              // response.name is the name of the new image with the extension
+              // response.size is the size of the new image
+            })
+            .catch((err) => {
+              // Oops, something went wrong. Check that the filename is correct and
+              // inspect err to get more details.
+            });
       }
     });
   };
   removeImage(index) {
     let array = [...this.state.images];
     array.splice(index, 1);
-    this.setState({images: array});
+    this.setState({ images: array });
     setTimeout(() => {
       this.props.propertyAction(this.state.images);
     }, 1000);
@@ -99,7 +150,7 @@ componentDidMount() {
             }}>
             <Dash
               dashThickness={1}
-              dashStyle={{backgroundColor: '#006FEB'}}
+              dashStyle={{ backgroundColor: '#006FEB' }}
               style={{
                 width: wp('15%'),
                 height: 1,
@@ -109,7 +160,7 @@ componentDidMount() {
             />
             <Dash
               dashThickness={1}
-              dashStyle={{backgroundColor: '#006FEB'}}
+              dashStyle={{ backgroundColor: '#006FEB' }}
               style={{
                 width: wp('15%'),
                 height: 1,
@@ -118,7 +169,7 @@ componentDidMount() {
               }}
             />
             <Dash
-              dashStyle={{backgroundColor: '#006FEB'}}
+              dashStyle={{ backgroundColor: '#006FEB' }}
               dashThickness={1}
               style={{
                 width: 1,
@@ -129,7 +180,7 @@ componentDidMount() {
               }}
             />
             <Dash
-              dashStyle={{backgroundColor: '#006FEB'}}
+              dashStyle={{ backgroundColor: '#006FEB' }}
               dashThickness={1}
               style={{
                 width: 1,
@@ -141,7 +192,7 @@ componentDidMount() {
             />
             <TouchableOpacity
               onPress={() => {
-                this.presentImagePicker();
+                this.setModalVisible(true)
               }}>
               <Image source={Constants.Images.camera} />
             </TouchableOpacity>
@@ -180,7 +231,7 @@ componentDidMount() {
               onPress={() => {
                 this.removeImage(value.index);
               }}>
-              <Image source={Constants.Images.closeIcon} />
+              <Image style={{tintColor: "#FFFFFF"}} source={Constants.Images.closeIcon} />
             </TouchableOpacity>
           </View>
         )}
@@ -189,6 +240,7 @@ componentDidMount() {
   };
 
   render() {
+    const { modalVisible } = this.state;
     return (
       <View
         style={[
@@ -228,7 +280,7 @@ componentDidMount() {
               }}>
               <Dash
                 dashThickness={1}
-                dashStyle={{backgroundColor: '#006FEB'}}
+                dashStyle={{ backgroundColor: '#006FEB' }}
                 style={{
                   width: wp('89%'),
                   height: 1,
@@ -238,7 +290,7 @@ componentDidMount() {
               />
               <Dash
                 dashThickness={1}
-                dashStyle={{backgroundColor: '#006FEB'}}
+                dashStyle={{ backgroundColor: '#006FEB' }}
                 style={{
                   width: wp('89%'),
                   height: 1,
@@ -247,7 +299,7 @@ componentDidMount() {
                 }}
               />
               <Dash
-                dashStyle={{backgroundColor: '#006FEB'}}
+                dashStyle={{ backgroundColor: '#006FEB' }}
                 dashThickness={1}
                 style={{
                   width: 1,
@@ -258,7 +310,7 @@ componentDidMount() {
                 }}
               />
               <Dash
-                dashStyle={{backgroundColor: '#006FEB'}}
+                dashStyle={{ backgroundColor: '#006FEB' }}
                 dashThickness={1}
                 style={{
                   width: 1,
@@ -270,7 +322,8 @@ componentDidMount() {
               />
               <TouchableOpacity
                 onPress={() => {
-                  this.presentImagePicker();
+                  this.setModalVisible(true)
+                  // this.presentImagePicker();
                 }}>
                 <Image source={Constants.Images.camera} />
               </TouchableOpacity>
@@ -284,7 +337,7 @@ componentDidMount() {
                 fontFamily: Constants.Fonts.shamelBold,
                 fontSize: wp('2.2%'),
                 color: '#9D9D9D',
-                marginTop:wp('2.5%')
+                marginTop: wp('2.5%')
               }}>
               {' '}
               {Common.Translations.translate(
@@ -299,9 +352,9 @@ componentDidMount() {
               height: '90%',
               alignItems: 'center',
             }}>
-            <View style={{width: wp('89%')}}>
+            <View style={{ width: wp('89%') }}>
               <FlatList
-                style={{width: wp('88%')}}
+                style={{ width: wp('88%') }}
                 contentContainerStyle={{
                   width: wp('88%'),
                   alignItems: 'flex-start',
@@ -314,6 +367,42 @@ componentDidMount() {
             </View>
           </View>
         )}
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            this.setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Pressable
+                style={[styles.button, { backgroundColor: colors.buttonBackground, width: "100%", marginBottom: 20 }]}
+                onPress={() => {
+                  this.openImageCamera();
+                }}
+              >
+                <Text style={styles.textStyle}>{`${Common.Translations.translate('choose_from_camera')}`}</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, { backgroundColor: colors.buttonBackground, width: "100%", marginBottom: 20 }]}
+                onPress={() => {
+                    this.presentImagePicker();
+                }}
+              >
+                <Text style={styles.textStyle}>{`${Common.Translations.translate('choose_from_library')}`}</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => this.setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>{`${Common.Translations.translate('cancel')}`}</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -325,6 +414,49 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22
+  },
+  modalView: {
+    margin: 20,
+    width: "80%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+    width: "100%"
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center"
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center"
+  }
 });
 
 export default Second;

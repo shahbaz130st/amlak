@@ -94,20 +94,28 @@ class PropertyAddress extends Component {
               // showsCompass={true}
               // liteMode={true}
               // showsTraffic={true}
-              showsUserLocation={true}
               // showsIndoors={true}
+              showsUserLocation={true}
               onPress={async (e) => {
+                let tempRegion = { ... this.state.region }
                 let coordinate = e.nativeEvent.coordinate;
-                let addres = await Common.Helper.address(
-                  coordinate.latitude,
-                  coordinate.longitude,
-                );
+                tempRegion.latitude = coordinate.latitude;
+                tempRegion.longitude = coordinate.longitude;
+                
                 this.setState({
                   latitude: coordinate.latitude,
                   longitude: coordinate.longitude,
-                  address: addres,
+                  region: tempRegion,
+                  
+                }, async() => {
+                  let addres = await Common.Helper.address(
+                    coordinate.latitude,
+                    coordinate.longitude,
+                  );
+                  this.setState({address: addres})
+                  // this.forceUpdate()
                 });
-
+               
                 this.props.propertyAction({
                   address: this.state.address,
                   latitude: coordinate.latitude,

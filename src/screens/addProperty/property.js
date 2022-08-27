@@ -72,6 +72,7 @@ class Property extends Component {
           <PropertyAddress
             containerStyle={{}}
             propertyAction={(selected) => {
+              console.log('check my selected addresss=====',selected)
               this.setState({
                 address: selected.address,
                 latitude: selected.latitude,
@@ -109,7 +110,7 @@ class Property extends Component {
 
           break;
         case 3:
-          if (this.state.images.length <= 1) {
+          if (this.state.images.length <= 1 && this.state.propertyType !== 40 && this.state.propertyType !== 30 && this.state.propertyType !== 10 && this.state.propertyType !== 20 && this.state.propertyType !== 50 && this.state.propertyType !== 60) {
             Common.Alert.show('select_property_images');
             return;
           }
@@ -384,6 +385,7 @@ class Property extends Component {
         {this.state.showAddressInformation && (
           <Components.AmlakAddressInformation
             address={this.state.address}
+            propertyType={this.state.propertyType}
             addressInformation={(values) => {
               this.showNextPrevious('next'),
                 this.setState({showAddressInformation: false, params: values});
