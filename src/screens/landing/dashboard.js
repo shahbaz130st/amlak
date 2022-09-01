@@ -860,8 +860,8 @@ class Dashboard extends Component {
 
   renderItem = (value, index) => {
     const itemName = value?.item?.category_name;
-    // console.log("Show render item picture", value)
-    let Image_Http_URL = value.item.picture.length > 0
+    // console.log("Show render item picture", value.item.picture[0].picture)
+    let Image_Http_URL = (value.item.picture.length > 0 && value.item.picture[0].picture?.includes('https'))
       // ? Constants.API.ImageBaseURL(value.item.picture[0].picture)
       ? value.item.picture[0].picture
       // : Constants.Images.cover;
@@ -871,6 +871,7 @@ class Dashboard extends Component {
       : itemName == 'office' ? Constants.Images.officeSale  
       : itemName == 'Vialla / Home' ? Constants.Images.homeSale : 
       Constants.Images.buildingSale ;
+      console.log('check image http=======',Image_Http_URL)
     //  Constants.API.ImageBaseURL(value.item.picture[0].picture)
     // value.item.picture.length > 0
     //   ? { uri: Constants.API.ImageBaseURL(value.item.picture[0].picture) }

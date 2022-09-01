@@ -98,6 +98,7 @@ class PropertyInformation extends Component {
     }
     this.setState({ years: years });
     if (this.props.category_id) {
+      // alert(this.props.category_id)
       this.setState({ cat_id: this.props.category_id });
     }
   }
@@ -203,13 +204,13 @@ class PropertyInformation extends Component {
       Common.Alert.show('select_currency');
     } else if (this.state.area.trim() == '') {
       Common.Alert.show('enter_property_estate_area');
-    } else if (this.state.year == '' && this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60) {
+    } else if (this.state.year == '' && this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60 && this.state.cat_id != 10) {
       Common.Alert.show('enter_year_of_construction');
-    } else if (this.state.facade.trim() == '' && this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60) {
+    } else if (this.state.facade.trim() == '' && this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60 && this.state.cat_id != 10) {
       Common.Alert.show('enter_facade_property');
-    } else if (this.state.blockNumber.trim() == '' && this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60) {
+    } else if (this.state.blockNumber.trim() == '' && this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60 && this.state.cat_id != 10 ) {
       Common.Alert.show('enter_block_number');
-    } else if (this.state.floors.trim() == '' && this.state.cat_id != 30 && this.state.cat_id != 40) {
+    } else if (this.state.floors.trim() == '' && this.state.cat_id != 30 && this.state.cat_id != 40  && this.state.cat_id != 20) {
       Common.Alert.show('enter_floor_type');
     } else if (this.state.area.length == 0) {
       Common.Alert.show('enter_property_estate_area');
@@ -320,42 +321,43 @@ class PropertyInformation extends Component {
         );
       case 60:
         return (
-          <View
-            style={{
-              width: '90%',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginTop: wp('2%'),
-            }}>
-            <Text
-              style={{
-                marginTop: wp('4%'),
-                width: '90%',
-                color: '#444040',
-                textAlign: 'right',
-                fontFamily: Constants.Fonts.shamelBold,
-                fontSize: wp('3.5%'),
-                marginBottom: wp('1.5%'),
-              }}>
-              {Common.Translations.translate('street_width')}
-            </Text>
-            <TextInput
-              style={{
-                height: hp('4%'),
-                borderColor: '#E1E1E1',
-                borderWidth: 0.5,
-                textAlign: 'right',
-                width: '90%',
-                paddingRight: wp('2%'),
-                paddingVertical: 0,
-              }}
-              placeholder={Common.Translations.translate('street_width')}
-              keyboardType="number-pad"
-              returnKeyType="done"
-              onChangeText={(text) => this.setState({ streetWidth: text })}
-              value={this.state.streetWidth}
-            />
-          </View>
+          <View />
+          // <View
+          //   style={{
+          //     width: '90%',
+          //     flexDirection: 'column',
+          //     alignItems: 'center',
+          //     marginTop: wp('2%'),
+          //   }}>
+          //   <Text
+          //     style={{
+          //       marginTop: wp('4%'),
+          //       width: '90%',
+          //       color: '#444040',
+          //       textAlign: 'right',
+          //       fontFamily: Constants.Fonts.shamelBold,
+          //       fontSize: wp('3.5%'),
+          //       marginBottom: wp('1.5%'),
+          //     }}>
+          //     {Common.Translations.translate('street_width')}
+          //   </Text>
+          //   <TextInput
+          //     style={{
+          //       height: hp('4%'),
+          //       borderColor: '#E1E1E1',
+          //       borderWidth: 0.5,
+          //       textAlign: 'right',
+          //       width: '90%',
+          //       paddingRight: wp('2%'),
+          //       paddingVertical: 0,
+          //     }}
+          //     placeholder={Common.Translations.translate('street_width')}
+          //     keyboardType="number-pad"
+          //     returnKeyType="done"
+          //     onChangeText={(text) => this.setState({ streetWidth: text })}
+          //     value={this.state.streetWidth}
+          //   />
+          // </View>
         );
       case 40:
         return (
@@ -407,67 +409,68 @@ class PropertyInformation extends Component {
     switch (this.state.cat_id) {
       case 10:
         return (
-          <View
-            style={{
-              width: '81%',
-              overflow: 'hidden',
-              marginTop: wp('4%'),
-              flexDirection: 'column',
-            }}>
-            <Text
-              style={{
-                width: '100%',
-                color: '#444040',
-                textAlign: 'right',
-                fontFamily: Constants.Fonts.shamelBold,
-                fontSize: wp('3.5%'),
-                marginBottom: wp('1.5%'),
-              }}>
-              {Common.Translations.translate('gender_type')}
-            </Text>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: wp('2%'),
-                borderWidth: 1,
-                borderColor: '#E1E1E1',
-              }}>
-              <Image
-                source={Constants.Images.menuIcon}
-                style={{
-                  width: wp('3%'),
-                  height: wp('3%'),
-                  marginLeft: wp('3%'),
-                }}
-                resizeMode="contain"
-              />
-              <ModalDropdown
-                style={{
-                  width: '90%',
-                }}
-                textStyle={{
-                  color: '#444040',
-                  textAlign: 'right',
-                  fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('2.5%'),
-                }}
-                dropdownStyle={{ width: '75%' }}
-                dropdownTextStyle={{
-                  textAlign: 'right',
-                  color: 'black',
-                  fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('4%'),
-                  marginRight: wp('2%'),
-                }}
-                options={this.state.genders}
-                onSelect={(idx, value) =>
-                  this.dropdown_genderType_onSelect(idx, value)
-                }
-                defaultValue={Common.Translations.translate('gender_type')}
-              />
-            </TouchableOpacity>
-          </View>
+          <View />
+          // <View
+          //   style={{
+          //     width: '81%',
+          //     overflow: 'hidden',
+          //     marginTop: wp('4%'),
+          //     flexDirection: 'column',
+          //   }}>
+          //   <Text
+          //     style={{
+          //       width: '100%',
+          //       color: '#444040',
+          //       textAlign: 'right',
+          //       fontFamily: Constants.Fonts.shamelBold,
+          //       fontSize: wp('3.5%'),
+          //       marginBottom: wp('1.5%'),
+          //     }}>
+          //     {Common.Translations.translate('gender_type')}
+          //   </Text>
+          //   <TouchableOpacity
+          //     style={{
+          //       flexDirection: 'row',
+          //       alignItems: 'center',
+          //       paddingVertical: wp('2%'),
+          //       borderWidth: 1,
+          //       borderColor: '#E1E1E1',
+          //     }}>
+          //     <Image
+          //       source={Constants.Images.menuIcon}
+          //       style={{
+          //         width: wp('3%'),
+          //         height: wp('3%'),
+          //         marginLeft: wp('3%'),
+          //       }}
+          //       resizeMode="contain"
+          //     />
+          //     <ModalDropdown
+          //       style={{
+          //         width: '90%',
+          //       }}
+          //       textStyle={{
+          //         color: '#444040',
+          //         textAlign: 'right',
+          //         fontFamily: Constants.Fonts.shamelBold,
+          //         fontSize: wp('2.5%'),
+          //       }}
+          //       dropdownStyle={{ width: '75%' }}
+          //       dropdownTextStyle={{
+          //         textAlign: 'right',
+          //         color: 'black',
+          //         fontFamily: Constants.Fonts.shamel,
+          //         fontSize: wp('4%'),
+          //         marginRight: wp('2%'),
+          //       }}
+          //       options={this.state.genders}
+          //       onSelect={(idx, value) =>
+          //         this.dropdown_genderType_onSelect(idx, value)
+          //       }
+          //       defaultValue={Common.Translations.translate('gender_type')}
+          //     />
+          //   </TouchableOpacity>
+          // </View>
         );
 
       case 20:
@@ -547,67 +550,68 @@ class PropertyInformation extends Component {
     switch (this.state.cat_id) {
       case 10:
         return (
-          <View
-            style={{
-              width: '81%',
-              overflow: 'hidden',
-              marginTop: wp('4%'),
-              flexDirection: 'column',
-            }}>
-            <Text
-              style={{
-                width: '100%',
-                color: '#444040',
-                textAlign: 'right',
-                fontFamily: Constants.Fonts.shamelBold,
-                fontSize: wp('3.5%'),
-                marginBottom: wp('1.5%'),
-              }}>
-              {Common.Translations.translate('type_of_living')}
-            </Text>
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: wp('2%'),
-                borderWidth: 1,
-                borderColor: '#E1E1E1',
-              }}>
-              <Image
-                source={Constants.Images.menuIcon}
-                style={{
-                  width: wp('3%'),
-                  height: wp('3%'),
-                  marginLeft: wp('3%'),
-                }}
-                resizeMode="contain"
-              />
-              <ModalDropdown
-                style={{
-                  width: '90%',
-                }}
-                textStyle={{
-                  color: '#444040',
-                  textAlign: 'right',
-                  fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('2.5%'),
-                }}
-                dropdownStyle={{ width: '75%' }}
-                dropdownTextStyle={{
-                  textAlign: 'right',
-                  color: 'black',
-                  fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('4%'),
-                  marginRight: wp('2%'),
-                }}
-                options={this.state.livingTypes}
-                onSelect={(idx, value) =>
-                  this.dropdown_LivingType_onSelect(idx, value)
-                }
-                defaultValue={Common.Translations.translate('type_of_living')}
-              />
-            </TouchableOpacity>
-          </View>
+          <View />
+          // <View
+          //   style={{
+          //     width: '81%',
+          //     overflow: 'hidden',
+          //     marginTop: wp('4%'),
+          //     flexDirection: 'column',
+          //   }}>
+          //   <Text
+          //     style={{
+          //       width: '100%',
+          //       color: '#444040',
+          //       textAlign: 'right',
+          //       fontFamily: Constants.Fonts.shamelBold,
+          //       fontSize: wp('3.5%'),
+          //       marginBottom: wp('1.5%'),
+          //     }}>
+          //     {Common.Translations.translate('type_of_living')}
+          //   </Text>
+          //   <TouchableOpacity
+          //     style={{
+          //       flexDirection: 'row',
+          //       alignItems: 'center',
+          //       paddingVertical: wp('2%'),
+          //       borderWidth: 1,
+          //       borderColor: '#E1E1E1',
+          //     }}>
+          //     <Image
+          //       source={Constants.Images.menuIcon}
+          //       style={{
+          //         width: wp('3%'),
+          //         height: wp('3%'),
+          //         marginLeft: wp('3%'),
+          //       }}
+          //       resizeMode="contain"
+          //     />
+          //     <ModalDropdown
+          //       style={{
+          //         width: '90%',
+          //       }}
+          //       textStyle={{
+          //         color: '#444040',
+          //         textAlign: 'right',
+          //         fontFamily: Constants.Fonts.shamelBold,
+          //         fontSize: wp('2.5%'),
+          //       }}
+          //       dropdownStyle={{ width: '75%' }}
+          //       dropdownTextStyle={{
+          //         textAlign: 'right',
+          //         color: 'black',
+          //         fontFamily: Constants.Fonts.shamel,
+          //         fontSize: wp('4%'),
+          //         marginRight: wp('2%'),
+          //       }}
+          //       options={this.state.livingTypes}
+          //       onSelect={(idx, value) =>
+          //         this.dropdown_LivingType_onSelect(idx, value)
+          //       }
+          //       defaultValue={Common.Translations.translate('type_of_living')}
+          //     />
+          //   </TouchableOpacity>
+          // </View>
         );
 
       case 20:
@@ -3335,7 +3339,7 @@ class PropertyInformation extends Component {
                 value={this.state.area}
               />
             </View>
-            {this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60 && <View
+            {this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60 && this.state.cat_id != 10 && <View
               style={{
                 width: '81%',
                 overflow: 'hidden',
@@ -3400,7 +3404,7 @@ class PropertyInformation extends Component {
             </View>}
             {this.renderDoorType()}
 
-            {this.state.cat_id != 30 && this.state.cat_id != 50 && this.state.cat_id != 60 && this.state.cat_id != 40 ? (
+            {this.state.cat_id != 30 && this.state.cat_id != 50 && this.state.cat_id != 60 && this.state.cat_id != 40 && this.state.cat_id != 10 && this.state.cat_id != 20  ? (
               <View
                 style={{
                   width: '81%',
@@ -3464,7 +3468,7 @@ class PropertyInformation extends Component {
               </View>
             ) : null}
 
-            {this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60 && <View
+            {this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60 && this.state.cat_id != 10 && <View
               style={{
                 width: '81%',
                 overflow: 'hidden',
@@ -3530,7 +3534,7 @@ class PropertyInformation extends Component {
                 />
               </TouchableOpacity>
             </View>}
-            {this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60 && <View
+            {this.state.cat_id != 40 && this.state.cat_id != 30 && this.state.cat_id != 20 && this.state.cat_id != 50 && this.state.cat_id != 60 && this.state.cat_id != 10 && <View
               style={{
                 width: '90%',
                 flexDirection: 'column',
@@ -3568,7 +3572,7 @@ class PropertyInformation extends Component {
                 value={this.state.blockNumber}
               />
             </View>}
-            {this.renderAttachments()}
+            {  this.renderAttachments()}
             {(this.state.cat_id != 30 && this.state.cat_id != 40) ? (
               <View style={{ width: '90%', flexDirection: 'column' }}>
                 <Text
@@ -3715,7 +3719,8 @@ class PropertyInformation extends Component {
               </View>
             ) : null}
 
-            <View style={{ width: '90%', flexDirection: 'column' }}>
+            {
+              <View style={{ width: '90%', flexDirection: 'column' }}>
               <Text
                 style={{
                   marginTop: wp('6%'),
@@ -3729,7 +3734,7 @@ class PropertyInformation extends Component {
                 {Common.Translations.translate('comfortable_features')}
               </Text>
               {this.renderFacilities()}
-            </View>
+            </View>}
           </View>
         </KeyboardAwareScrollView>
         <View
