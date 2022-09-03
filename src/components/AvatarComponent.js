@@ -105,7 +105,7 @@ export default class AvatarComponent extends Component {
                 {...props}
                 style={props.style}>
                 <Image
-                    resizeMode='cover'
+                    resizeMode='stretch'
                     style={props.style}
                     source={source ? { uri: source } : props.defaultSource /* ? props.defaultSource : null */}
                     onError={(e) => {

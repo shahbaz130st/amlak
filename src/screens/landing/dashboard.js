@@ -224,7 +224,7 @@ class Dashboard extends Component {
         this.showItems(this.state.initialPageToRender);
       }
     } catch (error) {
-      console.log('error', error);
+      // console.log('error', error);
     }
   }
   async checkPermission() {
@@ -252,7 +252,7 @@ class Dashboard extends Component {
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
-      console.log('Authorization status:', authStatus);
+      // console.log('Authorization status:', authStatus);
       this.getToken();
     }
   }
@@ -264,6 +264,7 @@ class Dashboard extends Component {
       zoom: 10/* size */,
       page: size
     });
+    console.log('response=======estateRes.data.data', JSON.stringify(estateRes.data.data))
     this.setState({ propertyCount: estateRes?.proparty_count })
     this.props.toggleLoader(false);
     this.setState({ showFooterLoader: false })
@@ -297,7 +298,7 @@ class Dashboard extends Component {
   }
 
   showProperties(estateRes, add) {
-    console.log("properties", add, estateRes.length)
+    // console.log("properties", add, estateRes.length)
     if (add) {
       this.setState({ arrayEstates: [...this.state.arrayEstates, ...estateRes] }); //another array
     } else {
@@ -315,7 +316,7 @@ class Dashboard extends Component {
       'filterProperties',
       (data) => {
         this.onEndReachedCalledDuringMomentum = true;
-        console.log("datalength", data)
+        // console.log("datalength", data)
         this.setState({ isFilterEvent: true, loadMore: false, dataFromFilter: true });
         this.showProperties(data);
         setTimeout(() => {
@@ -636,13 +637,21 @@ class Dashboard extends Component {
                       ? item?.details?.door_type_arabic
                       : item?.details?.door_type}
                   </Text>
-                  <Image
-                    style={{ width: wp('3%'), height: wp('3.5%') }}
-                    source={Constants.Images.door}
-                  />
+                  {Constants.API.Language == 'ar'
+                      && item?.details?.door_type_arabic ? 
+                      <Image
+                      style={{ width: wp('3%'), height: wp('3.5%') }}
+                      source={Constants.Images.door}
+                    />
+                      : item?.details?.door_type ? 
+                      <Image
+                      style={{ width: wp('3%'), height: wp('3.5%') }}
+                      source={Constants.Images.door}
+                    /> : null}
+                 
                 </View>
 
-                <View
+                {/* <View
                   style={{
                     marginRight: wp('2%'),
                     height: hp('2%'),
@@ -665,7 +674,7 @@ class Dashboard extends Component {
                     style={{ width: wp('3%'), height: wp('3.5%') }}
                     source={Constants.Images.road}
                   />
-                </View>
+                </View> */}
 
                 <View
                   style={{
@@ -859,33 +868,20 @@ class Dashboard extends Component {
 
 
   renderItem = (value, index) => {
+    const defaultSource =
+      itemName == 'land' ? Constants.Images.landSale
+        : itemName == 'shop' ? Constants.Images.shopSale
+          : itemName == 'apartment' ? Constants.Images.appartmentSale
+            : itemName == 'office' ? Constants.Images.officeSale
+              : itemName == 'Vialla / Home' ? Constants.Images.homeSale :
+                Constants.Images.buildingSale;
     const itemName = value?.item?.category_name;
-    // console.log("Show render item picture", value.item.picture[0].picture)
-    let Image_Http_URL = (value.item.picture.length > 0 && value.item.picture[0].picture?.includes('https'))
+    console.log("Show render item picture", value.item.picture.length)
+    let Image_Http_URL = value.item.picture.length > 0
       // ? Constants.API.ImageBaseURL(value.item.picture[0].picture)
       ? value.item.picture[0].picture
       // : Constants.Images.cover;
-      : itemName == 'land' ? Constants.Images.landSale 
-      : itemName == 'shop' ? Constants.Images.shopSale 
-      : itemName == 'apartment' ? Constants.Images.appartmentSale 
-      : itemName == 'office' ? Constants.Images.officeSale  
-      : itemName == 'Vialla / Home' ? Constants.Images.homeSale : 
-      Constants.Images.buildingSale ;
-      console.log('check image http=======',Image_Http_URL)
-    //  Constants.API.ImageBaseURL(value.item.picture[0].picture)
-    // value.item.picture.length > 0
-    //   ? { uri: Constants.API.ImageBaseURL(value.item.picture[0].picture) }
-    //   : Constants.Images.cover;
-    // let Image_Http_URL = Constants.Images.cover;
-    // try {
-    //   let Image_Http_URL =
-    //     value.item.picture.length > 0
-    //       ? { uri: Constants.API.ImageBaseURL(value.item.picture[0].picture) }
-    //       : Constants.Images.cover;
-    // } catch (error) {
-    //   console.log(error)
-    //   return <View />;
-    // }
+      : defaultSource;
     return (
       <View
         style={{
@@ -925,10 +921,11 @@ class Dashboard extends Component {
               <AvatarComponent
                 size={'large'}
                 disabled={true}
-                defaultSource={Constants.Images.cover}
+                // defaultSource={Constants.Images.cover}
+                defaultSource={defaultSource}
                 source={Image_Http_URL}
                 style={{ width: wp('80%'), height: hp('23%') }}
-                imageStyle={{ width: wp('80%'), height: hp('23%') }}
+                imageStyle={{ width: wp('80%'), height: hp('23%'),resizeMode: 'contain' }}
               />
               <View
                 style={{
@@ -1029,7 +1026,7 @@ class Dashboard extends Component {
                     fontSize: wp('2.5%'),
                     marginRight: wp('2%'),
                   }}>
-                  {`${value.item.region} ${value.item.address} ${value.item.city_id_arabic == undefined
+                  {`${value.item.region} ${value.item.address} ${value?.item?.city_id_arabic == undefined
                     ? ''
                     : Constants.API.Language == 'ar'
                       ? value.item.city_id_arabic
@@ -1128,7 +1125,7 @@ class Dashboard extends Component {
     this.props.toggleLoader(false)
     this.setState({ refreshing: false });
     if (estateRes.data.data) {
-      console.log('Listing Response', estateRes.data);
+      // console.log('Listing Response', estateRes.data);
       this.showProperties(estateRes.data.data);
     }
   };
@@ -1348,7 +1345,7 @@ class Dashboard extends Component {
       let results = await Services.EstateServices.homeSearch(
         this.state.searchKeyword,
       );
-      console.log('results', results);
+      // console.log('results', results);
       this.props.toggleLoader(false);
       if (results) {
         this.showProperties(results);
@@ -1361,18 +1358,17 @@ class Dashboard extends Component {
         page: this.state.initialPageToRender
       });
       if (estateRes.data.data) {
-        console.log('Listing Response', estateRes?.data?.data?.length);
+        // console.log('Listing Response', estateRes?.data?.data?.length);
         this.showProperties(estateRes.data.data);
       }
     }
   }
   handleLoadMore = () => {
-    console.log('i m here');
+    // console.log('i m here');
     // if (this.state.isList == true) {
 
     // this.page = this.page + 5; // increase page by 1
     this.setState({ initialPageToRender: this.state.initialPageToRender + 1 }, () => {
-      console.log('i m hereeeee', this.state.initialPageToRender);
       this.showItems(this.state.initialPageToRender);
     })
 
@@ -1387,7 +1383,7 @@ class Dashboard extends Component {
 
 
   getFilterList = async (item) => {
-    console.log(item)
+    // console.log(item)
     this.props.toggleLoader(true);
     if (item.id == 0) {
       this.refreshList();
@@ -1404,7 +1400,7 @@ class Dashboard extends Component {
       // console.log('my response filter===>', res);
       this.props.toggleLoader(false);
       if (res?.data) {
-        console.log('res', res);
+        console.log('res', JSON.stringify(res));
         // this.setState({ arrayEstates: res.data });
         if (res.data.length > 0) {
           Common.KeyChain.save('isFilter', 'true');
@@ -1804,12 +1800,12 @@ class Dashboard extends Component {
             }
             listData={this.state.items}
             onSelectOption={(option) => {
-              console.log("what is option", option),
-                this.setState({
-                  selectedFilter: option,
-                  showPicker: false,
-                  sortActive: false,
-                })
+              // console.log("what is option", option),
+              this.setState({
+                selectedFilter: option,
+                showPicker: false,
+                sortActive: false,
+              })
             }}
             closePicker={() => this.onClosePicker()}
             onCross={() =>
@@ -1834,7 +1830,7 @@ class Dashboard extends Component {
             item={this.state.selectedFilter}
             listData={this.state.sortOptions}
             onSelectOption={(option) => {
-              console.log("what is option", option)
+              // console.log("what is option", option)
               this.setState({
                 selectedFilter: option.id,
                 showPicker: false,
