@@ -264,7 +264,7 @@ class Dashboard extends Component {
       zoom: 10/* size */,
       page: size
     });
-    console.log('response=======estateRes.data.data', JSON.stringify(estateRes.data.data))
+    // console.log('response=======estateRes.data.data', JSON.stringify(estateRes.data.data))
     this.setState({ propertyCount: estateRes?.proparty_count })
     this.props.toggleLoader(false);
     this.setState({ showFooterLoader: false })
@@ -1146,7 +1146,7 @@ class Dashboard extends Component {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {array.length == 0 ? (
+        {array.length == 0 && this.props.loading !== true ? (
           <Text
             style={{
               fontFamily: Constants.Fonts.shamelBold,
@@ -1858,8 +1858,14 @@ class Dashboard extends Component {
 const mapDispatchToProps = (dispatch) => ({
   toggleLoader: (state) => dispatch(Actions.toggleLoader(state)),
 });
+const mapStateToProps = (state) => {
+  console.log('check for state=====',state?.common?.isLoading)
+  return {
+    loading: state?.common?.isLoading,
+  }
+};
 
-export default connect(null, mapDispatchToProps)(Dashboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
 
 const styles = StyleSheet.create({
 

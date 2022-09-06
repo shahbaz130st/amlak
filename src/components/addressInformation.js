@@ -101,7 +101,7 @@ class AddressInformation extends Component {
       Common.Alert.show('enter_region');
     } else if (this.state.street.trim() == '') {
       Common.Alert.show('enter_street');
-    } else if (this.state.building.trim() == '' && this.props.propertyType != 40  && this.props.propertyType != 30) {
+    } else if (this.state.building.trim() == '' && this.props.propertyType != 40 && this.props.propertyType != 30) {
       Common.Alert.show('enter_building');
     } else if (this.state.mileStone.trim() == '' && this.props.propertyType != 40) {
       Common.Alert.show('enter_milestone');
@@ -154,24 +154,26 @@ class AddressInformation extends Component {
               width: '100%',
               flexDirection: 'column',
               alignItems: 'center',
+              flex: 1
             }}>
+            <Components.AmlakHeader
+              height={hp('11%')}
+              isButtons={true}
+              leftButton={Constants.Images.closeBig}
+              title={Common.Translations.translate('exact_location_map')}
+              onSettingClick={() => {
+                this.props.closePicker()
+              }}
+              onBackButtonClick={() => {
+                this.props.closePicker()
+
+              }}
+            />
             <KeyboardAwareScrollView
               // enableOnAndroid={false}
               contentContainerStyle={styles.mainContainer}
               keyboardShouldPersistTaps="handled">
-              <Components.AmlakHeader
-                height={hp('11%')}
-                isButtons={true}
-                leftButton={Constants.Images.closeBig}
-                title={Common.Translations.translate('exact_location_map')}
-                onSettingClick={() => {
-                  this.props.closePicker()
-                }}
-                onBackButtonClick={() => {
-                  this.props.closePicker()
 
-                }}
-              />
               {/* <View style={{
                 flexDirection:"row",
                 paddingBottom:25,
@@ -225,7 +227,7 @@ class AddressInformation extends Component {
                   }}>
                   {Common.Translations.translate('add_more_detail_for_location')}
                 </Text>
-                <Image style={{width: 20,height: 20,resizeMode: "contain"}} source={AppConstant.Images.help} />
+                <Image style={{ width: 20, height: 20, resizeMode: "contain" }} source={AppConstant.Images.help} />
               </View>
               <View
                 style={{
@@ -305,7 +307,7 @@ class AddressInformation extends Component {
                   justifyContent: 'space-between',
                   marginTop: wp('2%'),
                 }}>
-               { <View style={{ flexDirection: 'column', width: '45%' }}>
+                {<View style={{ flexDirection: 'column', width: '45%' }}>
                   <Text
                     style={{
                       textAlign: 'right',
@@ -338,7 +340,7 @@ class AddressInformation extends Component {
                     value={this.state.mileStone}
                   />
                 </View>}
-               {this.props.propertyType != 40 && this.props.propertyType != 30 && <View style={{ flexDirection: 'column', width: '45%' }}>
+                {this.props.propertyType != 40 && this.props.propertyType != 30 && <View style={{ flexDirection: 'column', width: '45%' }}>
                   <Text
                     style={{
                       textAlign: 'right',
@@ -466,9 +468,7 @@ class AddressInformation extends Component {
                   />
                 </TouchableOpacity>
               </View>
-            </KeyboardAwareScrollView>
-          </View>
-          <View
+              <View
             style={{
               width: '100%',
               flexDirection: 'row',
@@ -489,6 +489,9 @@ class AddressInformation extends Component {
               }}
             />
           </View>
+            </KeyboardAwareScrollView>
+          </View>
+
         </View>
       </SafeAreaView>
     );
@@ -548,6 +551,6 @@ const styles = StyleSheet.create({
     width: Common.Helper.dimensions().width,
     alignItems: 'center',
     paddingBottom: wp('2%'),
-    // flexGrow: 1,
+    flexGrow: 1,
   }
 });
