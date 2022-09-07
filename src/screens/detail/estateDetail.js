@@ -2069,65 +2069,67 @@ class EstateDetail extends Component {
         return <View />;
     }
   };
-  headerView = () => (
-    <View style={{ alignItems: 'center', flexDirection: 'column' }}>
-      {console.log('check for property detail==== ', this.state.propertyDetail?.category_name)}
-      <View
-        style={{
-          width: wp('100%'),
-          height: hp('32.5%'),
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <SliderBox
-          images={this.state.images.length != 0 ? this.state.images
-            // : [Constants.Images.cover]}
-            : this.state.propertyDetail?.category_name == 'land' ? [Constants.Images.landSale]
-              : this.state.propertyDetail?.category_name == 'shop' ? [Constants.Images.shopSale]
-                : this.state.propertyDetail?.category_name == 'apartment' ? [Constants.Images.appartmentSale]
-                  : this.state.propertyDetail?.category_name == 'office' ? [Constants.Images.officeSale]
-                    : this.state.propertyDetail?.category_name == 'Vialla / Home' ? [Constants.Images.homeSale] :
-                      [Constants.Images.buildingSale]
-          }
-          resizeMode={'contain'}
-          ImageComponentStyle={{ backgroundColor: "black" }}
-          sliderBoxHeight={hp('33%')}
-          onCurrentImagePressed={(index) =>
-            console.log(`image ${index} pressed`)
-          }
-          currentImageEmitter={(index) =>
-            this.setState({ currentIndex: index + 1 })
-          }
-          dotColor="#006FEB"
-          inactiveDotColor="#FFFFFF"
-          dotStyle={{
-            width: 12,
-            height: 12,
-            borderRadius: 6,
-          }}
-        />
+  headerView = () => {
+    const selectedFilter = this.state.propertyDetail?.sale_or_rent;
+    return (
+      <View style={{ alignItems: 'center', flexDirection: 'column' }}>
         <View
           style={{
-            width: '20%',
-            height: hp('3%'),
-            position: 'absolute',
-            backgroundColor: 'rgba(68, 64, 64, 1)',
-            left: 4,
-            bottom: 4,
+            width: wp('100%'),
+            height: hp('32.5%'),
             justifyContent: 'center',
             alignItems: 'center',
           }}>
-          <Text
+          <SliderBox
+            images={this.state.images.length != 0 ? this.state.images
+              // : [Constants.Images.cover]}
+              : this.state.propertyDetail?.category_name == 'land' ? (selectedFilter !== null && selectedFilter == 'sale' ? [Constants.Images.landSale] : [Constants.Images.landRent])
+                : this.state.propertyDetail?.category_name == 'shop' ? (selectedFilter !== null && selectedFilter == 'sale' ? [Constants.Images.shopSale] : [Constants.Images.shopRent])
+                  : this.state.propertyDetail?.category_name == 'apartment' ? (selectedFilter !== null && selectedFilter == 'sale' ? [Constants.Images.appartmentSale] : [Constants.Images.appartmentRent])
+                    : this.state.propertyDetail?.category_name == 'office' ? (selectedFilter !== null && selectedFilter == 'sale' ? [Constants.Images.officeSale] : [Constants.Images.officeRent])
+                      : this.state.propertyDetail?.category_name == 'Vialla / Home' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? [Constants.Images.homeSale] : [Constants.Images.homeRent])
+                        : this.state.propertyDetail?.category_name == 'warehouse' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? [Constants.Images.wareHouseSale] : [Constants.Images.wareHouseRent]) :
+                          (selectedFilter !== null && selectedFilter?.type == 'sale' ? [Constants.Images.buildingSale] : [Constants.Images.buildingRent])
+            }
+            resizeMode={'contain'}
+            ImageComponentStyle={{ backgroundColor: "black" }}
+            sliderBoxHeight={hp('33%')}
+            onCurrentImagePressed={(index) =>
+              console.log(`image ${index} pressed`)
+            }
+            currentImageEmitter={(index) =>
+              this.setState({ currentIndex: index + 1 })
+            }
+            dotColor="#006FEB"
+            inactiveDotColor="#FFFFFF"
+            dotStyle={{
+              width: 12,
+              height: 12,
+              borderRadius: 6,
+            }}
+          />
+          <View
             style={{
-              fontFamily: Constants.Fonts.shamel,
-              fontSize: wp('3%'),
-              color: 'white',
-              paddingTop: wp('1%'),
+              width: '20%',
+              height: hp('3%'),
+              position: 'absolute',
+              backgroundColor: 'rgba(68, 64, 64, 1)',
+              left: 4,
+              bottom: 4,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}>
-            {this.state.currentIndex}/{this.state.images.length}
-          </Text>
-        </View>
-        {/* <View
+            <Text
+              style={{
+                fontFamily: Constants.Fonts.shamel,
+                fontSize: wp('3%'),
+                color: 'white',
+                paddingTop: wp('1%'),
+              }}>
+              {this.state.currentIndex}/{this.state.images.length}
+            </Text>
+          </View>
+          {/* <View
           style={{
             paddingHorizontal:2,
             height: hp('2%'),
@@ -2143,32 +2145,32 @@ class EstateDetail extends Component {
               this.showPageIndexes
         )}
         </View> */}
-        <View
-          style={{
-            width: '90%',
-            top: wp('10%'),
-            paddingVertical: wp('1%'),
-            // backgroundColor: 'red',
-            position: 'absolute',
-            flexDirection: 'row',
-          }}>
-          <View style={{ flexDirection: 'row' }}>
-            <TouchableOpacity onPress={() => this.showReport()}>
-              <View
-                style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  resizeMode: 'cover',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: wp('10%') / 2,
-                  overflow: 'hidden',
-                  backgroundColor: 'rgba(240,241,243,0.76)',
-                }}>
-                <Image source={Constants.Images.spam} />
-              </View>
-            </TouchableOpacity>
-            {/* <TouchableOpacity>
+          <View
+            style={{
+              width: '90%',
+              top: wp('10%'),
+              paddingVertical: wp('1%'),
+              // backgroundColor: 'red',
+              position: 'absolute',
+              flexDirection: 'row',
+            }}>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity onPress={() => this.showReport()}>
+                <View
+                  style={{
+                    width: wp('10%'),
+                    height: wp('10%'),
+                    resizeMode: 'cover',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: wp('10%') / 2,
+                    overflow: 'hidden',
+                    backgroundColor: 'rgba(240,241,243,0.76)',
+                  }}>
+                  <Image source={Constants.Images.spam} />
+                </View>
+              </TouchableOpacity>
+              {/* <TouchableOpacity>
               <View
                 style={{
                   width: wp('10%'),
@@ -2184,177 +2186,177 @@ class EstateDetail extends Component {
                 <Image source={Constants.Images.share} />
               </View>
             </TouchableOpacity> */}
-            <TouchableOpacity onPress={() => this.actionLike()}>
-              <View
-                style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  resizeMode: 'cover',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: wp('10%') / 2,
-                  overflow: 'hidden',
-                  backgroundColor: 'rgba(240,241,243,0.76)',
-                  marginLeft: wp('2%'),
-                }}>
-                <Image
-                  source={
-                    this.state.isLiked == false
-                      ? Constants.Images.heartGray
-                      : Constants.Images.heartRed
-                  }
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              width: wp('10%'),
-              height: wp('10%'),
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: wp('10%') / 2,
-              overflow: 'hidden',
-              backgroundColor: 'rgba(240,241,243,0.76)',
-              marginLeft: wp('56%'),
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                this.props.navigation.pop();
-              }}
+              <TouchableOpacity onPress={() => this.actionLike()}>
+                <View
+                  style={{
+                    width: wp('10%'),
+                    height: wp('10%'),
+                    resizeMode: 'cover',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: wp('10%') / 2,
+                    overflow: 'hidden',
+                    backgroundColor: 'rgba(240,241,243,0.76)',
+                    marginLeft: wp('2%'),
+                  }}>
+                  <Image
+                    source={
+                      this.state.isLiked == false
+                        ? Constants.Images.heartGray
+                        : Constants.Images.heartRed
+                    }
+                  />
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View
               style={{
-                width: '100%',
-                height: '100%',
+                width: wp('10%'),
+                height: wp('10%'),
                 alignItems: 'center',
                 justifyContent: 'center',
+                borderRadius: wp('10%') / 2,
+                overflow: 'hidden',
+                backgroundColor: 'rgba(240,241,243,0.76)',
+                marginLeft: wp('56%'),
               }}>
-              <Image source={Constants.Images.rightArrowWhite} />
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.pop();
+                }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Image source={Constants.Images.rightArrowWhite} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-      <View
-        style={{
-          width: '100%',
-          backgroundColor: 'white',
-          justifyContent: 'center',
-          alignItems: 'center',
-          paddingVertical: 1,
-          flexDirection: 'column',
-        }}>
         <View
           style={{
-            width: '90%',
-            justifyContent: 'flex-start',
-            flexDirection: 'row',
-            alignItems: 'flex-start',
-          }}>
-          <Text
-            style={{
-              fontFamily: Constants.Fonts.shamel,
-              color: '#B9B9B9',
-              fontSize: wp('2.5%'),
-              marginRight: wp('2%'),
-            }}>
-            {Constants.API.Language == 'en'
-              ? Common.Translations.translate('last_updated_in')
-              : moment(this.state.propertyDetail.updated_at).format(
-                'DD/MM/YYYY',
-              )}
-          </Text>
-          <Text
-            style={{
-              fontFamily: Constants.Fonts.shamel,
-              color: '#B9B9B9',
-              fontSize: wp('2.5%'),
-            }}>
-            {Constants.API.Language == 'en'
-              ? moment(this.state.propertyDetail.updated_at).format(
-                'DD/MM/YYYY',
-              )
-              : Common.Translations.translate('last_updated_in')}
-          </Text>
-        </View>
-        <Text
-          style={{
-            fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-            color: '#006FEB',
-            fontSize: wp('4.5%'),
-            alignSelf: 'flex-end',
-            marginRight: wp('9%'),
-          }}>
-          {`${Common.Helper.sign(this.state.propertyDetail.currancy)}` +
-            this.state.propertyDetail.price}
-        </Text>
-        <Text
-          style={{
-            fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-            color: '#444040',
-            fontSize: wp('3.5%'),
-            alignSelf: 'flex-end',
-            marginRight: wp('9%'),
-          }}>
-          {this.state.propertyDetail.category_name +
-            ' ' +
-
-            Common.Helper.capitalize(Common.Translations.translate(this.state.propertyDetail.sale_or_rent))}
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            width: '95%',
-            justifyContent: 'flex-end',
+            width: '100%',
+            backgroundColor: 'white',
+            justifyContent: 'center',
             alignItems: 'center',
-            marginTop: wp('1%'),
-            paddingRight: wp('2%'),
-            marginBottom: wp('2%'),
+            paddingVertical: 1,
+            flexDirection: 'column',
           }}>
+          <View
+            style={{
+              width: '90%',
+              justifyContent: 'flex-start',
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+            }}>
+            <Text
+              style={{
+                fontFamily: Constants.Fonts.shamel,
+                color: '#B9B9B9',
+                fontSize: wp('2.5%'),
+                marginRight: wp('2%'),
+              }}>
+              {Constants.API.Language == 'en'
+                ? Common.Translations.translate('last_updated_in')
+                : moment(this.state.propertyDetail.updated_at).format(
+                  'DD/MM/YYYY',
+                )}
+            </Text>
+            <Text
+              style={{
+                fontFamily: Constants.Fonts.shamel,
+                color: '#B9B9B9',
+                fontSize: wp('2.5%'),
+              }}>
+              {Constants.API.Language == 'en'
+                ? moment(this.state.propertyDetail.updated_at).format(
+                  'DD/MM/YYYY',
+                )
+                : Common.Translations.translate('last_updated_in')}
+            </Text>
+          </View>
           <Text
             style={{
-              fontFamily: Constants.Fonts.shamel,
+              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
+              color: '#006FEB',
+              fontSize: wp('4.5%'),
+              alignSelf: 'flex-end',
+              marginRight: wp('9%'),
+            }}>
+            {`${Common.Helper.sign(this.state.propertyDetail.currancy)}` +
+              this.state.propertyDetail.price}
+          </Text>
+          <Text
+            style={{
+              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
               color: '#444040',
               fontSize: wp('3.5%'),
-              marginRight: wp('2%'),
+              alignSelf: 'flex-end',
+              marginRight: wp('9%'),
             }}>
-            {`${this.state.propertyDetail.region} ${Constants.API.Language == 'ar' ? this.state.propertyDetail.city_id_arabic : this.state.propertyDetail.city_id} ${this.state.propertyDetail.address}`}
+            {this.state.propertyDetail.category_name +
+              ' ' +
+
+              Common.Helper.capitalize(Common.Translations.translate(this.state.propertyDetail.sale_or_rent))}
           </Text>
-          <Image source={Constants.Images.locationBlack} />
-        </View>
-        {this.renderDetail()}
-        <Text
-          style={{
-            fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-            color: '#444040',
-            fontSize: wp('3.5%'),
-            marginTop: wp('4%'),
-            width: '90%',
-            textAlign: 'right',
-          }}>
-          {Common.Translations.translate('property_description')}
-        </Text>
-        <View
-          style={{
-            width: '90%',
-            borderBottomColor: '#f5f5f5',
-            borderBottomWidth: 1,
-            paddingBottom: 5,
-          }}>
-          <ReadMore
-            numberOfLines={3}
-            renderTruncatedFooter={this._renderTruncatedFooter}
-            renderRevealedFooter={this._renderRevealedFooter}
-            onReady={this._handleTextReady}>
+          <View
+            style={{
+              flexDirection: 'row',
+              width: '95%',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              marginTop: wp('1%'),
+              paddingRight: wp('2%'),
+              marginBottom: wp('2%'),
+            }}>
             <Text
               style={{
                 fontFamily: Constants.Fonts.shamel,
                 color: '#444040',
                 fontSize: wp('3.5%'),
-                textAlign: 'right',
+                marginRight: wp('2%'),
               }}>
-              {this.state.propertyDetail.description}
+              {`${this.state.propertyDetail.region} ${Constants.API.Language == 'ar' ? this.state.propertyDetail.city_id_arabic : this.state.propertyDetail.city_id} ${this.state.propertyDetail.address}`}
             </Text>
-          </ReadMore>
-          {/* <Text
+            <Image source={Constants.Images.locationBlack} />
+          </View>
+          {this.renderDetail()}
+          <Text
+            style={{
+              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
+              color: '#444040',
+              fontSize: wp('3.5%'),
+              marginTop: wp('4%'),
+              width: '90%',
+              textAlign: 'right',
+            }}>
+            {Common.Translations.translate('property_description')}
+          </Text>
+          <View
+            style={{
+              width: '90%',
+              borderBottomColor: '#f5f5f5',
+              borderBottomWidth: 1,
+              paddingBottom: 5,
+            }}>
+            <ReadMore
+              numberOfLines={3}
+              renderTruncatedFooter={this._renderTruncatedFooter}
+              renderRevealedFooter={this._renderRevealedFooter}
+              onReady={this._handleTextReady}>
+              <Text
+                style={{
+                  fontFamily: Constants.Fonts.shamel,
+                  color: '#444040',
+                  fontSize: wp('3.5%'),
+                  textAlign: 'right',
+                }}>
+                {this.state.propertyDetail.description}
+              </Text>
+            </ReadMore>
+            {/* <Text
             style={{
               fontFamily: Constants.Fonts.shamel,
               color: '#006FEB',
@@ -2366,253 +2368,253 @@ class EstateDetail extends Component {
             }}>
             اقرأ المزيد
           </Text> */}
-        </View>
-        <Text
-          style={{
-            fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-            color: '#444040',
-            fontSize: wp('3.5%'),
-            textAlign: 'right',
-            width: '90%',
-            marginTop: hp('4%'),
-            marginBottom: hp('1%'),
-          }}>
-          {Common.Translations.translate('property_details')}
-        </Text>
-        {this.renderPropertyDetail()}
-        <Text
-          style={{
-            fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-            color: '#444040',
-            fontSize: wp('3.5%'),
-            textAlign: 'right',
-            width: '90%',
-            marginTop: hp('4%'),
-            marginBottom: hp('1%'),
-          }}>
-          {Common.Translations.translate('comfortable_features')}
-        </Text>
-
-        {this.renderFacilities()}
-        <View
-          style={{
-            width: '90%',
-            marginTop: hp('4%'),
-            flexDirection: 'column',
-          }}>
+          </View>
           <Text
             style={{
               fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
               color: '#444040',
-              fontSize: wp('4%'),
-              marginBottom: 3,
+              fontSize: wp('3.5%'),
               textAlign: 'right',
+              width: '90%',
+              marginTop: hp('4%'),
+              marginBottom: hp('1%'),
             }}>
-            {Common.Translations.translate('advertiser')}
+            {Common.Translations.translate('property_details')}
           </Text>
+          {this.renderPropertyDetail()}
+          <Text
+            style={{
+              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
+              color: '#444040',
+              fontSize: wp('3.5%'),
+              textAlign: 'right',
+              width: '90%',
+              marginTop: hp('4%'),
+              marginBottom: hp('1%'),
+            }}>
+            {Common.Translations.translate('comfortable_features')}
+          </Text>
+
+          {this.renderFacilities()}
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              width: '90%',
+              marginTop: hp('4%'),
+              flexDirection: 'column',
             }}>
-            <View style={{
-              flexDirection: 'row'
-            }}>
-              <TouchableOpacity
-                onPress={() => this.onCall()}
-                style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  backgroundColor: '#05B433',
-                  borderRadius: wp('10%') / 2,
-                  marginLeft: wp('2%'),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Image
-                  style={{
-                    width: wp('5%'),
-                    height: wp('5%'),
-                  }}
-                  source={Constants.Images.phone}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  Share.open({ url: this.state.propertyDetail.short_link })
-                    .then((res) => {
-                      console.log(res);
-                    })
-                    .catch((err) => {
-                      err && console.log(err);
-                    });
-                }}
-                style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  backgroundColor: '#05B433',
-                  borderRadius: wp('10%') / 2,
-                  marginLeft: wp('1%'),
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Image
-                  style={{
-                    width: wp('6%'),
-                    height: wp('6%'),
-                    tintColor: "white",
-                    resizeMode: 'contain'
-                  }}
-                  source={Constants.Images.shareIcon}
-                />
-              </TouchableOpacity>
-            </View>
+            <Text
+              style={{
+                fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
+                color: '#444040',
+                fontSize: wp('4%'),
+                marginBottom: 3,
+                textAlign: 'right',
+              }}>
+              {Common.Translations.translate('advertiser')}
+            </Text>
             <View
               style={{
                 flexDirection: 'row',
-                justifyContent: 'flex-end',
+                justifyContent: 'space-between',
                 alignItems: 'center',
               }}>
-              <View
-                style={{
-                  flexDirection: 'column',
-                  // backgroundColor: 'red'
-                }}>
-                <Text
+              <View style={{
+                flexDirection: 'row'
+              }}>
+                <TouchableOpacity
+                  onPress={() => this.onCall()}
+                  style={{
+                    width: wp('10%'),
+                    height: wp('10%'),
+                    backgroundColor: '#05B433',
+                    borderRadius: wp('10%') / 2,
+                    marginLeft: wp('2%'),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Image
+                    style={{
+                      width: wp('5%'),
+                      height: wp('5%'),
+                    }}
+                    source={Constants.Images.phone}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
                   onPress={() => {
-                    if (this.state.propertyDetail.owner.user_info.id) {
-                      this.props.navigation.push(
-                        Constants.Navigations.Setting.PROFILE,
-                        { id: this.state.propertyDetail.owner.user_info.id },
-                      );
-                    }
+                    Share.open({ url: this.state.propertyDetail.short_link })
+                      .then((res) => {
+                        console.log(res);
+                      })
+                      .catch((err) => {
+                        err && console.log(err);
+                      });
                   }}
                   style={{
-                    marginRight: wp('1%'),
-                    fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
+                    width: wp('10%'),
+                    height: wp('10%'),
+                    backgroundColor: '#05B433',
+                    borderRadius: wp('10%') / 2,
+                    marginLeft: wp('1%'),
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}>
-                  {console.log(
-                    'this.state.propertyDetail',
-                    this.state.propertyDetail.owner.star_rating,
-                  )}
-                  {this.state.propertyDetail.advertiser_name}
-                </Text>
-                <TouchableOpacity
-                  onPress={() => this.onPressRating()}
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-end',
-                    marginRight: wp('1%'),
-                  }}>
-                  <StarRating
-                    disabled={true}
-                    maxStars={5}
-                    starSize={wp('4%')}
-                    emptyStar={Constants.Images.star}
-                    fullStar={Constants.Images.starSelected}
-                    rating={this.state.propertyDetail.owner.star_rating}
+                  <Image
+                    style={{
+                      width: wp('6%'),
+                      height: wp('6%'),
+                      tintColor: "white",
+                      resizeMode: 'contain'
+                    }}
+                    source={Constants.Images.shareIcon}
                   />
                 </TouchableOpacity>
               </View>
-              <TouchableOpacity
-                onPress={() =>
-                  this.props.navigation.push(
-                    Constants.Navigations.Setting.PROFILE,
-                    { id: this.state.propertyDetail.owner.user_info.id },
-                  )
-                }>
-                <Image
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                }}>
+                <View
                   style={{
-                    width: wp('13%'),
-                    height: wp('13%'),
-                    marginLeft: wp('2%'),
-                    borderRadius: wp('13%') / 2,
-                  }}
-                  source={
-                    this.state.propertyDetail.owner.image == ''
-                      ? Constants.Images.profile
-                      : { uri: this.state.propertyDetail.owner.image }
-                  }
-                />
-              </TouchableOpacity>
+                    flexDirection: 'column',
+                    // backgroundColor: 'red'
+                  }}>
+                  <Text
+                    onPress={() => {
+                      if (this.state.propertyDetail.owner.user_info.id) {
+                        this.props.navigation.push(
+                          Constants.Navigations.Setting.PROFILE,
+                          { id: this.state.propertyDetail.owner.user_info.id },
+                        );
+                      }
+                    }}
+                    style={{
+                      marginRight: wp('1%'),
+                      fontFamily: Constants.Fonts.shamel,
+                      color: '#444040',
+                      fontSize: wp('3%'),
+                      textAlign: 'right',
+                    }}>
+                    {console.log(
+                      'this.state.propertyDetail',
+                      this.state.propertyDetail.owner.star_rating,
+                    )}
+                    {this.state.propertyDetail.advertiser_name}
+                  </Text>
+                  <TouchableOpacity
+                    onPress={() => this.onPressRating()}
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'flex-end',
+                      marginRight: wp('1%'),
+                    }}>
+                    <StarRating
+                      disabled={true}
+                      maxStars={5}
+                      starSize={wp('4%')}
+                      emptyStar={Constants.Images.star}
+                      fullStar={Constants.Images.starSelected}
+                      rating={this.state.propertyDetail.owner.star_rating}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
+                  onPress={() =>
+                    this.props.navigation.push(
+                      Constants.Navigations.Setting.PROFILE,
+                      { id: this.state.propertyDetail.owner.user_info.id },
+                    )
+                  }>
+                  <Image
+                    style={{
+                      width: wp('13%'),
+                      height: wp('13%'),
+                      marginLeft: wp('2%'),
+                      borderRadius: wp('13%') / 2,
+                    }}
+                    source={
+                      this.state.propertyDetail.owner.image == ''
+                        ? Constants.Images.profile
+                        : { uri: this.state.propertyDetail.owner.image }
+                    }
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'column',
-            width: '90%',
-            marginTop: hp('4%'),
-            justifyContent: 'flex-end',
-          }}>
-          <Text
-            style={{
-              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-              color: '#444040',
-              fontSize: wp('4%'),
-              marginBottom: 3,
-              textAlign: 'right',
-            }}>
-            {Common.Translations.translate('address_of_property')}
-          </Text>
           <View
             style={{
-              flexDirection: 'row',
-              width: '100%',
+              flexDirection: 'column',
+              width: '90%',
+              marginTop: hp('4%'),
               justifyContent: 'flex-end',
             }}>
             <Text
               style={{
-                fontFamily: Constants.Fonts.shamel,
+                fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
                 color: '#444040',
-                fontSize: wp('3%'),
-                marginRight: wp('2%'),
+                fontSize: wp('4%'),
+                marginBottom: 3,
+                textAlign: 'right',
               }}>
-              {`${this.state.propertyDetail.region} ${Constants.API.Language == 'ar' ? this.state.propertyDetail.city_id_arabic : this.state.propertyDetail.city_id} ${this.state.propertyDetail.address}`}
+              {Common.Translations.translate('address_of_property')}
             </Text>
-            <Image source={Constants.Images.locationBlack} />
+            <View
+              style={{
+                flexDirection: 'row',
+                width: '100%',
+                justifyContent: 'flex-end',
+              }}>
+              <Text
+                style={{
+                  fontFamily: Constants.Fonts.shamel,
+                  color: '#444040',
+                  fontSize: wp('3%'),
+                  marginRight: wp('2%'),
+                }}>
+                {`${this.state.propertyDetail.region} ${Constants.API.Language == 'ar' ? this.state.propertyDetail.city_id_arabic : this.state.propertyDetail.city_id} ${this.state.propertyDetail.address}`}
+              </Text>
+              <Image source={Constants.Images.locationBlack} />
+            </View>
+          </View>
+          <View
+            style={{
+              width: '90%',
+              height: hp('15%'),
+              marginTop: wp('2%'),
+            }}>
+            {this.state.propertyRegion &&
+              (<Components.AmlakMap
+                containerStyles={{ width: '100%', height: '100%' }}
+                provider={1}
+                showsUserLocation={this.state.isShowLocation}
+                forceRefresh={this.state.forceRefresh}
+                isCurrentLocation={true}
+                region={this.state.propertyRegion}
+                markers={this.state.marker}
+                onMapPress={(e) => {
+                  // alert(e);
+                }}
+              />)}
+
           </View>
         </View>
-        <View
+        <Text
           style={{
+            fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
+            color: '#444040',
+            fontSize: wp('3%'),
+            textAlign: 'right',
             width: '90%',
-            height: hp('15%'),
-            marginTop: wp('2%'),
+            marginTop: wp('5%'),
           }}>
-          {this.state.propertyRegion &&
-            (<Components.AmlakMap
-              containerStyles={{ width: '100%', height: '100%' }}
-              provider={1}
-              showsUserLocation={this.state.isShowLocation}
-              forceRefresh={this.state.forceRefresh}
-              isCurrentLocation={true}
-              region={this.state.propertyRegion}
-              markers={this.state.marker}
-              onMapPress={(e) => {
-                // alert(e);
-              }}
-            />)}
-
-        </View>
-      </View>
-      <Text
-        style={{
-          fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-          color: '#444040',
-          fontSize: wp('3%'),
-          textAlign: 'right',
-          width: '90%',
-          marginTop: wp('5%'),
-        }}>
-        {this.state.similerAds.length > 0
-          ? Common.Translations.translate('similar_ads')
-          : ''}
-      </Text>
-      {/* <Text
+          {this.state.similerAds.length > 0
+            ? Common.Translations.translate('similar_ads')
+            : ''}
+        </Text>
+        {/* <Text
           style={{
             fontFamily: Constants.Fonts.shamelBold,
             color: '#444040',
@@ -2623,8 +2625,9 @@ class EstateDetail extends Component {
           }}>
           {Common.Translations.translate('similar_ads')}
         </Text> */}
-    </View>
-  );
+      </View>
+    )
+  };
   renderProerties = (item) => {
     switch (item.category_id) {
       case 60:
@@ -3049,17 +3052,19 @@ class EstateDetail extends Component {
   renderItem = (value) => {
     let Image_Http_URL = Constants.Images.cover;
     const itemName = value?.item?.category_name;
+    const selectedFilter = value?.item?.sale_or_rent;
     try {
       Image_Http_URL =
         value.item.picture.length > 0
           ? { uri: value.item.picture[0].picture }
           // : Constants.Images.cover;
-          : itemName == 'land' ? Constants.Images.landSale
-            : itemName == 'shop' ? Constants.Images.shopSale
-              : itemName == 'apartment' ? Constants.Images.appartmentSale
-                : itemName == 'office' ? Constants.Images.officeSale
-                  : itemName == 'Vialla / Home' ? Constants.Images.homeSale :
-                    Constants.Images.buildingSale
+          : itemName == 'land' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.landSale : Constants.Images.landRent)
+            : itemName == 'shop' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.shopSale : Constants.Images.shopRent)
+              : itemName == 'apartment' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.appartmentSale : Constants.Images.appartmentRent)
+                : itemName == 'office' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.officeSale : Constants.Images.officeRent)
+                  : itemName == 'Vialla / Home' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.homeSale : Constants.Images.homeRent)
+                    : itemName == 'warehouse' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.wareHouseSale : Constants.Images.wareHouseRent) :
+                      (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.buildingSale : Constants.Images.buildingRent);
     } catch (error) {
       return <View />;
     }
@@ -3090,7 +3095,7 @@ class EstateDetail extends Component {
                 backgroundColor: 'white',
               }}>
               <Image
-                style={{ width: wp('80%'), height: hp('23%') }}
+                style={{ width: wp('80%'), height: hp('23%'),resizeMode: 'stretch' }}
                 source={Image_Http_URL}
               />
               <View

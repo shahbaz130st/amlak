@@ -93,12 +93,20 @@ export default (() => {
     contactByPhone:require('../assets/images/contactByPhone.png'),
     shareIcon:require('../assets/images/share_icon.png'),
     appartmentSale:require('../assets/images/appartment_sale.jpeg'),
+    appartmentRent:require('../assets/images/appartment_rent.jpeg'),
     buildingSale:require('../assets/images/building_sale.jpeg'),
+    buildingRent:require('../assets/images/building_rent.jpeg'),
     homeSale:require('../assets/images/home_sale.jpeg'),
+    homeRent:require('../assets/images/home_rent.jpeg'),
     landSale:require('../assets/images/land_sale.jpeg'),
+    landRent:require('../assets/images/land_rent.jpeg'),
     officeSale:require('../assets/images/office_sale.jpeg'),
+    officeRent:require('../assets/images/office_rent.jpeg'),
     shopSale:require('../assets/images/shop_sale.jpeg'),
+    shopRent:require('../assets/images/shop_rent.jpeg'),
     villaSale:require('../assets/images/villa_sale.jpeg'),
+    wareHouseSale:require('../assets/images/warehouse_sale.jpeg'),
+    wareHouseRent:require('../assets/images/warehouse_rent.jpeg'),
 
 
   };

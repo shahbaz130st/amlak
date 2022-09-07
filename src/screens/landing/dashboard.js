@@ -868,13 +868,16 @@ class Dashboard extends Component {
 
 
   renderItem = (value, index) => {
+    console.log('check for this.state.selectedFilter',this.state.selectedFilter)
+    const {selectedFilter} = this.state;
     const defaultSource =
-      itemName == 'land' ? Constants.Images.landSale
-        : itemName == 'shop' ? Constants.Images.shopSale
-          : itemName == 'apartment' ? Constants.Images.appartmentSale
-            : itemName == 'office' ? Constants.Images.officeSale
-              : itemName == 'Vialla / Home' ? Constants.Images.homeSale :
-                Constants.Images.buildingSale;
+      itemName == 'land' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.landSale : Constants.Images.landRent)
+        : itemName == 'shop' ?  (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.shopSale : Constants.Images.shopRent) 
+          : itemName == 'apartment' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.appartmentSale : Constants.Images.appartmentRent)
+            : itemName == 'office' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.officeSale : Constants.Images.officeRent)
+              : itemName == 'Vialla / Home' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.homeSale : Constants.Images.homeRent) 
+              : itemName == 'warehouse' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.wareHouseSale : Constants.Images.wareHouseRent) :
+              (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.buildingSale : Constants.Images.buildingRent);
     const itemName = value?.item?.category_name;
     console.log("Show render item picture", value.item.picture.length)
     let Image_Http_URL = value.item.picture.length > 0
