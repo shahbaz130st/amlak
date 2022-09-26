@@ -200,6 +200,30 @@ const updateProfile = async (data) => {
     return null;
   }
 };
+const disableUser = async (data) => {
+  try {
+    console.log(data);
+    const response = await Common.axios.post(
+      Constants.API.Onboarding.DISABLE_USER,
+      data,
+    );
+
+    if (response && response.status == 200) {
+      if (response.data && response.data.status == true) {
+        console.log(response.data.data);
+        return response.data.data;
+      } else {
+        return response.data;
+      }
+    }
+  } catch (error) {
+    console.log('error------>', error);
+    setTimeout(function () {
+      Common.Alert.show('alert', error.message);
+    }, 2000);
+    return null;
+  }
+};
 export default {
   userLogin,
   userSignup,
@@ -208,4 +232,5 @@ export default {
   userData,
   rating,
   updateProfile,
+  disableUser
 };

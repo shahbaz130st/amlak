@@ -22,6 +22,7 @@ const Onboarding = {
   USER_COORDINATE: 'user/set-coordinates',
   PAYMENT_METHOD: 'user/set-payment-method',
   RATING: 'user/post-review',
+  DISABLE_USER: 'auth/disabled-user',
 };
 const Dashboard = {
   CITIES: 'cities',
@@ -46,7 +47,7 @@ const Dashboard = {
   SIMILER_ADS: 'estates/similar-estate/',
   DELETE_ESTATE_FAV: 'estates/delete-fav/',
   SIMILER_EST: 'estates/similar-estate/',
-  PROPERTY_BY_CITY: 'estates/by-city/'
+  PROPERTY_BY_CITY: 'estates/by-city/',
 
 };
 

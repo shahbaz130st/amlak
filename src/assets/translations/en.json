@@ -293,5 +293,10 @@
   "item_type_rent":"for rent",
   "choose_from_camera": "Choose from Camera",
   "choose_from_library": "Choose from Library",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "deactivate": "Deactive account",
+  "deactivateAlertMsg": "Are you sure you want to Deactive account",
+  "no": "N0",
+  "confirm": "Confirm"
+
 }

@@ -292,5 +292,9 @@
   "item_type_rent":"للايجار",
   "choose_from_camera": "اختر من الكاميرا",
   "choose_from_library": "اختر من المكتبة",
-  "cancel": "يلغي"
+  "cancel": "يلغي",
+  "deactivate": "حساب معطل",
+  "deactivateAlertMsg": "هل أنت متأكد أنك تريد إلغاء تنشيط الحساب",
+  "no": "N0",
+  "confirm": "يتأكد"
 }

@@ -25,6 +25,7 @@ export const axios = Axios.create({
 // Request interceptor
  axios.interceptors.request.use(
   (config) => {
+    console.log('isdisdncidsiisdu',API.Token)
     if (API.Token != null) {
       config.headers = {
         Authorization: 'bearer '+ API.Token,

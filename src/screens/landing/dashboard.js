@@ -308,7 +308,8 @@ class Dashboard extends Component {
       (v, i, a) => a.indexOf(v) === i,
     );
     this.setState({ arrayEstates: uniqueEstates });
-    this.renderMarkers(estateRes, add);
+    // this.renderMarkers(estateRes, add);
+    this.renderMarkers(uniqueEstates, add);
   }
 
   configureListener() {

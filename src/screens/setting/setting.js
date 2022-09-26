@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import {
   View,
   StyleSheet,
@@ -6,25 +6,105 @@ import {
   Text,
   TouchableOpacity,
   Switch,
+  Alert
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import { Actions } from '../../redux/index';
+import { connect } from 'react-redux';
+import { CommonActions } from '@react-navigation/native';
 import * as Components from '../../components/index';
 import * as Constants from '../../constants/index';
 import * as Common from '../../common/index';
+import * as Services from '../../services/index';
+
+import User from '../../models/user';
+let userID;
 
 class Setting extends Component {
-  state = {isEnabled: false};
+  state = {
+    isEnabled: false,
+    isDisabledUser: false
+  };
 
   toggleSwitch = () => {
-    this.setState({isEnabled: !this.state.isEnabled});
+    this.setState({ isEnabled: !this.state.isEnabled });
   };
-componentDidMount(){
-  Common.Helper.logEvent('setting', {
-  });
-}
+  toggleSwitchDisabledUser = (value) => {
+    if (value) {
+      this.disableAlert()
+    }
+    else {
+      this.setState({ isDisabledUser: false });
+    }
+
+  };
+  componentDidMount() {
+    let userInstance = User.getInstance();
+    if (userInstance.getUser().info) {
+      userID = userInstance.getUser().info.id;
+    }
+    Common.Helper.logEvent('setting', {
+    });
+  }
+
+  disableAlert = () =>
+    Alert.alert('', Common.Translations.translate('deactivateAlertMsg'), [
+      {
+        text: Common.Translations.translate('no'),
+        onPress: () => { },
+        style: 'cancel',
+      },
+      {
+        text: Common.Translations.translate('confirm'),
+        onPress: async () => {
+          if (userID) {
+            let disableUser = await Services.AuthServices.disableUser({
+              id: userID,
+            });
+            console.log('check for disable user=====>', disableUser)
+          }
+          else{
+            this.loginAlert()
+          }
+          // Common.KeyChain.remove('authToken');
+          // Constants.API.Token = null;
+
+          // this.props.navigation.dispatch(
+          //   CommonActions.reset({
+          //     index: 0,
+          //     routes: [
+          //       { name: Constants.Navigations.Onboarding.DASHBOARD },
+          //     ],
+          //   }),
+          // );
+          // this.setState({ isDisabledUser: !this.state.isDisabledUser });
+        },
+        style: 'cancel',
+      },
+    ]);
+  loginAlert = () =>
+    Alert.alert('', Common.Translations.translate('login_required'), [
+      {
+        text: Common.Translations.translate('ok'),
+        onPress: () => { },
+        style: 'cancel',
+      },
+      {
+        text: Common.Translations.translate('login'),
+        onPress: () => {
+          setTimeout(() => {
+            this.props.navigation.navigate(
+              Constants.Navigations.Onboarding.LOGIN,
+            );
+          }, 1000);
+        },
+        style: 'cancel',
+      },
+    ]);
+
   render() {
     return (
       <View style={styles.container}>
@@ -37,7 +117,7 @@ componentDidMount(){
           }}
         />
         <View
-          style={{flexDirection: 'column', marginTop: wp('3%'), width: '85%'}}>
+          style={{ flexDirection: 'column', marginTop: wp('3%'), width: '85%' }}>
           <View
             style={{
               flexDirection: 'row',
@@ -51,10 +131,10 @@ componentDidMount(){
                   Constants.Navigations.Setting.LANGUAGE
                 );
               }}
-              style={{flexDirection: 'row'}}>
+              style={{ flexDirection: 'row' }}>
               <Image source={Constants.Images.arrowDetail} />
-              <Text style={{color: '#C7C1C1', marginLeft: 3}}>
-                {Constants.API.Language == 'ar' ? Common.Translations.translate('arabic'):Common.Translations.translate('english')}
+              <Text style={{ color: '#C7C1C1', marginLeft: 3 }}>
+                {Constants.API.Language == 'ar' ? Common.Translations.translate('arabic') : Common.Translations.translate('english')}
               </Text>
             </TouchableOpacity>
             <Text
@@ -76,7 +156,7 @@ componentDidMount(){
               height: hp('5%'),
             }}>
             <Switch
-              trackColor={{false: '#767577', true: '#4CD964'}}
+              trackColor={{ false: '#767577', true: '#4CD964' }}
               thumbColor={'#FDFDFD'}
               ios_backgroundColor="#3e3e3e"
               onValueChange={this.toggleSwitch}
@@ -91,13 +171,42 @@ componentDidMount(){
               {Common.Translations.translate('notification')}
             </Text>
           </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginTop: wp('3%'),
+              width: '90%',
+              height: hp('5%'),
+            }}>
+            <Switch
+              trackColor={{ false: '#767577', true: '#4CD964' }}
+              thumbColor={'#FDFDFD'}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={this.toggleSwitchDisabledUser}
+              value={this.state.isDisabledUser}
+            />
+            <Text
+              style={{
+                fontFamily: Constants.Fonts.shamel,
+                fontSize: wp('3%'),
+                color: '#444040',
+              }}>
+              {Common.Translations.translate('deactivate')}
+            </Text>
+          </View>
         </View>
       </View>
     );
   }
 }
 
-export default Setting;
+const mapDispatchToProps = (dispatch) => ({
+  toggleLoader: (state) => dispatch(Actions.toggleLoader(state)),
+});
+
+export default connect(null, mapDispatchToProps)(Setting);
 
 const styles = StyleSheet.create({
   container: {
