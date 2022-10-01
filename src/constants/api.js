@@ -22,7 +22,8 @@ const Onboarding = {
   USER_COORDINATE: 'user/set-coordinates',
   PAYMENT_METHOD: 'user/set-payment-method',
   RATING: 'user/post-review',
-  DISABLE_USER: 'auth/disabled-user',
+  DISABLE_USER: 'disabled-user',
+  ENABLE_USER: 'enable-user',
 };
 const Dashboard = {
   CITIES: 'cities',

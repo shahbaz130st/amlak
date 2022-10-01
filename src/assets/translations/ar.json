@@ -293,8 +293,9 @@
   "choose_from_camera": "اختر من الكاميرا",
   "choose_from_library": "اختر من المكتبة",
   "cancel": "يلغي",
-  "deactivate": "حساب معطل",
-  "deactivateAlertMsg": "هل أنت متأكد أنك تريد إلغاء تنشيط الحساب",
-  "no": "N0",
-  "confirm": "يتأكد"
+  "deactivate": "تعطيل الحساب ",
+  "deactivateAlertMsg": "هل انت متاكد من ايفاف هذا الحساب",
+  "no": "لا",
+  "confirm": "نعم",
+  "diactivate_Account":"هذا الحساب معطل سوف يتم تفعيل"
 }

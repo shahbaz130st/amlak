@@ -26,7 +26,7 @@ let userID;
 class Setting extends Component {
   state = {
     isEnabled: false,
-    isDisabledUser: false
+    isDisabledUser: true
   };
 
   toggleSwitch = () => {
@@ -34,10 +34,10 @@ class Setting extends Component {
   };
   toggleSwitchDisabledUser = (value) => {
     if (value) {
-      this.disableAlert()
+      this.setState({ isDisabledUser: false });
     }
     else {
-      this.setState({ isDisabledUser: false });
+      this.disableAlert()
     }
 
   };
@@ -64,23 +64,26 @@ class Setting extends Component {
             let disableUser = await Services.AuthServices.disableUser({
               id: userID,
             });
-            console.log('check for disable user=====>', disableUser)
+            console.log('check for disable user=====>', userID, disableUser)
+            if (disableUser.status == true) {
+              Common.KeyChain.remove('authToken');
+              Constants.API.Token = null;
+
+              this.props.navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [
+                    { name: Constants.Navigations.Onboarding.DASHBOARD },
+                  ],
+                }),
+              );
+              this.setState({ isDisabledUser: !this.state.isDisabledUser });
+
+            }
           }
-          else{
+          else {
             this.loginAlert()
           }
-          // Common.KeyChain.remove('authToken');
-          // Constants.API.Token = null;
-
-          // this.props.navigation.dispatch(
-          //   CommonActions.reset({
-          //     index: 0,
-          //     routes: [
-          //       { name: Constants.Navigations.Onboarding.DASHBOARD },
-          //     ],
-          //   }),
-          // );
-          // this.setState({ isDisabledUser: !this.state.isDisabledUser });
         },
         style: 'cancel',
       },
@@ -171,31 +174,33 @@ class Setting extends Component {
               {Common.Translations.translate('notification')}
             </Text>
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: wp('3%'),
-              width: '90%',
-              height: hp('5%'),
-            }}>
-            <Switch
-              trackColor={{ false: '#767577', true: '#4CD964' }}
-              thumbColor={'#FDFDFD'}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={this.toggleSwitchDisabledUser}
-              value={this.state.isDisabledUser}
-            />
-            <Text
+          {Constants.API.Token != null &&
+            <View
               style={{
-                fontFamily: Constants.Fonts.shamel,
-                fontSize: wp('3%'),
-                color: '#444040',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginTop: wp('3%'),
+                width: '90%',
+                height: hp('5%'),
               }}>
-              {Common.Translations.translate('deactivate')}
-            </Text>
-          </View>
+              <Switch
+                trackColor={{ false: '#767577', true: '#4CD964' }}
+                thumbColor={'#FDFDFD'}
+                ios_backgroundColor="#3e3e3e"
+                onValueChange={this.toggleSwitchDisabledUser}
+                value={this.state.isDisabledUser}
+              />
+              <Text
+                style={{
+                  fontFamily: Constants.Fonts.shamel,
+                  fontSize: wp('3%'),
+                  color: '#444040',
+                }}>
+                {Common.Translations.translate('deactivate')}
+              </Text>
+            </View>
+          }
         </View>
       </View>
     );

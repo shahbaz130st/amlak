@@ -294,9 +294,10 @@
   "choose_from_camera": "Choose from Camera",
   "choose_from_library": "Choose from Library",
   "cancel": "Cancel",
-  "deactivate": "Deactive account",
-  "deactivateAlertMsg": "Are you sure you want to Deactive account",
-  "no": "N0",
-  "confirm": "Confirm"
+  "deactivate": "Disable account",
+  "deactivateAlertMsg": "Are you sure you want to disable this account",
+  "no": "No",
+  "confirm": "Yes",
+  "diactivate_Account":"This account is disabled,  we will reactivate now.?"
 
 }

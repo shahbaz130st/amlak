@@ -210,8 +210,32 @@ const disableUser = async (data) => {
 
     if (response && response.status == 200) {
       if (response.data && response.data.status == true) {
-        console.log(response.data.data);
-        return response.data.data;
+        console.log(response.data);
+        return response.data;
+      } else {
+        return response.data;
+      }
+    }
+  } catch (error) {
+    console.log('error------>', error);
+    setTimeout(function () {
+      Common.Alert.show('alert', error.message);
+    }, 2000);
+    return null;
+  }
+};
+const enableUser = async (data) => {
+  try {
+    console.log(data);
+    const response = await Common.axios.post(
+      Constants.API.Onboarding.ENABLE_USER,
+      data,
+    );
+
+    if (response && response.status == 200) {
+      if (response.data && response.data.status == true) {
+        console.log(response.data);
+        return response.data;
       } else {
         return response.data;
       }
@@ -232,5 +256,6 @@ export default {
   userData,
   rating,
   updateProfile,
-  disableUser
+  disableUser,
+  enableUser
 };
