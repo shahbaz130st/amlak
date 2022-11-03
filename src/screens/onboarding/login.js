@@ -50,9 +50,9 @@ class Login extends Component {
       // console.log('code---->', login);
       setTimeout(() => {
         if (login) {
-          if (login?.is_disabled == 1) {
-            this.showDisableAlert(login.id)
-          } else {
+          // if (login?.is_disabled == 1) {
+          //   this.showDisableAlert(login.id)
+          // } else {
             if (login.id) {
               this.props.navigation.push(
                 Constants.Navigations.Onboarding.VERIFICATION,
@@ -64,7 +64,7 @@ class Login extends Component {
             }
           }
 
-        }
+        // }
       }, 1000);
       // this.props.navigation.push(Constants.Navigations.Onboarding.LOGIN)
     }
@@ -89,14 +89,17 @@ class Login extends Component {
           style: "cancel"
         },
         {
-          text: Common.Translations.translate('confirm'), onPress: async () => {
-            let enableUser = await Services.AuthServices.enableUser({
-              id: id,
-            });
-            if (enableUser?.status) {
-              this.submitAction()
-            }
+          text: Common.Translations.translate('confirm'), onPress: () => { 
+            this.props.navigation.push(Constants.Navigations.Onboarding.SIGNUP)
           }
+          // async () => {
+          //   let enableUser = await Services.AuthServices.enableUser({
+          //     id: id,
+          //   });
+          //   if (enableUser?.status) {
+          //     this.submitAction()
+          //   }
+          // }
         }
       ]
     );

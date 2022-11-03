@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
+  Linking,
+  Platform
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -25,6 +27,7 @@ import User from '../../models/user';
 class Profile extends Component {
   state = {
     isAds: false,
+    phone: '',
     DATA: [
 
     ],
@@ -33,6 +36,11 @@ class Profile extends Component {
     propertyId: '',
   };
   async componentDidMount() {
+    let userInstance = User.getInstance();
+    if (userInstance.getUser().info) {
+      console.log(userInstance.getUser().info);
+      this.setState({ phone: userInstance.getUser().info.mobile });
+    }
     this.props.toggleLoader(true)
     if (this.props.route.params) {
       let user = await Services.UserServices.userInformation(
@@ -56,9 +64,43 @@ class Profile extends Component {
           this.setState({ DATA: user.reviews });
         }
       }
+
     }
     this.props.toggleLoader(false);
     Common.Helper.logEvent('profile', {
+    });
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener("focus", async () => {
+      // The screen is focused
+      // Call any action
+      this.props.toggleLoader(true)
+      if (this.props.route.params) {
+        let user = await Services.UserServices.userInformation(
+          this.props.route.params.id,
+        );
+        if (user) {
+          console.log(user);
+          this.setState({ userInfo: user });
+          this.setState({ DATA: user.reviews });
+        }
+      } else {
+        let userInstance = User.getInstance();
+        if (userInstance.getUser().info) {
+          let user = await Services.UserServices.userInformation(
+            userInstance.getUser().info.id,
+          );
+          if (user) {
+            console.log(user);
+            this.setState({ userInfo: user });
+            this.setState({ userInfo: { ...user, profile_pic: userInstance.getUser().info.profile_pic } })
+            this.setState({ DATA: user.reviews });
+          }
+        }
+
+      }
+      this.props.toggleLoader(false);
+      Common.Helper.logEvent('profile', {
+      });
     });
   }
   actionSheetClicked = (type) => {
@@ -181,7 +223,7 @@ class Profile extends Component {
               starSize={wp('4%')}
               emptyStar={Constants.Images.star}
               fullStar={Constants.Images.starSelected}
-              rating={Number(value.item.total)}
+              rating={Math.round(value.item.total)}
             />
           </View>
           <Text
@@ -914,7 +956,7 @@ class Profile extends Component {
                 fontFamily: Constants.Fonts.shamel,
                 height: wp('4%')
               }}>
-              {`(${this.state.userInfo.total_rating})`}
+              {`(${Math.round(this.state.userInfo.total_rating)})`}
             </Text>
             <StarRating
               disabled={true}
@@ -922,7 +964,7 @@ class Profile extends Component {
               starSize={wp('4%')}
               emptyStar={Constants.Images.star}
               fullStar={Constants.Images.starSelected}
-              rating={Number(this.state.userInfo.total_rating)}
+              rating={Math.round(this.state.userInfo.total_rating)}
             />
           </View>
           <View
@@ -930,11 +972,11 @@ class Profile extends Component {
               width: wp('25%'),
               height: wp('10%'),
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: "center",
               alignItems: 'center',
               marginTop: wp('1.5%'),
             }}>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={{
                 width: wp('10%'),
                 height: wp('10%'),
@@ -946,7 +988,7 @@ class Profile extends Component {
                 borderColor: '#DDDDDD',
               }}>
               <Image source={Constants.Images.export} />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <TouchableOpacity
               style={{
                 width: wp('10%'),
@@ -957,6 +999,15 @@ class Profile extends Component {
                 justifyContent: 'center',
                 borderWidth: 0.5,
                 borderColor: '#DDDDDD',
+              }} onPress={() => {
+                let number = '';
+                if (Platform.OS === 'ios') {
+                  number = `telprompt:${this.state.phone}`;
+                }
+                else {
+                  number = `tel:${this.state.phone}`;
+                }
+                Linking.openURL(number);
               }}>
               <Image source={Constants.Images.callBlack} />
             </TouchableOpacity>
@@ -987,7 +1038,7 @@ class Profile extends Component {
                   color: this.state.isAds == false ? '#006FEB' : '#444040',
                 }}>
                 {' '}
-                {`(${this.state.userInfo.total_rating})`}{' '}
+                {`(${Math.round(this.state.userInfo.total_rating)})`}{' '}
                 {Common.Translations.translate('ratings')}
               </Text>
             </TouchableOpacity>

@@ -97,10 +97,12 @@ const userSignup = async (data) => {
     }
   } catch (error) {
     setTimeout(function () {
-      if (error.errors.mobile.length > 0) {
-        Common.Alert.show('alert', error.errors.mobile[0]);
+      console.log(JSON.stringify(error))
+      return
+      if (error?.errors?.mobile.length > 0) {
+        Common.Alert.show('alert', error?.errors?.mobile[0]);
       } else {
-        Common.Alert.show('alert', error.message);
+        Common.Alert.show('alert', error?.message);
       }
     }, 2000);
     return null;

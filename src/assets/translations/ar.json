@@ -293,8 +293,8 @@
   "choose_from_camera": "اختر من الكاميرا",
   "choose_from_library": "اختر من المكتبة",
   "cancel": "يلغي",
-  "deactivate": "تعطيل الحساب ",
-  "deactivateAlertMsg": "هل انت متاكد من ايفاف هذا الحساب",
+  "deactivate": "حذف الحساب",
+  "deactivateAlertMsg": "هل أنت متأكد أنك تريد حذف هذا الحساب",
   "no": "لا",
   "confirm": "نعم",
   "diactivate_Account":"هذا الحساب معطل سوف يتم تفعيل"

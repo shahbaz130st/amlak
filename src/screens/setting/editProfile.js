@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import {
   View,
@@ -10,12 +10,12 @@ import {
   TextInput,
   Platform,
 } from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import PhoneInput from 'react-native-phone-number-input';
 import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
-import {connect} from 'react-redux';
-import {Actions} from '../../redux/index';
+import { connect } from 'react-redux';
+import { Actions } from '../../redux/index';
 
 import * as Constants from '../../constants/index';
 import * as Services from '../../services/index';
@@ -36,18 +36,18 @@ class EditProfile extends Component {
     idNumber: '',
     imageURI: null,
     errorFieldName: '',
-    email:''
+    email: ''
   };
   async componentDidMount() {
     let userInstance = User.getInstance();
     if (userInstance.getUser().info) {
-console.log(userInstance.getUser().info);   
-this.setState({phone:userInstance.getUser().info.mobile});
-this.setState({code:userInstance.getUser().info.country_code});
-this.setState({name:userInstance.getUser().info.name});
-this.setState({idNumber:userInstance.getUser().info.national_id});
-this.setState({email:userInstance.getUser().info.email});
-this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
+      console.log(userInstance.getUser().info);
+      this.setState({ phone: userInstance.getUser().info.mobile });
+      this.setState({ code: userInstance.getUser().info.country_code });
+      this.setState({ name: userInstance.getUser().info.name });
+      this.setState({ idNumber: userInstance.getUser().info.national_id });
+      this.setState({ email: userInstance.getUser().info.email });
+      this.setState({ imageURI: { uri: userInstance.getUser().info.profile_pic } });
 
     }
     Common.Helper.logEvent('profile', {
@@ -75,7 +75,7 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
         ImageResizer.createResizedImage(response.uri, 700, 700, 'JPEG', 30, 0)
           .then((response) => {
-            const source = {uri: response.uri};
+            const source = { uri: response.uri };
             this.setState({
               imageURI: source,
             });
@@ -114,36 +114,36 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
 
   submitAction = async () => {
     if (this.state.name == '') {
-      this.setState({errorFieldName: 'name'});
+      this.setState({ errorFieldName: 'name' });
       Common.Alert.show('alert', Common.Translations.translate('enterName'));
     } else if (this.state.phone == '') {
       Common.Alert.show(
         'alert',
         Common.Translations.translate('errorEnterMobileNumber'),
       );
-      this.setState({errorFieldName: 'mobileNumberError'});
+      this.setState({ errorFieldName: 'mobileNumberError' });
     } else if (this.state.phone.length != 10 && this.state.phone.length != 9) {
       Common.Alert.show(
         'alert',
         Common.Translations.translate('errorMobileNumberLength'),
       );
-      this.setState({errorFieldName: 'mobileNumberError'});
+      this.setState({ errorFieldName: 'mobileNumberError' });
     } else if (this.state.idNumber == '') {
-      this.setState({errorFieldName: 'enterIDNumber'});
+      this.setState({ errorFieldName: 'enterIDNumber' });
       Common.Alert.show(
         'alert',
         Common.Translations.translate('enterIDNumber'),
       );
-    }  else if (this.state.imageURI == null) {
+    } else if (this.state.imageURI == null) {
       Common.Alert.show(
         'alert',
         Common.Translations.translate('selectProfilePic'),
       );
     } else {
-      this.setState({errorFieldName: ''});
+      this.setState({ errorFieldName: '' });
       this.props.toggleLoader(true);
       let params = {};
-      params.national_id = this.state.idNumber;
+      // params.national_id = this.state.idNumber;
       params.name = this.state.name;
       params.mobile = this.state.phone;
       params.country_code = this.state.code;
@@ -152,7 +152,18 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
       this.props.toggleLoader(false);
       if (userData) {
         console.log('signup------>', userData);
-       this.props.navigation.goBack();
+        let token = await Common.KeyChain.get('authToken');
+        if (token != null) {
+          this.props.toggleLoader(true);
+          Constants.API.Token = token;
+          let userRes = await Services.AuthServices.userData();
+          this.props.toggleLoader(false);
+          if (userRes) {
+            let userInstance = User.getInstance();
+            userInstance.setUser(userRes);
+          }
+        }
+        this.props.navigation.goBack();
       }
     }
 
@@ -171,14 +182,14 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
           onBackButtonClick={() => {
             this.props.navigation.pop();
           }}
-        
+
         />
-        <View style={{width: '100%'}}>
+        <View style={{ width: '100%' }}>
           <KeyboardAwareScrollView
             enableOnAndroid={true}
             contentContainerStyle={styles.mainContainer}
             keyboardShouldPersistTaps="handled">
-            <View style={{alignItems: 'center', flexDirection: 'column'}}>
+            <View style={{ alignItems: 'center', flexDirection: 'column' }}>
               <View
                 style={{
                   justifyContent: 'center',
@@ -186,9 +197,7 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
                   marginTop: hp('3%'),
                 }}>
                 <TouchableOpacity
-                  onPress={() => {
-                    this.presentImagePicker();
-                  }}>
+                >
                   <Image
                     style={{
                       width: wp('30%'),
@@ -196,11 +205,26 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
                       borderRadius: wp('30%') / 2,
                     }}
                     source={
-                      this.state.imageURI == null
+                      (this.state.imageURI == null || this?.state?.imageURI?.uri == "http://49.12.234.75/assets/upload/profile_pic")
                         ? Constants.Images.profile
                         : this.state.imageURI
                     }
                   />
+                </TouchableOpacity>
+                <TouchableOpacity style={{ height: 25, width: 25, borderRadius: 12.5, borderColor: 'rgb(211,211,211)', borderWidth: 1, alignItems: "center", justifyContent: "center", position: "absolute", bottom: 0, right: 15, backgroundColor: 'rgb(211,211,211)' }} onPress={() => {
+                  this.presentImagePicker();
+                }}>
+                  <Image
+                    style={{
+                      width: 11,
+                      height: 11,
+                      resizeMode: "contain"
+                    }}
+                    source={
+                      Constants.Images.editProfile
+                    }
+                  />
+
                 </TouchableOpacity>
               </View>
               <View
@@ -225,16 +249,16 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
                       this.state.errorFieldName == 'name'
                         ? 'red'
                         : 'rgb(211,211,211)',
-                        borderRadius:0,
-                        borderWidth:1
+                    borderRadius: 0,
+                    borderWidth: 1
                   }}
-                  onChangeText={(text) => this.setState({name: text})}
+                  onChangeText={(text) => this.setState({ name: text })}
                   value={this.state.name}
                   maxLength={20}
                   error={this.state.errorFieldName == 'name' ? true : undefined}
                 />
               </View>
-              <View
+              {/* <View
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -256,16 +280,16 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
                       this.state.errorFieldName == 'email'
                         ? 'red'
                         : 'rgb(211,211,211)',
-                        borderRadius:0,
-                        borderWidth:1
+                    borderRadius: 0,
+                    borderWidth: 1
                   }}
-                  onChangeText={(text) => this.setState({email: text})}
+                  onChangeText={(text) => this.setState({ email: text })}
                   value={this.state.email}
                   maxLength={20}
                   error={this.state.errorFieldName == 'email' ? true : undefined}
                 />
-              </View>
-           
+              </View> */}
+
               <View
                 style={{
                   justifyContent: 'center',
@@ -290,22 +314,80 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
                         this.state.errorFieldName == 'mobileNumberError'
                           ? 'rgb(255,0,0)'
                           : 'rgb(211,211,211)',
-                          borderRadius:0,
-                        borderWidth:1
+                      borderRadius: 0,
+                      borderWidth: 1
                     },
                   ]}>
                   <PhoneInput
                     ref={(ref) => {
                       this.phoneInput = ref;
                     }}
-                    disabled ={true}
+                    defaultCode="PS"
+                    defaultValue={this.state.phone}
+                    onChangeText={(text) => {
+                      this.setState({ phone: text });
+                    }}
+                    onChangeFormattedText={(text) => {
+                      this.setState({ code: text });
+                    }}
+                    textInputStyle={styles.textAreaContainer}
+                    codeTextStyle={{
+                      fontFamily: Constants.Fonts.shamelBold,
+                      fontSize: wp('3.2%'),
+                      height: hp('2.5%'),
+                    }}
+                    flagButtonStyle={{
+                      justifyContent: 'center',
+                      width: wp('12%'),
+                      height: "100%",
+                      marginLeft: wp('3%')
+                    }}
+                    textInputProps={{
+                      maxLength: 10,
+                      placeholder: ' 59 XXXXXXX',
+                      keyboardType: 'number-pad',
+                      style: {
+                        paddingVertical: 0,
+                        fontFamily: Constants.Fonts.shamel,
+                        fontSize: wp('3.2%'),
+                        height: hp('5%'),
+                        width: wp('50%'),
+                        paddingLeft: wp('2.5%'),
+                        borderStartWidth: 0.7,
+                        borderStartColor: '#E1E1E1',
+                        justifyContent: "center"
+                      },
+                    }}
+                    // disableArrowIcon={true}
+                    getCallingCode={(text) => {
+                      this.setState({ code: text });
+                    }}
+                    containerStyle={{
+                      width: wp('80%'),
+                      height: hp('5%'),
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderWidth: 1,
+                      borderColor: 'rgb(211,211,211)',
+                    }}
+                    textContainerStyle={{
+                      backgroundColor: "white",
+                      width: wp('79%'),
+                      height: hp('4.8%'),
+                    }}
+                  />
+                  {/* <PhoneInput
+                    ref={(ref) => {
+                      this.phoneInput = ref;
+                    }}
+                    disabled={true}
                     defaultCode={this.state.code}
                     defaultValue={this.state.phone}
                     onChangeText={(text) => {
-                      this.setState({phone: text});
+                      this.setState({ phone: text });
                     }}
                     onChangeFormattedText={(text) => {
-                      this.setState({code: text});
+                      this.setState({ code: text });
                     }}
                     containerStyle={{
                       backgroundColor: 'transparent',
@@ -346,19 +428,19 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
                     }}
                     disableArrowIcon={true}
                     getCallingCode={(text) => {
-                      this.setState({code: text});
+                      this.setState({ code: text });
                     }}
-                  />
+                  /> */}
                   {this.state.errorFieldName == 'mobileNumberError' && (
                     <Image
-                      style={{position: 'absolute', right: wp('3%')}}
+                      style={{ position: 'absolute', right: wp('3%') }}
                       source={Constants.Images.warning}
                     />
                   )}
                 </View>
               </View>
 
-              <View
+              {/* <View
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -383,17 +465,17 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
                       this.state.errorFieldName == 'enterIDNumber'
                         ? 'red'
                         : 'rgb(211,211,211)',
-                        borderRadius:0,
-                        borderWidth:1
+                    borderRadius: 0,
+                    borderWidth: 1
                   }}
                   placeholder="idNumberPlaceholder"
                   keyboardType="number-pad"
-                  onChangeText={(text) => this.setState({idNumber: text})}
+                  onChangeText={(text) => this.setState({ idNumber: text })}
                   value={this.state.idNumber}
                 />
-              </View>
+              </View> */}
 
-            
+
               <View
                 style={{
                   justifyContent: 'center',
@@ -402,7 +484,7 @@ this.setState({imageURI :{ uri: userInstance.getUser().info.profile_pic }});
                 }}>
                 <Components.AmlakButton
                   title="save_changes"
-                  titleStyles={{color: Constants.Colors.white,fontFamily: Constants.Fonts.shamelBold}}
+                  titleStyles={{ color: Constants.Colors.white, fontFamily: Constants.Fonts.shamelBold }}
                   containerStyles={{
                     backgroundColor: Constants.Colors.buttonBackground,
                   }}

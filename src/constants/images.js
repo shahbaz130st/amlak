@@ -107,6 +107,7 @@ export default (() => {
     villaSale:require('../assets/images/villa_sale.jpeg'),
     wareHouseSale:require('../assets/images/warehouse_sale.jpeg'),
     wareHouseRent:require('../assets/images/warehouse_rent.jpeg'),
+    editProfile: require("../assets/images/pencil.png")
 
 
   };

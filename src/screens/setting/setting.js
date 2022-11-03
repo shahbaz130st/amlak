@@ -44,6 +44,7 @@ class Setting extends Component {
   componentDidMount() {
     let userInstance = User.getInstance();
     if (userInstance.getUser().info) {
+      console.log(userInstance.getUser().info)
       userID = userInstance.getUser().info.id;
     }
     Common.Helper.logEvent('setting', {

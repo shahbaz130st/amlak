@@ -213,7 +213,7 @@
   "ongoing": "Approved",
   "language": "Language",
   "notification": "Receive notifications",
-  "arabic": "Arabic",
+  "arabic": "العربية",
   "english": "English",
   "rate_experience": "Please rate your experience with",
   "comment_here": "Tell us about your experience comment here",
@@ -294,10 +294,9 @@
   "choose_from_camera": "Choose from Camera",
   "choose_from_library": "Choose from Library",
   "cancel": "Cancel",
-  "deactivate": "Disable account",
-  "deactivateAlertMsg": "Are you sure you want to disable this account",
+  "deactivate": "Delete account",
+  "deactivateAlertMsg": "Are you sure you want to delete this account",
   "no": "No",
   "confirm": "Yes",
-  "diactivate_Account":"This account is disabled,  we will reactivate now.?"
-
+  "diactivate_Account":"This account is deleted,  you need to sign up."
 }

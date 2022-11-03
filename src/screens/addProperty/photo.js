@@ -7,7 +7,8 @@ import {
   FlatList,
   Image,
   Modal,
-  Pressable
+  Pressable,
+  Platform
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -60,9 +61,8 @@ class Second extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-
         response.map((item, index) => {
-          ImageResizer.createResizedImage(item.sourceURL, 700, 700, 'JPEG', 30, 0)
+          ImageResizer.createResizedImage(Platform.OS == "ios" ? item.sourceURL : item.path, 700, 700, 'JPEG', 30, 0)
             .then((response) => {
               const source = { uri: response.uri };
               let array = this.state.images;
@@ -89,7 +89,6 @@ class Second extends Component {
   openImageCamera = () => {
     const options = {
       cropperToolbarTitle: `${Common.Translations.translate('attach_photo')}`,
-      multiple: true,
       skipBackup: true,
       path: 'images',
     };
@@ -103,26 +102,27 @@ class Second extends Component {
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton);
       } else {
-          ImageResizer.createResizedImage(response.sourceURL, 700, 700, 'JPEG', 30, 0)
-            .then((response) => {
-              const source = { uri: response.uri };
-              let array = this.state.images;
-              array.push({ imageURI: source });
-              setTimeout(() => {
-                this.setState({ images: array });
-              }, 1000);
-              setTimeout(() => {
-                this.props.propertyAction(this.state.images);
-              }, 1000);
-              // response.uri is the URI of the new image that can now be displayed, uploaded...
-              // response.path is the path of the new image
-              // response.name is the name of the new image with the extension
-              // response.size is the size of the new image
-            })
-            .catch((err) => {
-              // Oops, something went wrong. Check that the filename is correct and
-              // inspect err to get more details.
-            });
+        console.log(response)
+        ImageResizer.createResizedImage(response.path, 700, 700, 'JPEG', 30, 0)
+          .then((response) => {
+            const source = { uri: response.uri };
+            let array = this.state.images;
+            array.push({ imageURI: source }); 
+            setTimeout(() => {
+              this.setState({images: array });
+            }, 1000);
+            setTimeout(() => {
+              this.props.propertyAction(this.state.images);
+            }, 1000);
+            // response.uri is the URI of the new image that can now be displayed, uploaded...
+            // response.path is the path of the new image
+            // response.name is the name of the new image with the extension
+            // response.size is the size of the new image
+          })
+          .catch((err) => {
+            // Oops, something went wrong. Check that the filename is correct and
+            // inspect err to get more details.
+          });
       }
     });
   };
@@ -231,7 +231,7 @@ class Second extends Component {
               onPress={() => {
                 this.removeImage(value.index);
               }}>
-              <Image style={{tintColor: "#FFFFFF"}} source={Constants.Images.closeIcon} />
+              <Image style={{ tintColor: "#FFFFFF" }} source={Constants.Images.closeIcon} />
             </TouchableOpacity>
           </View>
         )}
@@ -389,7 +389,7 @@ class Second extends Component {
               <Pressable
                 style={[styles.button, { backgroundColor: colors.buttonBackground, width: "100%", marginBottom: 20 }]}
                 onPress={() => {
-                    this.presentImagePicker();
+                  this.presentImagePicker();
                 }}
               >
                 <Text style={styles.textStyle}>{`${Common.Translations.translate('choose_from_library')}`}</Text>
