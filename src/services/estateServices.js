@@ -226,6 +226,7 @@ const sortList = async (data) => {
       Constants.API.Dashboard.ESTATES_SORT,
       data,
     );
+    console.log("Api url",Constants.API.Dashboard.ESTATES_SORT)
 
     if (response && response.status == 200) {
       return response.data;

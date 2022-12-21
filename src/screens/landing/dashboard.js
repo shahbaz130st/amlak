@@ -73,11 +73,6 @@ const dataShops = [
 
 
 class Dashboard extends Component {
-
-
-
-
-
   constructor(props) {
     super(props);
     this.onEndReachedCalledDuringMomentum = true;
@@ -639,17 +634,17 @@ class Dashboard extends Component {
                       : item?.details?.door_type}
                   </Text>
                   {Constants.API.Language == 'ar'
-                      && item?.details?.door_type_arabic ? 
-                      <Image
+                    && item?.details?.door_type_arabic ?
+                    <Image
                       style={{ width: wp('3%'), height: wp('3.5%') }}
                       source={Constants.Images.door}
                     />
-                      : item?.details?.door_type ? 
+                    : item?.details?.door_type ?
                       <Image
-                      style={{ width: wp('3%'), height: wp('3.5%') }}
-                      source={Constants.Images.door}
-                    /> : null}
-                 
+                        style={{ width: wp('3%'), height: wp('3.5%') }}
+                        source={Constants.Images.door}
+                      /> : null}
+
                 </View>
 
                 {/* <View
@@ -869,18 +864,18 @@ class Dashboard extends Component {
 
 
   renderItem = (value, index) => {
-    console.log('check for this.state.selectedFilter',this.state.selectedFilter)
-    const {selectedFilter} = this.state;
+    console.log('check for this.state.selectedFilter', this.state.selectedFilter)
+    const { selectedFilter } = this.state;
     const defaultSource =
       itemName == 'land' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.landSale : Constants.Images.landRent)
-        : itemName == 'shop' ?  (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.shopSale : Constants.Images.shopRent) 
+        : itemName == 'shop' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.shopSale : Constants.Images.shopRent)
           : itemName == 'apartment' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.appartmentSale : Constants.Images.appartmentRent)
             : itemName == 'office' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.officeSale : Constants.Images.officeRent)
-              : itemName == 'Vialla / Home' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.homeSale : Constants.Images.homeRent) 
-              : itemName == 'warehouse' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.wareHouseSale : Constants.Images.wareHouseRent) :
-              (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.buildingSale : Constants.Images.buildingRent);
+              : itemName == 'Vialla / Home' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.homeSale : Constants.Images.homeRent)
+                : itemName == 'warehouse' ? (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.wareHouseSale : Constants.Images.wareHouseRent) :
+                  (selectedFilter !== null && selectedFilter?.type == 'Sale' ? Constants.Images.buildingSale : Constants.Images.buildingRent);
     const itemName = value?.item?.category_name;
-    console.log("Show render item picture", value.item.picture.length)
+    console.log("Show render item picture", value.item.is_fav)
     let Image_Http_URL = value.item.picture.length > 0
       // ? Constants.API.ImageBaseURL(value.item.picture[0].picture)
       ? value.item.picture[0].picture
@@ -929,7 +924,7 @@ class Dashboard extends Component {
                 defaultSource={defaultSource}
                 source={Image_Http_URL}
                 style={{ width: wp('80%'), height: hp('23%') }}
-                imageStyle={{ width: wp('80%'), height: hp('23%'),resizeMode: 'contain' }}
+                imageStyle={{ width: wp('80%'), height: hp('23%'), resizeMode: 'contain' }}
               />
               <View
                 style={{
@@ -1030,11 +1025,7 @@ class Dashboard extends Component {
                     fontSize: wp('2.5%'),
                     marginRight: wp('2%'),
                   }}>
-                  {`${value.item.region} ${value.item.address} ${value?.item?.city_id_arabic == undefined
-                    ? ''
-                    : Constants.API.Language == 'ar'
-                      ? value.item.city_id_arabic
-                      : value.item.city_id}
+                  {`${value.item.region} ${value.item.address} ${Constants.API.Language == 'en'? value.item.city_id:value.item.city_id_arabic}
                     `}
                 </Text>
 
@@ -1150,6 +1141,9 @@ class Dashboard extends Component {
           justifyContent: 'center',
           alignItems: 'center',
         }}>
+        {
+          console.log("arraylist", array)
+        }
         {array.length == 0 && this.props.loading !== true ? (
           <Text
             style={{
@@ -1401,7 +1395,7 @@ class Dashboard extends Component {
       // console.log('parameter request', params);
 
       let res = await Services.EstateServices.sortList(params);
-      // console.log('my response filter===>', res);
+      console.log('my response filter===>', res);
       this.props.toggleLoader(false);
       if (res?.data) {
         console.log('res', JSON.stringify(res));
@@ -1863,7 +1857,7 @@ const mapDispatchToProps = (dispatch) => ({
   toggleLoader: (state) => dispatch(Actions.toggleLoader(state)),
 });
 const mapStateToProps = (state) => {
-  console.log('check for state=====',state?.common?.isLoading)
+  console.log('check for state=====', state?.common?.isLoading)
   return {
     loading: state?.common?.isLoading,
   }

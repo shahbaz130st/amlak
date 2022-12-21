@@ -8,6 +8,8 @@
 #import <FirebaseMessaging.h>
 #import <UserNotifications/UserNotifications.h>
 #import <RNFBDynamicLinksAppDelegateInterceptor.h>
+#import <FBSDKCoreKit/FBSDKCoreKit.h> // <- Add This Import
+#import <React/RCTLinkingManager.h>
 //#import "RNFirebaseNotifications.h"
 //#import "RNFirebaseMessaging.h"
 
@@ -32,9 +34,24 @@ static void InitializeFlipper(UIApplication *application) {
 #endif
 
 @implementation AppDelegate
+- (void)applicationDidBecomeActive:(UIApplication *)application{
+   [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+ }
 
+-(void)applicationDidEnterBackground:(UIApplication *)application{
+   [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+ }
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
 return [[RNFBDynamicLinksAppDelegateInterceptor sharedInstance] application:app openURL:url options:options];
+  if ([[FBSDKApplicationDelegate sharedInstance] application:app openURL:url options:options]) {
+      return YES;
+    }
+
+    if ([RCTLinkingManager application:app openURL:url options:options]) {
+      return YES;
+    }
+
+    return NO;
 }
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray<id> * _Nullable))restorationHandler {
 return [[RNFBDynamicLinksAppDelegateInterceptor sharedInstance] application:application continueUserActivity:userActivity restorationHandler:restorationHandler];
@@ -88,7 +105,7 @@ return [[RNFBDynamicLinksAppDelegateInterceptor sharedInstance] application:appl
   }
 
   [application registerForRemoteNotifications];
-
+  [FBSDKApplicationDelegate.sharedInstance initializeSDK];
   return YES;
 }
 

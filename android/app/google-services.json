@@ -14,6 +14,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "663041982751-bqch7i2qb4rp0rsotklisr30cqfojcf8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.amlak",
+            "certificate_hash": "c83939229c82feae759632824a16eebfb4d67a0f"
+          }
+        },
+        {
+          "client_id": "663041982751-pgfimf84g1ar4sd012jmrea7v8g75r7l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.amlak",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "663041982751-tmrmbo7oiiqa3pjs1ongcu5ek44u1ua1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.amlak",
+            "certificate_hash": "4aa5d2cd2f60ac6220e4fd502783c573a8f788f1"
+          }
+        },
+        {
           "client_id": "663041982751-p1s7ppm427pmgcej00gupbu43ug9oqo2.apps.googleusercontent.com",
           "client_type": 3
         }

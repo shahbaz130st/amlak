@@ -9,18 +9,14 @@
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { StatusBar, View, Text, LogBox, Platform, I18nManager } from 'react-native';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import AuthStack from './src/navigations/application.stack';
 import * as Common from './src/common/index';
 const Store = Common.reduxInit();
 import AppLoader from './src/components/appLoader';
-import * as Constants from './src/constants/index';
 import { navigationRef } from './src/services/navigationServices';
 import NetInfo from "@react-native-community/netinfo";
-import { checkVersion } from './src/constants/AppUtil';
-// import dynamicLinks from '@react-native-firebase/dynamic-links';
 import * as Sentry from "@sentry/react-native";
 import SpInAppUpdates, {
   NeedsUpdateResponse,
@@ -28,6 +24,7 @@ import SpInAppUpdates, {
   StartUpdateOptions,
 } from 'sp-react-native-in-app-updates';
 import RNRestart from 'react-native-restart';
+import {Settings} from 'react-native-fbsdk-next';
 Sentry.init({
   dsn:
     // "https://6fd3e74226f14b2aaee5b13464ff2816@o990431.ingest.sentry.io/5946962",
@@ -35,67 +32,70 @@ Sentry.init({
   enableNative: true,
 });
 
-const inAppUpdates = new SpInAppUpdates(
-  false // isDebug
-);
-
 class App extends Component {
   constructor(props) {
     super(props);
+    this.inAppUpdates = new SpInAppUpdates(
+      true // debug verbosely
+    );
     this.state = {
       networkStatus: true
     }
     Common.Translations.initConfig();
-    console.log('Constants.API.Language', Constants.API.Language);
   }
   componentDidMount = async () => {
+    Settings.setAdvertiserTrackingEnabled(true);
+    this.checkAppUpdate();
     if (I18nManager.isRTL == true) {
       await Common.Translations.getDefaultLanguage();
       RNRestart.Restart()
     }
-    this.checkAppUpdate();
     LogBox.ignoreAllLogs();
-    // checkVersion();
     NetInfo.addEventListener(state => {
       this.setState({ networkStatus: state.isConnected })
       console.log("Connection type", state.type);
       console.log("Is connected?", state.isConnected);
     });
-    // this.unsubscribe = dynamicLinks().onLink(this.handleDynamicLink);
-    // dynamicLinks()
-    //   .getInitialLink()
-    //   .then(this.handleDynamicLink);
   }
 
   checkAppUpdate = () => {
-    // curVersion is optional if you don't provide it will automatically take from the app using react-native-device-info
-    inAppUpdates.checkNeedsUpdate().then((result) => {
-      // console.log("checkAppUpdate", result.shouldUpdate, result.storeVersion)
+    //   if(Platform.OS=="android"){
+    //   // curVersion is optional if you don't provide it will automatically take from the app using react-native-device-info
+    //  this.inAppUpdates.checkNeedsUpdate().then((result) => {
+    //     // console.log("checkAppUpdate", result.shouldUpdate, result.storeVersion)
+    //     if (result.shouldUpdate) {
+    //       let updateOptions: StartUpdateOptions = {};
+    //       if (Platform.OS === 'android') {
+    //         // android only, on iOS the user will be promped to go to your app store page
+    //         updateOptions = {
+    //           updateType: IAUUpdateKind.FLEXIBLE,
+    //         };
+    //       }
+    //       this.inAppUpdates.startUpdate(updateOptions); // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
+    //     }
+    //   });
+    // }else{
+    this.inAppUpdates.checkNeedsUpdate().then(result => {
       if (result.shouldUpdate) {
-        let updateOptions: StartUpdateOptions = {};
-        if (Platform.OS === 'android') {
-          // android only, on iOS the user will be promped to go to your app store page
-          updateOptions = {
+        const updateOptions: StartUpdateOptions = Platform.select({
+          ios: {
+            title: 'Update available',
+            message: "There is a new version of the app available on the App Store, do you want to update it?",
+            buttonUpgradeText: 'Update',
+            buttonCancelText: 'Cancel'
+          },
+          android: {
             updateType: IAUUpdateKind.FLEXIBLE,
-          };
-        }
-        inAppUpdates.startUpdate(updateOptions); // https://github.com/SudoPlz/sp-react-native-in-app-updates/blob/master/src/types.ts#L78
+          },
+        });
+        this.inAppUpdates.startUpdate(updateOptions);
       }
-    });
+    })
+      .catch(error => {
+        // alert(error)
+        console.log("inappupdate catch error", error)
+      })
   }
-
-  // handleDynamicLink = (link) => {
-  //   // Handle dynamic link inside your own application
-  //   // if (link.url === "https://invertase.io/offer") {
-  //   //   // ...navigate to your offers screen
-  //   // }
-
-  //   console.log(JSON.stringify(link), "link123");
-
-  //   console.log(link, "link.url");
-
-  //   // }
-  // };
 
   render() {
     return (

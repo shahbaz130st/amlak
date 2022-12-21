@@ -965,7 +965,7 @@ class EstateDetail extends Component {
                     textAlign: 'right',
                     marginLeft: wp('30%'),
                   }}>
-                  {this.state.propertyDetail.elevator}
+                  {this.state.propertyDetail.electricity}
                 </Text>
               </View>
             </View>
@@ -1365,7 +1365,7 @@ class EstateDetail extends Component {
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.car_garage.toLowerCase() == 'yes'
+                    this.state.propertyDetail.tapu.toLowerCase() == 'yes'
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -2339,22 +2339,22 @@ class EstateDetail extends Component {
               width: '90%',
               borderBottomColor: '#f5f5f5',
               borderBottomWidth: 1,
-              paddingBottom: 5,
+              // borderColor: "red", borderWidth: 1
             }}>
             <ReadMore
               numberOfLines={3}
               renderTruncatedFooter={this._renderTruncatedFooter}
               renderRevealedFooter={this._renderRevealedFooter}
               onReady={this._handleTextReady}>
-              <Text
-                style={{
-                  fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('3.5%'),
-                  textAlign: 'right',
-                }}>
-                {this.state.propertyDetail.description}
-              </Text>
+            <Text
+              style={{
+                fontFamily: Constants.Fonts.shamel,
+                color: '#444040',
+                fontSize: wp('3.5%'),
+                textAlign: 'right'
+              }}>
+              {this.state.propertyDetail.description}
+            </Text>
             </ReadMore>
             {/* <Text
             style={{
@@ -3095,7 +3095,7 @@ class EstateDetail extends Component {
                 backgroundColor: 'white',
               }}>
               <Image
-                style={{ width: wp('80%'), height: hp('23%'),resizeMode: 'stretch' }}
+                style={{ width: wp('80%'), height: hp('23%'), resizeMode: 'stretch' }}
                 source={Image_Http_URL}
               />
               <View

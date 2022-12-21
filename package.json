@@ -21,7 +21,7 @@
     "@react-native-community/netinfo": "^8.2.0",
     "@react-native-firebase/analytics": "^12.8.0",
     "@react-native-firebase/app": "^12.8.0",
-    "@react-native-firebase/dynamic-links": "^14.9.2",
+    "@react-native-firebase/dynamic-links": "^12.8.0",
     "@react-native-firebase/messaging": "^12.8.0",
     "@react-navigation/bottom-tabs": "5.9.1",
     "@react-navigation/native": "5.7.5",
@@ -38,6 +38,7 @@
     "react-native-event-listeners": "^1.0.7",
     "react-native-extra-dimensions-android": "1.2.5",
     "react-native-fast-image": "^8.5.11",
+    "react-native-fbsdk-next": "^11.1.0",
     "react-native-geocoder": "^0.5.0",
     "react-native-gesture-handler": "1.8.0",
     "react-native-get-location": "^1.4.3",
@@ -68,7 +69,7 @@
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
     "rn-fetch-blob": "0.12.0",
-    "sp-react-native-in-app-updates": "^1.1.7"
+    "sp-react-native-in-app-updates": "1.2.0"
   },
   "devDependencies": {
     "@babel/core": "7.8.4",
