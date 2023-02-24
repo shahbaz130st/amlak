@@ -7,13 +7,59 @@ import * as Common from '../../common/index';
 import * as Services from '../../services/index';
 import dynamicLinks from '@react-native-firebase/dynamic-links';
 import { CommonActions } from '@react-navigation/native';
+import SpInAppUpdates, {
+  NeedsUpdateResponse,
+  IAUUpdateKind,
+  StartUpdateOptions,
+} from 'sp-react-native-in-app-updates';
 
 class Splash extends Component {
+  constructor(props) {
+    super(props);
+    this.inAppUpdates = new SpInAppUpdates(
+      true // debug verbosely
+    );
+  }
   async componentDidMount() {
+    this.checkAppUpdate();
     await dynamicLinks().onLink(this.handleDynamicLink);
     await dynamicLinks()
       .getInitialLink()
       .then(this.handleDynamicLink);
+  }
+
+  checkAppUpdate = () => {
+    this.inAppUpdates.checkNeedsUpdate().then(result => {
+      if (result.shouldUpdate) {
+        const updateOptions: StartUpdateOptions = Platform.select({
+          ios: {
+            title: 'Update available',
+            message: "There is a new version of the app available on the App Store, do you want to update it?",
+            buttonUpgradeText: 'Update',
+            buttonCancelText: 'Cancel'
+          },
+          android: {
+            updateType: IAUUpdateKind.FLEXIBLE,
+          },
+        });
+        this.inAppUpdates.startUpdate(updateOptions);
+      }
+    })
+      .catch(async (error) => {
+        // alert(error)
+        console.log("inappupdate catch error", error)
+        let token = await Common.KeyChain.get('authToken');
+        this.checkPermission();
+        setTimeout(() => {
+          if (token != null) {
+            Constants.API.Token = token;
+            this.props.navigation.navigate(Screens.Onboarding.DASHBOARD);
+          } else {
+            // this.props.navigation.push(Screens.Onboarding.WELCOME);
+            this.props.navigation.navigate(Screens.Onboarding.DASHBOARD);
+          }
+        }, 3000)
+      })
   }
 
   handleDynamicLink = async (link) => {

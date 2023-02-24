@@ -15,22 +15,23 @@ import User from '../../models/user';
 import * as Common from '../../common/index';
 import * as Constants from '../../constants/index';
 import { Actions } from '../../redux/index';
+// import Preference from 'react-native-preference';
 class Filter extends Component {
   state = {
-    nonCollidingMultiSliderValue: [0, 1000000],
+    nonCollidingMultiSliderValue: /* Preference.get("nonCollidingMultiSliderValue") ? Preference.get("nonCollidingMultiSliderValue") :  */[100, 120000],
     // spaceValues: [100, 10000],
-    spaceValues: [0, 10000],
+    spaceValues: /* Preference.get("areaSpace") ? Preference.get("areaSpace") : */[0, 10000],
     roadWidth: [100],
     sliderOneChanging: false,
     items: [],
     currentRating: 0,
-    cat_id: null,
-    sale_rent: null,
+    cat_id: /* Preference.get("category") ? Preference.get("category")?.id :  */null,
+    sale_rent: /* Preference.get("sale_rent") ? Preference.get("sale_rent") : */ null,
     numberOfRooms: 0,
     numberOfHalls: 0,
     numberOfBathRooms: 0,
-    priceMax: 1000000,
-    priceMin: 0,
+    priceMax: 120000,
+    priceMin: 100,
     floors: '',
     properties: [],
     appliedFilterCount: 1,
@@ -49,18 +50,26 @@ class Filter extends Component {
       Common.Translations.translate('living'),
       Common.Translations.translate('agriculture'),
     ],
-    land_type: '',
-    categories: []
+    land_type: /* (Preference.get("land_type") && Preference.get("category") && Preference.get("category")?.id == 30) ? Preference.get("land_type") : */ '',
+    categories: [],
+    city: [],
+    cityItems: [],
+    city_id: -1
   };
 
   async componentDidMount() {
     this.categroyList();
+    this.cityList();
     Common.Helper.logEvent('filter', {});
   }
 
   resetValues = () => {
+    // Preference.clear('category')
+    // Preference.clear('sale_rent')
+    // Preference.clear("land_type")
+    // Preference.clear("nonCollidingMultiSliderValue")
     this.setState({
-      nonCollidingMultiSliderValue: [0, 1000000],
+      nonCollidingMultiSliderValue: [100, 120000],
       spaceValues: [100, 10000],
       roadWidth: [100],
       sliderOneChanging: false,
@@ -70,8 +79,8 @@ class Filter extends Component {
       numberOfRooms: 0,
       numberOfHalls: 0,
       numberOfBathRooms: 0,
-      priceMax: 1000000,
-      priceMin: 0,
+      priceMax: 120000,
+      priceMin: 100,
       floors: '',
       properties: [],
       appliedFilterCount: 1,
@@ -139,6 +148,17 @@ class Filter extends Component {
       categories.push(values[i]);
     }
     this.setState({ items: items, categories: categories });
+  };
+  cityList = async () => {
+    let values = await Services.EstateServices.cityList()
+    console.log(values)
+    let items = [];
+    let city = [];
+    for (let i = 0; i < values.length; i++) {
+      items.push(Constants.API.Language == 'en' ? values[i].name : values[i].name_ar);
+      city.push(values[i]);
+    }
+    this.setState({ cityItems: items, city: city });
   };
 
   priceRange = async () => {
@@ -297,6 +317,7 @@ class Filter extends Component {
     // params.category_id = this.state.cat_id;
     params.rent_or_sale = this.state.sale_rent.toLowerCase();
     params.type = this.state.cat_id;
+    params.city_id = this.state.city_id
 
     console.log('parameter request', params);
 
@@ -330,9 +351,11 @@ class Filter extends Component {
   dropdown_landType_onSelect = (idx, value) => {
     let items = this.state.landTypes[idx];
     if (idx == 0) {
+      // Preference.set("land_type", 'Building')
       this.setState({ land_type: 'Building' });
     }
     if (idx == 1) {
+      // Preference.set("land_type", 'Agriculture')
       this.setState({ land_type: 'Agriculture' });
     }
   };
@@ -2172,9 +2195,11 @@ class Filter extends Component {
     }
   };
   nonCollidingMultiSliderValuesChange = (values) => {
+    // Preference.set("nonCollidingMultiSliderValue", values)
     this.setState({ nonCollidingMultiSliderValue: values });
   };
   spaceSlideValueChanged = (values) => {
+    // Preference.set("areaSpace", values)
     this.setState({ spaceValues: values });
   };
   roadWidthSlideValueChanged = (values) => {
@@ -2183,12 +2208,14 @@ class Filter extends Component {
 
   dropdown_category_onSelect = (idx, value) => {
     let items = this.state.categories[idx];
+    // Preference.set("category", items)
     this.setState({ cat_id: items.id });
     setTimeout(() => {
       this.priceRange();
     }, 1000);
   };
   dropdown_propertyType_onSelect = (idx, value) => {
+    // Preference.set("sale_rent", value)
     this.setState({ sale_rent: value });
     setTimeout(() => {
       this.priceRange();
@@ -2320,7 +2347,8 @@ class Filter extends Component {
                 onSelect={(idx, value) =>
                   this.dropdown_category_onSelect(idx, value)
                 }
-                defaultValue={Common.Translations.translate('category')}
+                value={this.state.cat_id}
+                defaultValue={/* Preference.get("category") ? Preference.get("category")?.name : */ Common.Translations.translate('category')}
               />
             </TouchableOpacity>
           </View>
@@ -2390,7 +2418,70 @@ class Filter extends Component {
                 onSelect={(idx, value) =>
                   this.dropdown_propertyType_onSelect(idx, value)
                 }
-                defaultValue={Common.Translations.translate('property_type')}
+                defaultValue={/* Preference.get("sale_rent") ? Preference.get("sale_rent") :  */Common.Translations.translate('property_type')}
+              />
+            </TouchableOpacity>
+          </View>
+          <Text
+            style={{
+              marginTop: wp('4%'),
+              width: '90%',
+              color: '#444040',
+              textAlign: 'right',
+              fontFamily: Constants.Fonts.shamelBold,
+              fontSize: wp('2.5%'),
+            }}>
+            {Common.Translations.translate('city')}
+          </Text>
+          <View
+            style={{
+              width: '90%',
+              backgroundColor: '#F0F0F0',
+              borderRadius: wp('1%'),
+              overflow: 'hidden',
+              marginTop: wp('2%'),
+            }}>
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                paddingVertical: wp('2%'),
+              }}>
+              <Image
+                source={Constants.Images.menuIcon}
+                style={{
+                  width: wp('3%'),
+                  height: wp('3%'),
+                  marginLeft: wp('3%'),
+                }}
+                resizeMode="contain"
+              />
+              <ModalDropdown
+                style={{
+                  width: '90%',
+                }}
+                textStyle={{
+                  color: '#444040',
+                  textAlign: 'right',
+                  fontFamily: Constants.Fonts.shamelBold,
+                  fontSize: wp('2.5%'),
+                }}
+                dropdownStyle={{ width: '80%' }}
+                dropdownTextStyle={{
+                  textAlign: 'right',
+                  color: 'black',
+                  fontFamily: Constants.Fonts.shamel,
+                  fontSize: wp('3%'),
+                }}
+                options={this.state.cityItems}
+                onSelect={(idx, value) => {
+                  console.log(value)
+                  this.setState({
+                    city_id: this.state.city[idx].id,
+                  })
+                  // Preference.set("city", value)
+                }}
+                defaultValue={/* Preference.get("city") ? Preference.get("city") : */ Common.Translations.translate('city')}
               />
             </TouchableOpacity>
           </View>
@@ -2460,7 +2551,7 @@ class Filter extends Component {
                     onSelect={(idx, value) =>
                       this.dropdown_landType_onSelect(idx, value)
                     }
-                    defaultValue={Common.Translations.translate('type_land')}
+                    defaultValue={/* Preference.get("land_type") ? Preference.get("land_type") : */ Common.Translations.translate('type_land')}
                   />
                 </TouchableOpacity>
               </View>

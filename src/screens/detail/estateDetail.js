@@ -293,7 +293,7 @@ class EstateDetail extends Component {
     }
     this.props.toggleLoader(true);
     let params = {};
-    let userInstance = User.getInstance();
+    let userInstance = await User.getInstance();
     if (userInstance.getUser().info) {
       params['user_id'] = userInstance.getUser().info.id;
     }
@@ -332,11 +332,18 @@ class EstateDetail extends Component {
       },
     ]);
 
-  onCall() {
+  async onCall() {
     if (Constants.API.Token == null) {
       this.loginAlert();
       return;
     }
+    let userInstance = await User.getInstance();
+    Common.Helper.logEvent('callPropertyOwner', {
+      Customer_Phone_Number: userInstance.getUser().info.mobile,
+      Customer_Name: userInstance.getUser().info.name,
+      Property_Owner_Phone_Number: this.state.propertyDetail.owner_number,
+      Propert_Id: this.state.propertyDetail.id
+    });
     let phone = this.state.propertyDetail.owner_number;
     let phoneNumber = phone;
     if (Platform.OS !== 'android') {
@@ -2150,27 +2157,11 @@ class EstateDetail extends Component {
               width: '90%',
               top: wp('10%'),
               paddingVertical: wp('1%'),
-              // backgroundColor: 'red',
               position: 'absolute',
               flexDirection: 'row',
+              justifyContent:"space-between"
             }}>
-            <View style={{ flexDirection: 'row' }}>
-              <TouchableOpacity onPress={() => this.showReport()}>
-                <View
-                  style={{
-                    width: wp('10%'),
-                    height: wp('10%'),
-                    resizeMode: 'cover',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: wp('10%') / 2,
-                    overflow: 'hidden',
-                    backgroundColor: 'rgba(240,241,243,0.76)',
-                  }}>
-                  <Image source={Constants.Images.spam} />
-                </View>
-              </TouchableOpacity>
-              {/* <TouchableOpacity>
+            <TouchableOpacity onPress={() => this.showReport()}>
               <View
                 style={{
                   width: wp('10%'),
@@ -2181,34 +2172,10 @@ class EstateDetail extends Component {
                   borderRadius: wp('10%') / 2,
                   overflow: 'hidden',
                   backgroundColor: 'rgba(240,241,243,0.76)',
-                  marginLeft: wp('2%'),
                 }}>
-                <Image source={Constants.Images.share} />
+                <Image source={Constants.Images.spam} />
               </View>
-            </TouchableOpacity> */}
-              <TouchableOpacity onPress={() => this.actionLike()}>
-                <View
-                  style={{
-                    width: wp('10%'),
-                    height: wp('10%'),
-                    resizeMode: 'cover',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: wp('10%') / 2,
-                    overflow: 'hidden',
-                    backgroundColor: 'rgba(240,241,243,0.76)',
-                    marginLeft: wp('2%'),
-                  }}>
-                  <Image
-                    source={
-                      this.state.isLiked == false
-                        ? Constants.Images.heartGray
-                        : Constants.Images.heartRed
-                    }
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
             <View
               style={{
                 width: wp('10%'),
@@ -2218,7 +2185,6 @@ class EstateDetail extends Component {
                 borderRadius: wp('10%') / 2,
                 overflow: 'hidden',
                 backgroundColor: 'rgba(240,241,243,0.76)',
-                marginLeft: wp('56%'),
               }}>
               <TouchableOpacity
                 onPress={() => {
@@ -2346,15 +2312,15 @@ class EstateDetail extends Component {
               renderTruncatedFooter={this._renderTruncatedFooter}
               renderRevealedFooter={this._renderRevealedFooter}
               onReady={this._handleTextReady}>
-            <Text
-              style={{
-                fontFamily: Constants.Fonts.shamel,
-                color: '#444040',
-                fontSize: wp('3.5%'),
-                textAlign: 'right'
-              }}>
-              {this.state.propertyDetail.description}
-            </Text>
+              <Text
+                style={{
+                  fontFamily: Constants.Fonts.shamel,
+                  color: '#444040',
+                  fontSize: wp('3.5%'),
+                  textAlign: 'right'
+                }}>
+                {this.state.propertyDetail.description}
+              </Text>
             </ReadMore>
             {/* <Text
             style={{
@@ -2421,54 +2387,6 @@ class EstateDetail extends Component {
               <View style={{
                 flexDirection: 'row'
               }}>
-                <TouchableOpacity
-                  onPress={() => this.onCall()}
-                  style={{
-                    width: wp('10%'),
-                    height: wp('10%'),
-                    backgroundColor: '#05B433',
-                    borderRadius: wp('10%') / 2,
-                    marginLeft: wp('2%'),
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Image
-                    style={{
-                      width: wp('5%'),
-                      height: wp('5%'),
-                    }}
-                    source={Constants.Images.phone}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    Share.open({ url: this.state.propertyDetail.short_link })
-                      .then((res) => {
-                        console.log(res);
-                      })
-                      .catch((err) => {
-                        err && console.log(err);
-                      });
-                  }}
-                  style={{
-                    width: wp('10%'),
-                    height: wp('10%'),
-                    backgroundColor: '#05B433',
-                    borderRadius: wp('10%') / 2,
-                    marginLeft: wp('1%'),
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <Image
-                    style={{
-                      width: wp('6%'),
-                      height: wp('6%'),
-                      tintColor: "white",
-                      resizeMode: 'contain'
-                    }}
-                    source={Constants.Images.shareIcon}
-                  />
-                </TouchableOpacity>
               </View>
               <View
                 style={{
@@ -3077,7 +2995,22 @@ class EstateDetail extends Component {
           alignItems: 'center',
           marginVertical: wp('2%'),
         }}>
-        <TouchableOpacity onPress={() => this.refreshDetail(value.item.id)}>
+        <TouchableOpacity onPress={async () => {
+          if (Constants.API.Token == null) {
+            Common.Helper.logEvent('Similar_Property_Click', {
+              Customer_ID: "With_out_login",
+              Propert_Id: value.item.id
+            });
+          } else {
+            let userInstance = await User.getInstance();
+            Common.Helper.logEvent('Similar_Property_Click', {
+              Customer_ID: userInstance.getUser().info.id,
+              Propert_Id: value.item.id
+            });
+          }
+          this.refreshDetail(value.item.id)
+        }
+        }>
           <View
             style={{
               width: wp('90%'),
@@ -3230,6 +3163,97 @@ class EstateDetail extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <View
+          style={{
+            height: 64, position: "absolute", bottom: 20, zIndex: 12345, width: "100%", flexDirection: "row", alignItems: "center",
+            justifyContent: "space-evenly",
+            backgroundColor: "white",
+            shadowColor: "#000",
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+          }}>
+          <TouchableOpacity onPress={() => this.actionLike()}>
+            <View
+              style={{
+                width: wp('12%'),
+                height: 43,
+                borderRadius: 5,
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'rgba(240,241,243,0.76)',
+              }}>
+              <Image
+                style={{ height: "60%", width: "60%", resizeMode: "contain" }}
+                source={
+                  this.state.isLiked == false
+                    ? Constants.Images.heartGray
+                    : Constants.Images.heartRed
+                }
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              Share.open({ url: this.state.propertyDetail.short_link })
+                .then((res) => {
+                  console.log(res);
+                })
+                .catch((err) => {
+                  err && console.log(err);
+                });
+            }}
+            style={{
+              width: wp('12%'),
+              height: 43,
+              backgroundColor: '#05B433',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 5
+            }}>
+            <Image
+              style={{
+                width: "60%",
+                height: "60%",
+                tintColor: "white",
+                resizeMode: 'contain'
+              }}
+              source={Constants.Images.shareIcon}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.onCall()
+            }}>
+            <View
+              style={{
+                height: 43,
+                width: wp('60%'),
+                backgroundColor: "#006feb",
+                alignItems: 'center',
+                justifyContent: "space-evenly",
+                flexDirection: "row",
+                borderRadius: 5,
+              }}>
+              <Text
+                style={{
+                  fontFamily: Constants.Fonts.SF_Display_Bold,
+                  fontSize: 18,
+                  color: 'white',
+                }}>
+                {Common.Helper.capitalize(Common.Translations.translate("phoneNumber"))}
+              </Text>
+              <Image
+                style={{ height: "60%", resizeMode: "contain" }}
+                source={Constants.Images.phone}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
         <View
           style={{
             flexDirection: 'column',

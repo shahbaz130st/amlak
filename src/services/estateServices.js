@@ -161,9 +161,10 @@ const defaultEstates = async (data) => {
       latitude: data.latitude,
       longitude: data.longitude,
       zoom: data.zoom,
+      city_id: data.city_id
     };
-    console.log("urlasd",`${Constants.API.Dashboard.ESTATES_SEACRH}/page=${data.page}`)
-    console.log("urlasd=====data",data)
+    console.log("urlasd", `${Constants.API.Dashboard.ESTATES_SEACRH}/page=${data.page}`)
+    console.log("urlasd=====data", data, body)
     const response = await Common.axios.post(
       `${Constants.API.Dashboard.ESTATES_SEACRH}?page=${data.page}`,
       body,
@@ -206,7 +207,7 @@ const priceRange = async (data) => {
 };
 
 const sortList = async (data) => {
-  console.log("data",data)
+  console.log("Api url", Constants.API.Dashboard.ESTATES_SORT, data)
   try {
     // const body = {
     //   starts: data.starts,
@@ -226,7 +227,6 @@ const sortList = async (data) => {
       Constants.API.Dashboard.ESTATES_SORT,
       data,
     );
-    console.log("Api url",Constants.API.Dashboard.ESTATES_SORT)
 
     if (response && response.status == 200) {
       return response.data;

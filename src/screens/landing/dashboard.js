@@ -8,7 +8,9 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
-  ActivityIndicator
+  ActivityIndicator,
+  Platform,
+  SafeAreaView
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
@@ -25,6 +27,7 @@ import * as Services from '../../services/index';
 import User from '../../models/user';
 import messaging from '@react-native-firebase/messaging';
 import AvatarComponent from "../../components/AvatarComponent";
+import ModalDropdown from '../../../lib/react-native-modal-dropdown-with-flatlist';
 
 const dataShops = [
   {
@@ -114,6 +117,7 @@ class Dashboard extends Component {
       forceRefresh: '333',
       dataFromFilter: false,
       flagAdded: 0,
+      city_id: null
     };
   }
 
@@ -122,6 +126,7 @@ class Dashboard extends Component {
   }
 
   async componentDidMount() {
+    this.cityList();
     let tempArray = [];
     this.props.toggleLoader(true);
     let token = await Common.KeyChain.get('authToken');
@@ -196,6 +201,18 @@ class Dashboard extends Component {
     this.checkPermission();
   }
 
+  cityList = async () => {
+    let values = await Services.EstateServices.cityList()
+    console.log(values)
+    let items = [];
+    let city = [];
+    for (let i = 0; i < values.length; i++) {
+      items.push(Constants.API.Language == 'en' ? values[i].name : values[i].name_ar);
+      city.push(values[i]);
+    }
+    this.setState({ cityItems: items, city: city });
+  };
+
   async refreshPageToHome() {
     try {
       let location = await Common.Helper.location();
@@ -257,7 +274,8 @@ class Dashboard extends Component {
       latitude: this.state.currentLocation.latitude,
       longitude: this.state.currentLocation.longitude,
       zoom: 10/* size */,
-      page: size
+      page: size,
+      city_id: this.state.city_id
     });
     // console.log('response=======estateRes.data.data', JSON.stringify(estateRes.data.data))
     this.setState({ propertyCount: estateRes?.proparty_count })
@@ -891,11 +909,23 @@ class Dashboard extends Component {
           marginVertical: wp('2%'),
         }}>
         <TouchableOpacity
-          onPress={() => {
+          onPress={async () => {
             // if (Constants.API.Token == null) {
             //   this.loginAlert();
             //   return;
             // }
+            if (Constants.API.Token == null) {
+              Common.Helper.logEvent('Dashboard_List_Property_Click', {
+                Customer_ID: "With_out_login",
+                Propert_Id: value.item.id
+              });
+            } else {
+              let userInstance = await User.getInstance();
+              Common.Helper.logEvent('Dashboard_List_Property_Click', {
+                Customer_ID: userInstance.getUser().info.id,
+                Propert_Id: value.item.id
+              });
+            }
             this.props.navigation.navigate(
               Constants.Navigations.Dashboard.DETAIL,
               { id: value.item.id },
@@ -1025,7 +1055,7 @@ class Dashboard extends Component {
                     fontSize: wp('2.5%'),
                     marginRight: wp('2%'),
                   }}>
-                  {`${value.item.region} ${value.item.address} ${Constants.API.Language == 'en'? value.item.city_id:value.item.city_id_arabic}
+                  {`${value.item.region} ${value.item.address} ${Constants.API.Language == 'en' ? value.item.city_id : value.item.city_id_arabic}
                     `}
                 </Text>
 
@@ -1090,7 +1120,19 @@ class Dashboard extends Component {
         forceRefresh={this.state.forceRefresh}
         showsUserLocation={this.state.isShowLocation}
         markers={arrayFilter}
-        onMapPress={(e) => {
+        onMapPress={async (e) => {
+          if (Constants.API.Token == null) {
+            Common.Helper.logEvent('Dashboard_Map_Property_Click', {
+              Customer_ID: "With_out_login",
+              Propert_Id: e.product.id
+            });
+          } else {
+            let userInstance = await User.getInstance();
+            Common.Helper.logEvent('Dashboard_Map_Property_Click', {
+              Customer_ID: userInstance.getUser().info.id,
+              Propert_Id: e.product.id
+            });
+          }
           this.setState({ showInfo: true, markerInfo: e });
         }}
         regionChange={(e, p) => {
@@ -1115,7 +1157,8 @@ class Dashboard extends Component {
       latitude: this.state.currentLocation.latitude,
       longitude: this.state.currentLocation.longitude,
       zoom: 10/* this.page */,
-      page: this.state.initialPageToRender
+      page: this.state.initialPageToRender,
+      city_id: this.state.city_id
     });
     this.props.toggleLoader(false)
     this.setState({ refreshing: false });
@@ -1136,14 +1179,13 @@ class Dashboard extends Component {
       <View
         style={{
           height: hp('70%'),
-          width: wp('100%'),
           backgroundColor: 'white',
           justifyContent: 'center',
-          alignItems: 'center',
+          alignItems: 'center'
         }}>
-        {
+          {/* {
           console.log("arraylist", array)
-        }
+        } */}
         {array.length == 0 && this.props.loading !== true ? (
           <Text
             style={{
@@ -1353,7 +1395,8 @@ class Dashboard extends Component {
         latitude: this.state.currentLocation.latitude,
         longitude: this.state.currentLocation.longitude,
         zoom: 10/* this.page */,
-        page: this.state.initialPageToRender
+        page: this.state.initialPageToRender,
+        city_id: this.state.city_id
       });
       if (estateRes.data.data) {
         // console.log('Listing Response', estateRes?.data?.data?.length);
@@ -1391,7 +1434,7 @@ class Dashboard extends Component {
       const params = {};
       params.rent_or_sale = item?.type.toLowerCase();
       params.type = item?.id;
-
+      params.city_id = this.state.city_id
       // console.log('parameter request', params);
 
       let res = await Services.EstateServices.sortList(params);
@@ -1422,25 +1465,75 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <View style={{
+          width: "100%",
+          justifyContent: "center",
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+          alignItems: "flex-end",
+        }}>
+          <ModalDropdown
+            style={{
+              backgroundColor: '#F0F0F0',
+              borderRadius: 5,
+              marginLeft: 15,
+              borderColor: "lightgrey",
+              borderWidth: 1,
+              justifyContent: "center",
+              height: 40,
+              width: 100
+            }}
+            opacityStyle={{
+              height: "100%",
+              justifyContent: "center"
+            }}
+            textStyle={{
+              color: '#444040',
+              textAlign: 'right',
+              fontFamily: Constants.Fonts.shamelBold,
+              fontSize: wp('3%')
+            }}
+            dropdownTextStyle={{
+              textAlign: 'right',
+              color: 'black',
+              fontFamily: Constants.Fonts.shamel,
+              fontSize: wp('3%')
+            }}
+            options={this.state.cityItems}
+            onSelect={async (idx, value) => {
+              console.log(this.state.city[idx].id, value)
+              await this.setState({
+                city_id: this.state.city[idx].id,
+              })
+              this.getFilterList(this.state.selectedFilter == null ? { "id": 0, "name": "All" } : this.state.selectedFilter)
+            }}
+            leftImage={Constants.Images.menuIcon}
+            rightImage={Constants.Images.locationBlack}
+            buttonContainerStyle={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-evenly"
+            }}
+            accessible={true}
+            defaultValue={Common.Translations.translate('city')}
+          />
+        </View>
         <View
           style={{
             width: wp('100%'),
-            height: hp('16%'),
+            height: hp('11%'),
             backgroundColor: 'white',
             justifyContent: 'center',
-            alignItems: 'center',
+            alignItems: 'center'
           }}>
           <View
             style={{
               width: wp('100%'),
               height: hp('5%'),
-              marginTop: hp('4.5%'),
               justifyContent: 'center',
               alignItems: 'center',
-              flexDirection: 'row',
-              // borderColor:"red",
-              // borderWidth:1
+              flexDirection: 'row'
             }}>
             <TouchableOpacity
               style={{ marginLeft: wp('5%') }}
@@ -1459,6 +1552,54 @@ class Dashboard extends Component {
                 <Image source={Constants.Images.sort} />
               ) : null}
             </TouchableOpacity>
+            {/* <TouchableOpacity
+              onPress={() =>
+                this.setState({
+                  isFilter: true,
+                  showPicker: !this.state.showPicker,
+                  sortActive: false,
+                  showBottomPicker: false,
+                  showInfo: false,
+                })
+              }>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  backgroundColor: 'white',
+                  width: wp('30%'),
+                  height: hp('4%'),
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: wp('1%'),
+                  borderWidth: 1,
+                  borderColor:
+                    this.state.isFilter == true ? '#006FEB' : 'transparent',
+                  overflow: 'hidden',
+                }}>
+                <Image
+                  style={{
+                    marginRight: wp('6%'),
+                  }}
+                  source={
+                    this.state.isFilter == true
+                      ? Constants.Images.downArrowDark
+                      : Constants.Images.downArrow
+                  }
+                />
+                <Text
+                  style={{
+                    fontFamily: Constants.Fonts.shamelBold,
+                    fontSize: wp('3%'),
+                    color: this.state.isFilter == true ? 'black' : '#E1E1E1',
+                  }}>
+                  {this.state.selectedFilter == null
+                    ? Common.Translations.translate('all')
+                    : this.state.selectedFilter.name == undefined
+                      ? Common.Translations.translate('all')
+                      : this.state.selectedFilter.name}
+                </Text>
+              </View>
+            </TouchableOpacity> */}
             <FlatList
               data={this.state.items}
               showsHorizontalScrollIndicator={false}
@@ -1557,7 +1698,7 @@ class Dashboard extends Component {
                   flexDirection: 'row',
                   backgroundColor: 'white',
                   width: wp('33%'),
-                  height: hp('4%'),
+                  // height: hp('4%'),
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}>
@@ -1606,7 +1747,7 @@ class Dashboard extends Component {
                   flexDirection: 'row',
                   backgroundColor: 'white',
                   width: wp('33%'),
-                  height: hp('4%'),
+                  // height: hp('4%'),
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}>
@@ -1634,7 +1775,7 @@ class Dashboard extends Component {
                 style={{
                   flexDirection: 'row',
                   width: wp('33%'),
-                  height: hp('4%'),
+                  // height: hp('4%'),
                   justifyContent: 'center',
                   alignItems: 'center'
                 }}>
@@ -1738,7 +1879,7 @@ class Dashboard extends Component {
             </TouchableOpacity>
           </View> */}
         </View>
-        <View style={{ height: hp('75%'), width: wp('100%') }}>
+        <View style={{ flex: 1,/* height: hp('75%'), */ width: wp('100%') }}>
           {this.state.isList == true ? this.listView() : this.mapView()}
           {this.state.isList == false ? (
             <TouchableOpacity
@@ -1848,7 +1989,7 @@ class Dashboard extends Component {
             }}
           />
         )}
-      </View>
+      </SafeAreaView>
     );
   }
 }

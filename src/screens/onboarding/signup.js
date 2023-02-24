@@ -17,7 +17,6 @@ import ImagePicker from 'react-native-image-picker';
 import ImageResizer from 'react-native-image-resizer';
 import { connect } from 'react-redux';
 import { Actions } from '../../redux/index';
-import analytics from '@react-native-firebase/analytics';
 
 import * as Constants from '../../constants/index';
 import * as Services from '../../services/index';
