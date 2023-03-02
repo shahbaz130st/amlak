@@ -524,7 +524,7 @@ PODS:
   - RNFBApp (12.9.3):
     - Firebase/CoreOnly (= 8.8.0)
     - React-Core
-  - RNFBCrashlytics (12.9.3):
+  - RNFBCrashlytics (12.8.0):
     - Firebase/Crashlytics (= 8.8.0)
     - React-Core
     - RNFBApp
@@ -896,7 +896,7 @@ SPEC CHECKSUMS:
   RNFastImage: 5c9c9fed9c076e521b3f509fe79e790418a544e8
   RNFBAnalytics: f76bfa164ac235b00505deb9fc1776634056898c
   RNFBApp: 729c0666395b1953198dc4a1ec6deb8fbe1c302e
-  RNFBCrashlytics: 2061ca863e8e2fa1aae9b12477d7dfa8e88ca0f9
+  RNFBCrashlytics: 55698c61c1650b05b9bd493270f5d58f5967b4b1
   RNFBDynamicLinks: 4cb7df93b3bea086d743ecb78127c3d11b38510d
   RNFBMessaging: 8415ec196e5c1196caa26ec0742cdb48ed4d0f97
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
@@ -914,6 +914,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: b6fec13128262316db6e2876892e38387923cc53
+PODFILE CHECKSUM: 6b99a33e6abee462fdb90adb049dd631498def21
 
 COCOAPODS: 1.11.3

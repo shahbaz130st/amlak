@@ -6,6 +6,8 @@
 	<string>663041982751-gkli4kro8r2kdosk5gq6bgnffgh64vjo.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.663041982751-gkli4kro8r2kdosk5gq6bgnffgh64vjo</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>663041982751-bqch7i2qb4rp0rsotklisr30cqfojcf8.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyC381qXC8PhvFJMQ6yBAa9jRlGSlHegIHg</string>
 	<key>GCM_SENDER_ID</key>
@@ -19,16 +21,25 @@
 	<key>STORAGE_BUCKET</key>
 	<string>amlak-2e642.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:663041982751:ios:64332eab3cbf05ae11f02a</string>
+	<key>crashlytics_debug_enabled</key>
+	<true/>
+	<key>crashlytics_auto_collection_enabled</key>
+	<true/>
+	<key>crashlytics_is_error_generation_on_js_crash_enabled</key>
+	<true/>
+	<key>crashlytics_javascript_exception_handler_chaining_enabled</key>
+		<true/>
+
 </dict>
 </plist>
