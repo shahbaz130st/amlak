@@ -128,6 +128,7 @@ class Dashboard extends Component {
 
   async componentDidMount() {
     this.cityList();
+    // console.log();
     let tempArray = [];
     this.props.toggleLoader(true);
     let token = await Common.KeyChain.get("authToken");
