@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   View,
   StyleSheet,
@@ -10,25 +10,27 @@ import {
   Linking,
   StatusBar,
   SafeAreaView,
-} from 'react-native';
+  Pressable,
+} from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import { SliderBox } from 'react-native-image-slider-box';
-import moment from 'moment';
-import StarRating from 'react-native-star-rating';
-import Share from 'react-native-share';
+} from "react-native-responsive-screen";
+import { SliderBox } from "react-native-image-slider-box";
+import moment from "moment";
+import StarRating from "react-native-star-rating";
+import Share from "react-native-share";
+import RBSheet from "react-native-raw-bottom-sheet";
 
-import * as Components from '../../components/index';
-import * as Constants from '../../constants/index';
-import * as Common from '../../common/index';
-import * as Services from '../../services/index';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import ReadMore from 'react-native-read-more-text';
-import { connect } from 'react-redux';
-import { Actions } from '../../redux/index';
-import User from '../../models/user';
+import * as Components from "../../components/index";
+import * as Constants from "../../constants/index";
+import * as Common from "../../common/index";
+import * as Services from "../../services/index";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import ReadMore from "react-native-read-more-text";
+import { connect } from "react-redux";
+import { Actions } from "../../redux/index";
+import User from "../../models/user";
 
 const MyStatusBar = ({ backgroundColor, ...props }) => (
   <View style={[styles.statusBar, { backgroundColor }]}>
@@ -45,11 +47,11 @@ class EstateDetail extends Component {
     currentIndex: 1,
     favorite_list: [],
     sortOptions: [
-      { name: Common.Translations.translate('report_reason'), id: '-1' },
-      { name: Common.Translations.translate('misleading'), id: '1' },
-      { name: Common.Translations.translate('fake'), id: '2' },
-      { name: Common.Translations.translate('improper'), id: '3' },
-      { name: Common.Translations.translate('others'), id: '4' },
+      { name: Common.Translations.translate("report_reason"), id: "-1" },
+      { name: Common.Translations.translate("misleading"), id: "1" },
+      { name: Common.Translations.translate("fake"), id: "2" },
+      { name: Common.Translations.translate("improper"), id: "3" },
+      { name: Common.Translations.translate("others"), id: "4" },
     ],
     showReport: false,
     selectedFilter: null,
@@ -58,19 +60,19 @@ class EstateDetail extends Component {
     similerAds: [],
     propertyRegion: null,
     marker: null,
-    forceRefresh: '333',
+    forceRefresh: "333",
     isShowLocation: false,
-    shortLink: ''
+    shortLink: "",
   };
 
   async componentDidMount() {
-    this.props.restorePropertyId('');
+    this.props.restorePropertyId("");
     this.props.toggleLoader(true);
     let detailRes = await Services.EstateServices.estates(
-      this.props.route.params.id,
+      this.props.route.params.id
     );
     let detailAds = await Services.EstateServices.similarProps(
-      this.props.route.params.id,
+      this.props.route.params.id
     );
     if (detailAds && detailAds.length > 0) {
       this.setState({ similerAds: detailAds });
@@ -80,18 +82,20 @@ class EstateDetail extends Component {
       this.setState({ propertyDetail: detailRes });
       console.log("Property Detail", detailRes);
       this.setState({
-        marker: [{
-          latitude:
-            parseFloat(detailRes.latitude) == NaN
-              ? detailRes.latitude
-              : parseFloat(detailRes.latitude),
-          longitude:
-            parseFloat(detailRes.longitude) == NaN
-              ? detailRes.longitude
-              : parseFloat(detailRes.longitude),
-          title: detailRes.advertiser_name,
-          subtitle: '',
-        }]
+        marker: [
+          {
+            latitude:
+              parseFloat(detailRes.latitude) == NaN
+                ? detailRes.latitude
+                : parseFloat(detailRes.latitude),
+            longitude:
+              parseFloat(detailRes.longitude) == NaN
+                ? detailRes.longitude
+                : parseFloat(detailRes.longitude),
+            title: detailRes.advertiser_name,
+            subtitle: "",
+          },
+        ],
       });
       this.setState({
         propertyRegion: {
@@ -142,7 +146,7 @@ class EstateDetail extends Component {
     let detailRes = await Services.EstateServices.estates(id);
     this.props.toggleLoader(false);
     if (detailRes && detailRes.id) {
-      console.log('object------>', detailRes);
+      console.log("object------>", detailRes);
       this.setState({ propertyDetail: detailRes });
       this.setState({ isLiked: detailRes.is_fav });
       let images = [];
@@ -173,16 +177,16 @@ class EstateDetail extends Component {
   };
   _renderTruncatedFooter = (handlePress) => {
     return (
-      <Text style={{ color: '#006FEB', marginTop: 5 }} onPress={handlePress}>
-        {Common.Translations.translate('readMore')}
+      <Text style={{ color: "#006FEB", marginTop: 5 }} onPress={handlePress}>
+        {Common.Translations.translate("readMore")}
       </Text>
     );
   };
 
   _renderRevealedFooter = (handlePress) => {
     return (
-      <Text style={{ color: '#006FEB', marginTop: 5 }} onPress={handlePress}>
-        {Common.Translations.translate('readLess')}
+      <Text style={{ color: "#006FEB", marginTop: 5 }} onPress={handlePress}>
+        {Common.Translations.translate("readLess")}
       </Text>
     );
   };
@@ -196,12 +200,12 @@ class EstateDetail extends Component {
         style={{
           backgroundColor:
             index + 1 == this.state.currentIndex
-              ? 'rgba(0,111,235,1)'
-              : 'rgba(255,255,255,0.35)',
+              ? "rgba(0,111,235,1)"
+              : "rgba(255,255,255,0.35)",
           width: 13,
           height: 13,
           borderRadius: 13 / 2,
-          marginHorizontal: wp('0.5%'),
+          marginHorizontal: wp("0.5%"),
         }}
         key={index}
       />
@@ -216,21 +220,21 @@ class EstateDetail extends Component {
     if (this.state.isLiked) {
       this.props.toggleLoader(true);
       let favRes = await Services.EstateServices.deletefav(
-        this.props.route.params.id,
+        this.props.route.params.id
       );
       this.props.toggleLoader(false);
 
       if (favRes) {
-        console.log('----->', favRes);
+        console.log("----->", favRes);
         this.setState({ isLiked: false });
       }
     } else {
       this.props.toggleLoader(true);
       let detailRes = await Services.EstateServices.addToFav(
-        this.props.route.params.id,
+        this.props.route.params.id
       );
       if (detailRes) {
-        console.log('----->', detailRes);
+        console.log("----->", detailRes);
         this.setState({ isLiked: true });
       }
       this.props.toggleLoader(false);
@@ -243,20 +247,20 @@ class EstateDetail extends Component {
       return;
     }
     Alert.alert(
-      Common.Translations.translate('title_report'),
-      Common.Translations.translate('message_report'),
+      Common.Translations.translate("title_report"),
+      Common.Translations.translate("message_report"),
       [
         {
-          text: Common.Translations.translate('report_button'),
+          text: Common.Translations.translate("report_button"),
           onPress: () => this.selectReport(),
-          style: 'default',
+          style: "default",
         },
         {
-          text: Common.Translations.translate('cancel_button'),
-          onPress: () => console.log('OK Pressed'),
+          text: Common.Translations.translate("cancel_button"),
+          onPress: () => console.log("OK Pressed"),
         },
       ],
-      { cancelable: false },
+      { cancelable: false }
     );
   }
 
@@ -288,19 +292,19 @@ class EstateDetail extends Component {
   }
 
   reportEstate = async (comment) => {
-    if (comment.id == '-1') {
+    if (comment.id == "-1") {
       return;
     }
     this.props.toggleLoader(true);
     let params = {};
     let userInstance = await User.getInstance();
     if (userInstance.getUser().info) {
-      params['user_id'] = userInstance.getUser().info.id;
+      params["user_id"] = userInstance.getUser().info.id;
     }
-    params['estat_id'] = this.props.route.params.id;
-    params['comment'] = comment.name;
-    params['value'] = comment.id;
-    console.log('params------>', params);
+    params["estat_id"] = this.props.route.params.id;
+    params["comment"] = comment.name;
+    params["value"] = comment.id;
+    console.log("params------>", params);
     await Services.EstateServices.report(params);
     this.props.toggleLoader(false);
   };
@@ -312,62 +316,63 @@ class EstateDetail extends Component {
   }
 
   loginAlert = () =>
-    Alert.alert('', Common.Translations.translate('login_required'), [
+    Alert.alert("", Common.Translations.translate("login_required"), [
       {
-        text: Common.Translations.translate('ok'),
-        onPress: () => { },
-        style: 'cancel',
+        text: Common.Translations.translate("ok"),
+        onPress: () => {},
+        style: "cancel",
       },
       {
-        text: Common.Translations.translate('login'),
+        text: Common.Translations.translate("login"),
         onPress: () => {
-          this.props.restorePropertyId(this.props.route.params.id)
+          this.props.restorePropertyId(this.props.route.params.id);
           setTimeout(() => {
             this.props.navigation.navigate(
-              Constants.Navigations.Onboarding.LOGIN,
+              Constants.Navigations.Onboarding.LOGIN
             );
           }, 1000);
         },
-        style: 'cancel',
+        style: "cancel",
       },
     ]);
 
   async onCall() {
     if (Constants.API.Token == null) {
-      this.loginAlert();
+      this.RBSheet.open();
+      // this.loginAlert();
       return;
     }
     let userInstance = await User.getInstance();
-    Common.Helper.logEvent('callPropertyOwner', {
+    Common.Helper.logEvent("callPropertyOwner", {
       Customer_Phone_Number: userInstance.getUser().info.mobile,
       Customer_Name: userInstance.getUser().info.name,
       Property_Owner_Phone_Number: this.state.propertyDetail.owner_number,
-      Propert_Id: this.state.propertyDetail.id
+      Propert_Id: this.state.propertyDetail.id,
     });
     let phone = this.state.propertyDetail.owner_number;
     let phoneNumber = phone;
-    if (Platform.OS !== 'android') {
+    if (Platform.OS !== "android") {
       phoneNumber = `telprompt:${phone}`;
     } else {
       phoneNumber = `tel:${phone}`;
     }
 
     Alert.alert(
-      'Call',
+      "Call",
       phone.toString(),
       [
         {
-          text: 'Cancel',
-          onPress: () => console.log('Cancel Pressed'),
-          style: 'cancel',
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
         },
         {
-          text: 'OK',
+          text: "OK",
           onPress: () => {
             Linking.canOpenURL(phoneNumber)
               .then((supported) => {
                 if (!supported) {
-                  Alert.alert('Phone number is not available');
+                  Alert.alert("Phone number is not available");
                 } else {
                   return Linking.openURL(phoneNumber);
                 }
@@ -376,7 +381,7 @@ class EstateDetail extends Component {
           },
         },
       ],
-      { cancelable: false },
+      { cancelable: false }
     );
   }
   renderDetail = () => {
@@ -385,25 +390,27 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              flexDirection: 'row',
-              backgroundColor: '#F5F5F5',
-              paddingVertical: wp('3%'),
-              width: '90%',
-              justifyContent: 'space-around',
-              paddingHorizontal: wp('2%'),
-            }}>
+              flexDirection: "row",
+              backgroundColor: "#F5F5F5",
+              paddingVertical: wp("3%"),
+              width: "90%",
+              justifyContent: "space-around",
+              paddingHorizontal: wp("2%"),
+            }}
+          >
             <MyStatusBar backgroundColor="white" barStyle="light-content" />
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.bath == undefined
-                  ? ''
-                  : 1 + ' ' + Common.Translations.translate('bathRoom')}
+                  ? ""
+                  : 1 + " " + Common.Translations.translate("bathRoom")}
               </Text>
               <Image source={Constants.Images.bathRoomSelected} />
             </View>
@@ -446,19 +453,20 @@ class EstateDetail extends Component {
               />
             </View> */}
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.shop_area == undefined
-                  ? ''
+                  ? ""
                   : this.state.propertyDetail.details.shop_area +
-                  ' ' +
-                  Common.Translations.translate('m2')}
+                    " " +
+                    Common.Translations.translate("m2")}
               </Text>
               <Image source={Constants.Images.provincesSelected} />
             </View>
@@ -468,78 +476,83 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              flexDirection: 'row',
-              backgroundColor: '#F5F5F5',
-              paddingVertical: wp('3%'),
-              width: '90%',
-              justifyContent: 'space-around',
-              paddingHorizontal: wp('2%'),
-            }}>
+              flexDirection: "row",
+              backgroundColor: "#F5F5F5",
+              paddingVertical: wp("3%"),
+              width: "90%",
+              justifyContent: "space-around",
+              paddingHorizontal: wp("2%"),
+            }}
+          >
             <MyStatusBar backgroundColor="white" barStyle="light-content" />
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.number_of_baths == undefined
-                  ? ''
+                  ? ""
                   : this.state.propertyDetail.details.number_of_baths +
-                  ' ' +
-                  Common.Translations.translate('bathRoom')}
+                    " " +
+                    Common.Translations.translate("bathRoom")}
               </Text>
               <Image source={Constants.Images.bathRoomSelected} />
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.number_of_halls == undefined
-                  ? ''
+                  ? ""
                   : this.state.propertyDetail.details.number_of_halls +
-                  ' ' +
-                  Common.Translations.translate('galleries')}
+                    " " +
+                    Common.Translations.translate("galleries")}
               </Text>
               <Image source={Constants.Images.tubSelected} />
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.number_of_bedrooms ==
-                  undefined
-                  ? ''
+                undefined
+                  ? ""
                   : this.state.propertyDetail.details.number_of_bedrooms +
-                  ' ' +
-                  Common.Translations.translate('bedRoom')}
+                    " " +
+                    Common.Translations.translate("bedRoom")}
               </Text>
               <Image source={Constants.Images.bedSelected} />
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.total_area == undefined
-                  ? ''
+                  ? ""
                   : this.state.propertyDetail.details.total_area +
-                  ' ' +
-                  Common.Translations.translate('m2')}
+                    " " +
+                    Common.Translations.translate("m2")}
               </Text>
               <Image source={Constants.Images.provincesSelected} />
             </View>
@@ -549,82 +562,89 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              flexDirection: 'row',
-              backgroundColor: '#F5F5F5',
-              paddingVertical: wp('3%'),
-              width: '90%',
-              justifyContent: 'space-between',
-              paddingHorizontal: wp('2%'),
-            }}>
+              flexDirection: "row",
+              backgroundColor: "#F5F5F5",
+              paddingVertical: wp("3%"),
+              width: "90%",
+              justifyContent: "space-between",
+              paddingHorizontal: wp("2%"),
+            }}
+          >
             <MyStatusBar backgroundColor="white" barStyle="light-content" />
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.no_of_bath == undefined
-                  ? ''
+                  ? ""
                   : this.state.propertyDetail.details.no_of_bath +
-                  ' ' +
-                  Common.Translations.translate('bathRoom')}
+                    " " +
+                    Common.Translations.translate("bathRoom")}
               </Text>
               <Image source={Constants.Images.bathRoomSelected} />
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.door_type == undefined
-                  ? ''
-                  : Constants.API.Language == 'ar' ? this.state.propertyDetail.details.door_type_arabic : this.state.propertyDetail.details.door_type}
+                  ? ""
+                  : Constants.API.Language == "ar"
+                  ? this.state.propertyDetail.details.door_type_arabic
+                  : this.state.propertyDetail.details.door_type}
               </Text>
               <Image
-                style={{ width: wp('3%'), height: wp('3.5%') }}
+                style={{ width: wp("3%"), height: wp("3.5%") }}
                 source={Constants.Images.doorBlue}
               />
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.warehouse_street_width ==
-                  undefined
-                  ? ''
+                undefined
+                  ? ""
                   : this.state.propertyDetail.details.warehouse_street_width +
-                  ' ' +
-                  Common.Translations.translate('m')}
+                    " " +
+                    Common.Translations.translate("m")}
               </Text>
               <Image
-                style={{ width: wp('3%'), height: wp('3.5%') }}
+                style={{ width: wp("3%"), height: wp("3.5%") }}
                 source={Constants.Images.roadBlue}
               />
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.warehouse_area == undefined
-                  ? ''
+                  ? ""
                   : this.state.propertyDetail.details.warehouse_area +
-                  ' ' +
-                  Common.Translations.translate('m2')}
+                    " " +
+                    Common.Translations.translate("m2")}
               </Text>
               <Image source={Constants.Images.provincesSelected} />
             </View>
@@ -634,85 +654,94 @@ class EstateDetail extends Component {
         return (
           <React.Fragment>
             {this.state.propertyDetail.details.office_area &&
-              this.state.propertyDetail.details.office_area != undefined ? (
+            this.state.propertyDetail.details.office_area != undefined ? (
               <View
                 style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#F5F5F5',
-                  paddingVertical: wp('3%'),
-                  width: '90%',
-                  justifyContent: 'space-around',
-                  paddingHorizontal: wp('2%'),
-                }}>
+                  flexDirection: "row",
+                  backgroundColor: "#F5F5F5",
+                  paddingVertical: wp("3%"),
+                  width: "90%",
+                  justifyContent: "space-around",
+                  paddingHorizontal: wp("2%"),
+                }}
+              >
                 <MyStatusBar backgroundColor="white" barStyle="light-content" />
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {this.state.propertyDetail.details.floor_number == undefined
-                      ? ''
+                      ? ""
                       : this.state.propertyDetail.details.floor_number +
-                      ' ' +
-                      Common.Translations.translate('bathRoom')}
+                        " " +
+                        Common.Translations.translate("bathRoom")}
                   </Text>
                   <Image source={Constants.Images.bathRoomSelected} />
                 </View>
 
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {this.state.propertyDetail.details.door_type == undefined
-                      ? ''
-                      : Constants.API.Language == 'ar' ? this.state.propertyDetail.details.door_type_arabic : this.state.propertyDetail.details.door_type}
+                      ? ""
+                      : Constants.API.Language == "ar"
+                      ? this.state.propertyDetail.details.door_type_arabic
+                      : this.state.propertyDetail.details.door_type}
                   </Text>
                   <Image
-                    style={{ width: wp('3%'), height: wp('3.5%') }}
+                    style={{ width: wp("3%"), height: wp("3.5%") }}
                     source={Constants.Images.doorBlue}
                   />
                 </View>
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {this.state.propertyDetail.details.office_area == undefined
-                      ? ''
+                      ? ""
                       : this.state.propertyDetail.details.office_area +
-                      ' ' +
-                      Common.Translations.translate('m2')}
+                        " " +
+                        Common.Translations.translate("m2")}
                   </Text>
                   <Image source={Constants.Images.provincesSelected} />
                 </View>
@@ -724,58 +753,65 @@ class EstateDetail extends Component {
         return (
           <React.Fragment>
             {this.state.propertyDetail.details.land_area &&
-              this.state.propertyDetail.details.land_area != undefined ? (
+            this.state.propertyDetail.details.land_area != undefined ? (
               <View
                 style={{
-                  flexDirection: 'row',
-                  backgroundColor: '#F5F5F5',
-                  paddingVertical: wp('3%'),
-                  width: '90%',
-                  justifyContent: 'space-around',
-                  paddingHorizontal: wp('2%'),
-                }}>
+                  flexDirection: "row",
+                  backgroundColor: "#F5F5F5",
+                  paddingVertical: wp("3%"),
+                  width: "90%",
+                  justifyContent: "space-around",
+                  paddingHorizontal: wp("2%"),
+                }}
+              >
                 <MyStatusBar backgroundColor="white" barStyle="light-content" />
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {this.state.propertyDetail.details.land_type == undefined
-                      ? ''
-                      : Constants.API.Language == 'ar' ? this.state.propertyDetail.details.land_type_arabic : this.state.propertyDetail.details.land_type}
+                      ? ""
+                      : Constants.API.Language == "ar"
+                      ? this.state.propertyDetail.details.land_type_arabic
+                      : this.state.propertyDetail.details.land_type}
                   </Text>
                   <Image source={Constants.Images.type} />
                 </View>
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {this.state.propertyDetail.details.land_area == undefined
-                      ? ''
+                      ? ""
                       : this.state.propertyDetail.details.land_area +
-                      ' ' +
-                      Common.Translations.translate('m2')}
+                        " " +
+                        Common.Translations.translate("m2")}
                   </Text>
                   <Image source={Constants.Images.provincesSelected} />
                 </View>
@@ -787,78 +823,83 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              flexDirection: 'row',
-              backgroundColor: '#F5F5F5',
-              paddingVertical: wp('3%'),
-              width: '90%',
-              justifyContent: 'space-around',
-              paddingHorizontal: wp('2%'),
-            }}>
+              flexDirection: "row",
+              backgroundColor: "#F5F5F5",
+              paddingVertical: wp("3%"),
+              width: "90%",
+              justifyContent: "space-around",
+              paddingHorizontal: wp("2%"),
+            }}
+          >
             <MyStatusBar backgroundColor="white" barStyle="light-content" />
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.number_of_baths == undefined
-                  ? ''
+                  ? ""
                   : this.state.propertyDetail.details.number_of_baths +
-                  ' ' +
-                  Common.Translations.translate('bathRoom')}
+                    " " +
+                    Common.Translations.translate("bathRoom")}
               </Text>
               <Image source={Constants.Images.bathRoomSelected} />
             </View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.number_of_halls == undefined
-                  ? ''
+                  ? ""
                   : this.state.propertyDetail.details.number_of_halls +
-                  ' ' +
-                  Common.Translations.translate('galleries')}
+                    " " +
+                    Common.Translations.translate("galleries")}
               </Text>
               <Image source={Constants.Images.tubSelected} />
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.number_of_bedrooms ==
-                  undefined
-                  ? ''
+                undefined
+                  ? ""
                   : this.state.propertyDetail.details.number_of_bedrooms +
-                  ' ' +
-                  Common.Translations.translate('bedRoom')}
+                    " " +
+                    Common.Translations.translate("bedRoom")}
               </Text>
               <Image source={Constants.Images.bedSelected} />
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('2.5%'),
-                  marginRight: wp('2%'),
-                }}>
+                  color: "#444040",
+                  fontSize: wp("2.5%"),
+                  marginRight: wp("2%"),
+                }}
+              >
                 {this.state.propertyDetail.details.total_area == undefined
-                  ? ''
+                  ? ""
                   : this.state.propertyDetail.details.total_area +
-                  ' ' +
-                  Common.Translations.translate('m2')}
+                    " " +
+                    Common.Translations.translate("m2")}
               </Text>
               <Image source={Constants.Images.provincesSelected} />
             </View>
@@ -873,57 +914,63 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              width: '90%',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               paddingBottom: 5,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}>
-              <View style={{ flexDirection: 'column' }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+              }}
+            >
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
-                  {Common.Translations.translate('surrounded_with_wall')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {Common.Translations.translate("surrounded_with_wall")}
                 </Text>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#006FEB',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
+                    color: "#006FEB",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
                   {this.state.propertyDetail.details.wall_around}
                 </Text>
               </View>
 
-              <View style={{ flexDirection: 'column' }}>
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
-                  {Common.Translations.translate('property_id')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {Common.Translations.translate("property_id")}
                 </Text>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#006FEB',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                    marginLeft: wp('30%'),
-                  }}>
+                    color: "#006FEB",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                    marginLeft: wp("30%"),
+                  }}
+                >
                   {this.state.propertyDetail.details.building_number ==
-                    undefined
+                  undefined
                     ? this.state.propertyDetail.details.id
                     : this.state.propertyDetail.details.building_number}
                 </Text>
@@ -931,47 +978,52 @@ class EstateDetail extends Component {
             </View>
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}>
-              <View style={{ flexDirection: 'column' }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+              }}
+            >
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
-                  {Common.Translations.translate('water')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {Common.Translations.translate("water")}
                 </Text>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#006FEB',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
+                    color: "#006FEB",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
                   {this.state.propertyDetail.water}
                 </Text>
               </View>
-              <View style={{ flexDirection: 'column' }}>
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
-                  {Common.Translations.translate('electricity')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {Common.Translations.translate("electricity")}
                 </Text>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#006FEB',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                    marginLeft: wp('30%'),
-                  }}>
+                    color: "#006FEB",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                    marginLeft: wp("30%"),
+                  }}
+                >
                   {this.state.propertyDetail.electricity}
                 </Text>
               </View>
@@ -983,81 +1035,91 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              width: '90%',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               paddingBottom: 5,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+              }}
+            >
               {this.state.propertyDetail.category_id == 50 ||
-                this.state.propertyDetail.category_id == 40 ? (
-                <View style={{ flexDirection: 'column' }}>
+              this.state.propertyDetail.category_id == 40 ? (
+                <View style={{ flexDirection: "column" }}>
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamel,
-                      color: '#444040',
-                      fontSize: wp('3%'),
-                      textAlign: 'right',
-                    }}>
-                    {Common.Translations.translate('door_type')}
+                      color: "#444040",
+                      fontSize: wp("3%"),
+                      textAlign: "right",
+                    }}
+                  >
+                    {Common.Translations.translate("door_type")}
                   </Text>
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamelBold,
-                      color: '#006FEB',
-                      fontSize: wp('3%'),
-                      textAlign: 'right',
-                    }}>
-                    {Constants.API.Language == 'ar' ? this.state.propertyDetail.details.door_type_arabic : this.state.propertyDetail.details.door_type}
+                      color: "#006FEB",
+                      fontSize: wp("3%"),
+                      textAlign: "right",
+                    }}
+                  >
+                    {Constants.API.Language == "ar"
+                      ? this.state.propertyDetail.details.door_type_arabic
+                      : this.state.propertyDetail.details.door_type}
                   </Text>
                 </View>
               ) : (
-                <View style={{ flexDirection: 'column' }}>
+                <View style={{ flexDirection: "column" }}>
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamel,
-                      color: '#444040',
-                      fontSize: wp('3%'),
-                      textAlign: 'right',
-                    }}>
-                    {Common.Translations.translate('year_of_construction')}
+                      color: "#444040",
+                      fontSize: wp("3%"),
+                      textAlign: "right",
+                    }}
+                  >
+                    {Common.Translations.translate("year_of_construction")}
                   </Text>
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamelBold,
-                      color: '#006FEB',
-                      fontSize: wp('3%'),
-                      textAlign: 'right',
-                    }}>
+                      color: "#006FEB",
+                      fontSize: wp("3%"),
+                      textAlign: "right",
+                    }}
+                  >
                     {this.state.propertyDetail.name}
                   </Text>
                 </View>
               )}
 
-              <View style={{ flexDirection: 'column' }}>
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
-                  {Common.Translations.translate('property_id')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {Common.Translations.translate("property_id")}
                 </Text>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#006FEB',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                    marginLeft: wp('30%'),
-                  }}>
+                    color: "#006FEB",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                    marginLeft: wp("30%"),
+                  }}
+                >
                   {this.state.propertyDetail.details.building_number ==
-                    undefined
+                  undefined
                     ? this.state.propertyDetail.details.id
                     : this.state.propertyDetail.details.building_number}
                 </Text>
@@ -1065,48 +1127,53 @@ class EstateDetail extends Component {
             </View>
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}>
-              <View style={{ flexDirection: 'column' }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+              }}
+            >
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
-                  {Common.Translations.translate('furnished')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {Common.Translations.translate("furnished")}
                 </Text>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#006FEB',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
+                    color: "#006FEB",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
                   {this.state.propertyDetail.furnitarued}
                 </Text>
               </View>
-              <View style={{ flexDirection: 'column' }}>
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
-                  {Common.Translations.translate('interface')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {Common.Translations.translate("interface")}
                 </Text>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#006FEB',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                    marginLeft: wp('30%'),
-                  }}>
-                  غربية{' '}
+                    color: "#006FEB",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                    marginLeft: wp("30%"),
+                  }}
+                >
+                  غربية{" "}
                 </Text>
               </View>
             </View>
@@ -1116,81 +1183,91 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              width: '90%',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               paddingBottom: 5,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+              }}
+            >
               {this.state.propertyDetail.category_id == 50 ||
-                this.state.propertyDetail.category_id == 40 ? (
-                <View style={{ flexDirection: 'column' }}>
+              this.state.propertyDetail.category_id == 40 ? (
+                <View style={{ flexDirection: "column" }}>
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamel,
-                      color: '#444040',
-                      fontSize: wp('3%'),
-                      textAlign: 'right',
-                    }}>
-                    {Common.Translations.translate('door_type')}
+                      color: "#444040",
+                      fontSize: wp("3%"),
+                      textAlign: "right",
+                    }}
+                  >
+                    {Common.Translations.translate("door_type")}
                   </Text>
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamelBold,
-                      color: '#006FEB',
-                      fontSize: wp('3%'),
-                      textAlign: 'right',
-                    }}>
-                    {Constants.API.Language == 'ar' ? this.state.propertyDetail.details.door_type_arabic : this.state.propertyDetail.details.door_type}
+                      color: "#006FEB",
+                      fontSize: wp("3%"),
+                      textAlign: "right",
+                    }}
+                  >
+                    {Constants.API.Language == "ar"
+                      ? this.state.propertyDetail.details.door_type_arabic
+                      : this.state.propertyDetail.details.door_type}
                   </Text>
                 </View>
               ) : (
-                <View style={{ flexDirection: 'column' }}>
+                <View style={{ flexDirection: "column" }}>
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamel,
-                      color: '#444040',
-                      fontSize: wp('3%'),
-                      textAlign: 'right',
-                    }}>
-                    {Common.Translations.translate('year_of_construction')}
+                      color: "#444040",
+                      fontSize: wp("3%"),
+                      textAlign: "right",
+                    }}
+                  >
+                    {Common.Translations.translate("year_of_construction")}
                   </Text>
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamelBold,
-                      color: '#006FEB',
-                      fontSize: wp('3%'),
-                      textAlign: 'right',
-                    }}>
+                      color: "#006FEB",
+                      fontSize: wp("3%"),
+                      textAlign: "right",
+                    }}
+                  >
                     {this.state.propertyDetail.name}
                   </Text>
                 </View>
               )}
 
-              <View style={{ flexDirection: 'column' }}>
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
-                  {Common.Translations.translate('property_id')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {Common.Translations.translate("property_id")}
                 </Text>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#006FEB',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                    marginLeft: wp('30%'),
-                  }}>
+                    color: "#006FEB",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                    marginLeft: wp("30%"),
+                  }}
+                >
                   {this.state.propertyDetail.details.building_number ==
-                    undefined
+                  undefined
                     ? this.state.propertyDetail.details.id
                     : this.state.propertyDetail.details.building_number}
                 </Text>
@@ -1198,48 +1275,53 @@ class EstateDetail extends Component {
             </View>
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-              }}>
-              <View style={{ flexDirection: 'column' }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+              }}
+            >
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
-                  {Common.Translations.translate('furnished')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {Common.Translations.translate("furnished")}
                 </Text>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#006FEB',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
+                    color: "#006FEB",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
                   {this.state.propertyDetail.furnitarued}
                 </Text>
               </View>
-              <View style={{ flexDirection: 'column' }}>
+              <View style={{ flexDirection: "column" }}>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                  }}>
-                  {Common.Translations.translate('interface')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {Common.Translations.translate("interface")}
                 </Text>
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#006FEB',
-                    fontSize: wp('3%'),
-                    textAlign: 'right',
-                    marginLeft: wp('30%'),
-                  }}>
-                  غربية{' '}
+                    color: "#006FEB",
+                    fontSize: wp("3%"),
+                    textAlign: "right",
+                    marginLeft: wp("30%"),
+                  }}
+                >
+                  غربية{" "}
                 </Text>
               </View>
             </View>
@@ -1253,67 +1335,72 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              width: '90%',
-              flexDirection: 'column',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              flexDirection: "column",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               paddingBottom: 5,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('garage')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("garage")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.car_garage.toLowerCase() == 'yes'
+                    this.state.propertyDetail.car_garage.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('elevator')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("elevator")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.elevator.toLowerCase() == 'yes'
+                    this.state.propertyDetail.elevator.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('water')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("water")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.water.toLowerCase() == 'yes'
+                    this.state.propertyDetail.water.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1321,20 +1408,21 @@ class EstateDetail extends Component {
               </View>
             </View>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-              <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('electricity')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("electricity")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.electricity.toLowerCase() == 'yes'
+                    this.state.propertyDetail.electricity.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1348,31 +1436,34 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              width: '90%',
-              flexDirection: 'column',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              flexDirection: "column",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               paddingBottom: 5,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row' }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row" }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('officially_registered')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("officially_registered")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.tapu.toLowerCase() == 'yes'
+                    this.state.propertyDetail.tapu.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1386,67 +1477,72 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              width: '90%',
-              flexDirection: 'column',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              flexDirection: "column",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               paddingBottom: 5,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('garage')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("garage")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.car_garage.toLowerCase() == 'yes'
+                    this.state.propertyDetail.car_garage.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('elevator')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("elevator")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.elevator.toLowerCase() == 'yes'
+                    this.state.propertyDetail.elevator.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('water')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("water")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.water.toLowerCase() == 'yes'
+                    this.state.propertyDetail.water.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1454,20 +1550,21 @@ class EstateDetail extends Component {
               </View>
             </View>
 
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-              <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('electricity')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("electricity")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.electricity.toLowerCase() == 'yes'
+                    this.state.propertyDetail.electricity.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1481,68 +1578,73 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              width: '90%',
-              flexDirection: 'column',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              flexDirection: "column",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               paddingBottom: 5,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('garage')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("garage")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.car_garage.toLowerCase() == 'yes'
+                    this.state.propertyDetail.car_garage.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('elevator')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("elevator")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.elevator.toLowerCase() == 'yes'
+                    this.state.propertyDetail.elevator.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('furnished')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("furnished")}
                 </Text>
                 <Image
                   source={
                     this.state.propertyDetail.is_furnitarued.toLowerCase() ==
-                      'yes'
+                    "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1552,101 +1654,107 @@ class EstateDetail extends Component {
 
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('veranda')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("veranda")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.brenda.toLowerCase() == 'yes'
+                    this.state.propertyDetail.brenda.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('water')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("water")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.water.toLowerCase() == 'yes'
-                      ? Constants.Images.roundCheck
-                      : Constants.Images.roundUnCheck
-                  }
-                />
-              </View>
-
-              <View style={{ flexDirection: 'row', marginRight: wp('4%') }}>
-                <Text
-                  style={{
-                    marginRight: wp('1%'),
-                    fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('electricity')}
-                </Text>
-                <Image
-                  source={
-                    this.state.propertyDetail.electricity.toLowerCase() == 'yes'
+                    this.state.propertyDetail.water.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
 
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row", marginRight: wp("4%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('maids_room')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("electricity")}
+                </Text>
+                <Image
+                  source={
+                    this.state.propertyDetail.electricity.toLowerCase() == "yes"
+                      ? Constants.Images.roundCheck
+                      : Constants.Images.roundUnCheck
+                  }
+                />
+              </View>
+
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    marginRight: wp("1%"),
+                    fontFamily: Constants.Fonts.shamelBold,
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("maids_room")}
                 </Text>
                 <Image
                   source={
                     this.state.propertyDetail.service_room.toLowerCase() ==
-                      'yes'
+                    "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-              <View style={{ flexDirection: 'row' }}>
+            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('internal_staircase')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("internal_staircase")}
                 </Text>
                 <Image
                   source={
                     this.state.propertyDetail.internal_staircase.toLowerCase() ==
-                      'yes'
+                    "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1660,68 +1768,73 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              width: '90%',
-              flexDirection: 'column',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              flexDirection: "column",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               paddingBottom: 5,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('garage')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("garage")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.car_garage.toLowerCase() == 'yes'
+                    this.state.propertyDetail.car_garage.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('elevator')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("elevator")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.elevator.toLowerCase() == 'yes'
+                    this.state.propertyDetail.elevator.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('furnished')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("furnished")}
                 </Text>
                 <Image
                   source={
                     this.state.propertyDetail.is_furnitarued.toLowerCase() ==
-                      'yes'
+                    "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1731,80 +1844,85 @@ class EstateDetail extends Component {
 
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('veranda')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("veranda")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.brenda.toLowerCase() == 'yes'
+                    this.state.propertyDetail.brenda.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('water')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("water")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.water.toLowerCase() == 'yes'
-                      ? Constants.Images.roundCheck
-                      : Constants.Images.roundUnCheck
-                  }
-                />
-              </View>
-
-              <View style={{ flexDirection: 'row', marginRight: wp('4%') }}>
-                <Text
-                  style={{
-                    marginRight: wp('1%'),
-                    fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('electricity')}
-                </Text>
-                <Image
-                  source={
-                    this.state.propertyDetail.electricity.toLowerCase() == 'yes'
+                    this.state.propertyDetail.water.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
 
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row", marginRight: wp("4%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('maids_room')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("electricity")}
+                </Text>
+                <Image
+                  source={
+                    this.state.propertyDetail.electricity.toLowerCase() == "yes"
+                      ? Constants.Images.roundCheck
+                      : Constants.Images.roundUnCheck
+                  }
+                />
+              </View>
+
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={{
+                    marginRight: wp("1%"),
+                    fontFamily: Constants.Fonts.shamelBold,
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("maids_room")}
                 </Text>
                 <Image
                   source={
                     this.state.propertyDetail.service_room.toLowerCase() ==
-                      'yes'
+                    "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1818,67 +1936,72 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              width: '90%',
-              flexDirection: 'column',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              flexDirection: "column",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               paddingBottom: 5,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('garage')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("garage")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.car_garage.toLowerCase() == 'yes'
+                    this.state.propertyDetail.car_garage.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('elevator')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("elevator")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.elevator.toLowerCase() == 'yes'
+                    this.state.propertyDetail.elevator.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('water')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("water")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.water.toLowerCase() == 'yes'
+                    this.state.propertyDetail.water.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1888,42 +2011,45 @@ class EstateDetail extends Component {
 
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('veranda')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("veranda")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.brenda.toLowerCase() == 'yes'
+                    this.state.propertyDetail.brenda.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
 
-              <View style={{ flexDirection: 'row', marginRight: wp('4%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("4%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('electricity')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("electricity")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.electricity.toLowerCase() == 'yes'
+                    this.state.propertyDetail.electricity.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -1937,68 +2063,73 @@ class EstateDetail extends Component {
         return (
           <View
             style={{
-              width: '90%',
-              flexDirection: 'column',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              flexDirection: "column",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               paddingBottom: 5,
-            }}>
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('garage')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("garage")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.car_garage.toLowerCase() == 'yes'
+                    this.state.propertyDetail.car_garage.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('elevator')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("elevator")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.elevator.toLowerCase() == 'yes'
+                    this.state.propertyDetail.elevator.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
-              <View style={{ flexDirection: 'row' }}>
+              <View style={{ flexDirection: "row" }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('furnished')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("furnished")}
                 </Text>
                 <Image
                   source={
                     this.state.propertyDetail.is_furnitarued.toLowerCase() ==
-                      'yes'
+                    "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -2008,62 +2139,66 @@ class EstateDetail extends Component {
 
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                marginBottom: wp('2%'),
-              }}>
-              <View style={{ flexDirection: 'row', marginRight: wp('6%') }}>
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                marginBottom: wp("2%"),
+              }}
+            >
+              <View style={{ flexDirection: "row", marginRight: wp("6%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('water')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("water")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.water.toLowerCase() == 'yes'
+                    this.state.propertyDetail.water.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
 
-              <View style={{ flexDirection: 'row', marginRight: wp('4%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("4%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('electricity')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("electricity")}
                 </Text>
                 <Image
                   source={
-                    this.state.propertyDetail.electricity.toLowerCase() == 'yes'
+                    this.state.propertyDetail.electricity.toLowerCase() == "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
                 />
               </View>
 
-              <View style={{ flexDirection: 'row', marginRight: wp('4%') }}>
+              <View style={{ flexDirection: "row", marginRight: wp("4%") }}>
                 <Text
                   style={{
-                    marginRight: wp('1%'),
+                    marginRight: wp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    color: '#444040',
-                    fontSize: wp('3%'),
-                  }}>
-                  {Common.Translations.translate('internal_staircase')}
+                    color: "#444040",
+                    fontSize: wp("3%"),
+                  }}
+                >
+                  {Common.Translations.translate("internal_staircase")}
                 </Text>
                 <Image
                   source={
                     this.state.propertyDetail.internal_staircase.toLowerCase() ==
-                      'yes'
+                    "yes"
                       ? Constants.Images.roundCheck
                       : Constants.Images.roundUnCheck
                   }
@@ -2079,28 +2214,51 @@ class EstateDetail extends Component {
   headerView = () => {
     const selectedFilter = this.state.propertyDetail?.sale_or_rent;
     return (
-      <View style={{ alignItems: 'center', flexDirection: 'column' }}>
+      <View style={{ alignItems: "center", flexDirection: "column" }}>
         <View
           style={{
-            width: wp('100%'),
-            height: hp('32.5%'),
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+            width: wp("100%"),
+            height: hp("32.5%"),
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <SliderBox
-            images={this.state.images.length != 0 ? this.state.images
-              // : [Constants.Images.cover]}
-              : this.state.propertyDetail?.category_name == 'land' ? (selectedFilter !== null && selectedFilter == 'sale' ? [Constants.Images.landSale] : [Constants.Images.landRent])
-                : this.state.propertyDetail?.category_name == 'shop' ? (selectedFilter !== null && selectedFilter == 'sale' ? [Constants.Images.shopSale] : [Constants.Images.shopRent])
-                  : this.state.propertyDetail?.category_name == 'apartment' ? (selectedFilter !== null && selectedFilter == 'sale' ? [Constants.Images.appartmentSale] : [Constants.Images.appartmentRent])
-                    : this.state.propertyDetail?.category_name == 'office' ? (selectedFilter !== null && selectedFilter == 'sale' ? [Constants.Images.officeSale] : [Constants.Images.officeRent])
-                      : this.state.propertyDetail?.category_name == 'Vialla / Home' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? [Constants.Images.homeSale] : [Constants.Images.homeRent])
-                        : this.state.propertyDetail?.category_name == 'warehouse' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? [Constants.Images.wareHouseSale] : [Constants.Images.wareHouseRent]) :
-                          (selectedFilter !== null && selectedFilter?.type == 'sale' ? [Constants.Images.buildingSale] : [Constants.Images.buildingRent])
+            images={
+              this.state.images.length != 0
+                ? this.state.images
+                : // : [Constants.Images.cover]}
+                this.state.propertyDetail?.category_name == "land"
+                ? selectedFilter !== null && selectedFilter == "sale"
+                  ? [Constants.Images.landSale]
+                  : [Constants.Images.landRent]
+                : this.state.propertyDetail?.category_name == "shop"
+                ? selectedFilter !== null && selectedFilter == "sale"
+                  ? [Constants.Images.shopSale]
+                  : [Constants.Images.shopRent]
+                : this.state.propertyDetail?.category_name == "apartment"
+                ? selectedFilter !== null && selectedFilter == "sale"
+                  ? [Constants.Images.appartmentSale]
+                  : [Constants.Images.appartmentRent]
+                : this.state.propertyDetail?.category_name == "office"
+                ? selectedFilter !== null && selectedFilter == "sale"
+                  ? [Constants.Images.officeSale]
+                  : [Constants.Images.officeRent]
+                : this.state.propertyDetail?.category_name == "Vialla / Home"
+                ? selectedFilter !== null && selectedFilter?.type == "sale"
+                  ? [Constants.Images.homeSale]
+                  : [Constants.Images.homeRent]
+                : this.state.propertyDetail?.category_name == "warehouse"
+                ? selectedFilter !== null && selectedFilter?.type == "sale"
+                  ? [Constants.Images.wareHouseSale]
+                  : [Constants.Images.wareHouseRent]
+                : selectedFilter !== null && selectedFilter?.type == "sale"
+                ? [Constants.Images.buildingSale]
+                : [Constants.Images.buildingRent]
             }
-            resizeMode={'contain'}
+            resizeMode={"contain"}
             ImageComponentStyle={{ backgroundColor: "black" }}
-            sliderBoxHeight={hp('33%')}
+            sliderBoxHeight={hp("33%")}
             onCurrentImagePressed={(index) =>
               console.log(`image ${index} pressed`)
             }
@@ -2117,22 +2275,24 @@ class EstateDetail extends Component {
           />
           <View
             style={{
-              width: '20%',
-              height: hp('3%'),
-              position: 'absolute',
-              backgroundColor: 'rgba(68, 64, 64, 1)',
+              width: "20%",
+              height: hp("3%"),
+              position: "absolute",
+              backgroundColor: "rgba(68, 64, 64, 1)",
               left: 4,
               bottom: 4,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Text
               style={{
                 fontFamily: Constants.Fonts.shamel,
-                fontSize: wp('3%'),
-                color: 'white',
-                paddingTop: wp('1%'),
-              }}>
+                fontSize: wp("3%"),
+                color: "white",
+                paddingTop: wp("1%"),
+              }}
+            >
               {this.state.currentIndex}/{this.state.images.length}
             </Text>
           </View>
@@ -2154,48 +2314,52 @@ class EstateDetail extends Component {
         </View> */}
           <View
             style={{
-              width: '90%',
-              top: wp('10%'),
-              paddingVertical: wp('1%'),
-              position: 'absolute',
-              flexDirection: 'row',
-              justifyContent:"space-between"
-            }}>
+              width: "90%",
+              top: wp("10%"),
+              paddingVertical: wp("1%"),
+              position: "absolute",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity onPress={() => this.showReport()}>
               <View
                 style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  resizeMode: 'cover',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  borderRadius: wp('10%') / 2,
-                  overflow: 'hidden',
-                  backgroundColor: 'rgba(240,241,243,0.76)',
-                }}>
+                  width: wp("10%"),
+                  height: wp("10%"),
+                  resizeMode: "cover",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  borderRadius: wp("10%") / 2,
+                  overflow: "hidden",
+                  backgroundColor: "rgba(240,241,243,0.76)",
+                }}
+              >
                 <Image source={Constants.Images.spam} />
               </View>
             </TouchableOpacity>
             <View
               style={{
-                width: wp('10%'),
-                height: wp('10%'),
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: wp('10%') / 2,
-                overflow: 'hidden',
-                backgroundColor: 'rgba(240,241,243,0.76)',
-              }}>
+                width: wp("10%"),
+                height: wp("10%"),
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: wp("10%") / 2,
+                overflow: "hidden",
+                backgroundColor: "rgba(240,241,243,0.76)",
+              }}
+            >
               <TouchableOpacity
                 onPress={() => {
                   this.props.navigation.pop();
                 }}
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+                  width: "100%",
+                  height: "100%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <Image source={Constants.Images.rightArrowWhite} />
               </TouchableOpacity>
             </View>
@@ -2203,122 +2367,150 @@ class EstateDetail extends Component {
         </View>
         <View
           style={{
-            width: '100%',
-            backgroundColor: 'white',
-            justifyContent: 'center',
-            alignItems: 'center',
+            width: "100%",
+            backgroundColor: "white",
+            justifyContent: "center",
+            alignItems: "center",
             paddingVertical: 1,
-            flexDirection: 'column',
-          }}>
+            flexDirection: "column",
+          }}
+        >
           <View
             style={{
-              width: '90%',
-              justifyContent: 'flex-start',
-              flexDirection: 'row',
-              alignItems: 'flex-start',
-            }}>
+              width: "90%",
+              justifyContent: "flex-start",
+              flexDirection: "row",
+              alignItems: "flex-start",
+            }}
+          >
             <Text
               style={{
                 fontFamily: Constants.Fonts.shamel,
-                color: '#B9B9B9',
-                fontSize: wp('2.5%'),
-                marginRight: wp('2%'),
-              }}>
-              {Constants.API.Language == 'en'
-                ? Common.Translations.translate('last_updated_in')
+                color: "#B9B9B9",
+                fontSize: wp("2.5%"),
+                marginRight: wp("2%"),
+              }}
+            >
+              {Constants.API.Language == "en"
+                ? Common.Translations.translate("last_updated_in")
                 : moment(this.state.propertyDetail.updated_at).format(
-                  'DD/MM/YYYY',
-                )}
+                    "DD/MM/YYYY"
+                  )}
             </Text>
             <Text
               style={{
                 fontFamily: Constants.Fonts.shamel,
-                color: '#B9B9B9',
-                fontSize: wp('2.5%'),
-              }}>
-              {Constants.API.Language == 'en'
+                color: "#B9B9B9",
+                fontSize: wp("2.5%"),
+              }}
+            >
+              {Constants.API.Language == "en"
                 ? moment(this.state.propertyDetail.updated_at).format(
-                  'DD/MM/YYYY',
-                )
-                : Common.Translations.translate('last_updated_in')}
+                    "DD/MM/YYYY"
+                  )
+                : Common.Translations.translate("last_updated_in")}
             </Text>
           </View>
           <Text
             style={{
-              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-              color: '#006FEB',
-              fontSize: wp('4.5%'),
-              alignSelf: 'flex-end',
-              marginRight: wp('9%'),
-            }}>
+              fontFamily:
+                Constants.API.Language == "en"
+                  ? Constants.Fonts.SF_Pro_Text_Bold
+                  : Constants.Fonts.shamelBold,
+              color: "#006FEB",
+              fontSize: wp("4.5%"),
+              alignSelf: "flex-end",
+              marginRight: wp("9%"),
+            }}
+          >
             {`${Common.Helper.sign(this.state.propertyDetail.currancy)}` +
               this.state.propertyDetail.price}
           </Text>
           <Text
             style={{
-              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-              color: '#444040',
-              fontSize: wp('3.5%'),
-              alignSelf: 'flex-end',
-              marginRight: wp('9%'),
-            }}>
+              fontFamily:
+                Constants.API.Language == "en"
+                  ? Constants.Fonts.SF_Pro_Text_Bold
+                  : Constants.Fonts.shamelBold,
+              color: "#444040",
+              fontSize: wp("3.5%"),
+              alignSelf: "flex-end",
+              marginRight: wp("9%"),
+            }}
+          >
             {this.state.propertyDetail.category_name +
-              ' ' +
-
-              Common.Helper.capitalize(Common.Translations.translate(this.state.propertyDetail.sale_or_rent))}
+              " " +
+              Common.Helper.capitalize(
+                Common.Translations.translate(
+                  this.state.propertyDetail.sale_or_rent
+                )
+              )}
           </Text>
           <View
             style={{
-              flexDirection: 'row',
-              width: '95%',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
-              marginTop: wp('1%'),
-              paddingRight: wp('2%'),
-              marginBottom: wp('2%'),
-            }}>
+              flexDirection: "row",
+              width: "95%",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              marginTop: wp("1%"),
+              paddingRight: wp("2%"),
+              marginBottom: wp("2%"),
+            }}
+          >
             <Text
               style={{
                 fontFamily: Constants.Fonts.shamel,
-                color: '#444040',
-                fontSize: wp('3.5%'),
-                marginRight: wp('2%'),
-              }}>
-              {`${this.state.propertyDetail.region} ${Constants.API.Language == 'ar' ? this.state.propertyDetail.city_id_arabic : this.state.propertyDetail.city_id} ${this.state.propertyDetail.address}`}
+                color: "#444040",
+                fontSize: wp("3.5%"),
+                marginRight: wp("2%"),
+              }}
+            >
+              {`${this.state.propertyDetail.region} ${
+                Constants.API.Language == "ar"
+                  ? this.state.propertyDetail.city_id_arabic
+                  : this.state.propertyDetail.city_id
+              } ${this.state.propertyDetail.address}`}
             </Text>
             <Image source={Constants.Images.locationBlack} />
           </View>
           {this.renderDetail()}
           <Text
             style={{
-              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-              color: '#444040',
-              fontSize: wp('3.5%'),
-              marginTop: wp('4%'),
-              width: '90%',
-              textAlign: 'right',
-            }}>
-            {Common.Translations.translate('property_description')}
+              fontFamily:
+                Constants.API.Language == "en"
+                  ? Constants.Fonts.SF_Pro_Text_Bold
+                  : Constants.Fonts.shamelBold,
+              color: "#444040",
+              fontSize: wp("3.5%"),
+              marginTop: wp("4%"),
+              width: "90%",
+              textAlign: "right",
+            }}
+          >
+            {Common.Translations.translate("property_description")}
           </Text>
           <View
             style={{
-              width: '90%',
-              borderBottomColor: '#f5f5f5',
+              width: "90%",
+              borderBottomColor: "#f5f5f5",
               borderBottomWidth: 1,
               // borderColor: "red", borderWidth: 1
-            }}>
+            }}
+          >
             <ReadMore
               numberOfLines={3}
               renderTruncatedFooter={this._renderTruncatedFooter}
               renderRevealedFooter={this._renderRevealedFooter}
-              onReady={this._handleTextReady}>
+              onReady={this._handleTextReady}
+            >
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('3.5%'),
-                  textAlign: 'right'
-                }}>
+                  color: "#444040",
+                  fontSize: wp("3.5%"),
+                  textAlign: "right",
+                }}
+              >
                 {this.state.propertyDetail.description}
               </Text>
             </ReadMore>
@@ -2337,101 +2529,120 @@ class EstateDetail extends Component {
           </View>
           <Text
             style={{
-              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-              color: '#444040',
-              fontSize: wp('3.5%'),
-              textAlign: 'right',
-              width: '90%',
-              marginTop: hp('4%'),
-              marginBottom: hp('1%'),
-            }}>
-            {Common.Translations.translate('property_details')}
+              fontFamily:
+                Constants.API.Language == "en"
+                  ? Constants.Fonts.SF_Pro_Text_Bold
+                  : Constants.Fonts.shamelBold,
+              color: "#444040",
+              fontSize: wp("3.5%"),
+              textAlign: "right",
+              width: "90%",
+              marginTop: hp("4%"),
+              marginBottom: hp("1%"),
+            }}
+          >
+            {Common.Translations.translate("property_details")}
           </Text>
           {this.renderPropertyDetail()}
           <Text
             style={{
-              fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-              color: '#444040',
-              fontSize: wp('3.5%'),
-              textAlign: 'right',
-              width: '90%',
-              marginTop: hp('4%'),
-              marginBottom: hp('1%'),
-            }}>
-            {Common.Translations.translate('comfortable_features')}
+              fontFamily:
+                Constants.API.Language == "en"
+                  ? Constants.Fonts.SF_Pro_Text_Bold
+                  : Constants.Fonts.shamelBold,
+              color: "#444040",
+              fontSize: wp("3.5%"),
+              textAlign: "right",
+              width: "90%",
+              marginTop: hp("4%"),
+              marginBottom: hp("1%"),
+            }}
+          >
+            {Common.Translations.translate("comfortable_features")}
           </Text>
 
           {this.renderFacilities()}
           <View
             style={{
-              width: '90%',
-              marginTop: hp('4%'),
-              flexDirection: 'column',
-            }}>
+              width: "90%",
+              marginTop: hp("4%"),
+              flexDirection: "column",
+            }}
+          >
             <Text
               style={{
-                fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-                color: '#444040',
-                fontSize: wp('4%'),
+                fontFamily:
+                  Constants.API.Language == "en"
+                    ? Constants.Fonts.SF_Pro_Text_Bold
+                    : Constants.Fonts.shamelBold,
+                color: "#444040",
+                fontSize: wp("4%"),
                 marginBottom: 3,
-                textAlign: 'right',
-              }}>
-              {Common.Translations.translate('advertiser')}
+                textAlign: "right",
+              }}
+            >
+              {Common.Translations.translate("advertiser")}
             </Text>
             <View
               style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}>
-              <View style={{
-                flexDirection: 'row'
-              }}>
-              </View>
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <View
                 style={{
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                }}>
+                  flexDirection: "row",
+                }}
+              ></View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                }}
+              >
                 <View
                   style={{
-                    flexDirection: 'column',
+                    flexDirection: "column",
                     // backgroundColor: 'red'
-                  }}>
+                  }}
+                >
                   <Text
                     onPress={() => {
                       if (this.state.propertyDetail.owner.user_info.id) {
                         this.props.navigation.push(
                           Constants.Navigations.Setting.PROFILE,
-                          { id: this.state.propertyDetail.owner.user_info.id },
+                          { id: this.state.propertyDetail.owner.user_info.id }
                         );
                       }
                     }}
                     style={{
-                      marginRight: wp('1%'),
+                      marginRight: wp("1%"),
                       fontFamily: Constants.Fonts.shamel,
-                      color: '#444040',
-                      fontSize: wp('3%'),
-                      textAlign: 'right',
-                    }}>
+                      color: "#444040",
+                      fontSize: wp("3%"),
+                      textAlign: "right",
+                    }}
+                  >
                     {console.log(
-                      'this.state.propertyDetail',
-                      this.state.propertyDetail.owner.star_rating,
+                      "this.state.propertyDetail",
+                      this.state.propertyDetail.owner.star_rating
                     )}
                     {this.state.propertyDetail.advertiser_name}
                   </Text>
                   <TouchableOpacity
                     onPress={() => this.onPressRating()}
                     style={{
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                      marginRight: wp('1%'),
-                    }}>
+                      flexDirection: "row",
+                      justifyContent: "flex-end",
+                      marginRight: wp("1%"),
+                    }}
+                  >
                     <StarRating
                       disabled={true}
                       maxStars={5}
-                      starSize={wp('4%')}
+                      starSize={wp("4%")}
                       emptyStar={Constants.Images.star}
                       fullStar={Constants.Images.starSelected}
                       rating={this.state.propertyDetail.owner.star_rating}
@@ -2442,18 +2653,19 @@ class EstateDetail extends Component {
                   onPress={() =>
                     this.props.navigation.push(
                       Constants.Navigations.Setting.PROFILE,
-                      { id: this.state.propertyDetail.owner.user_info.id },
+                      { id: this.state.propertyDetail.owner.user_info.id }
                     )
-                  }>
+                  }
+                >
                   <Image
                     style={{
-                      width: wp('13%'),
-                      height: wp('13%'),
-                      marginLeft: wp('2%'),
-                      borderRadius: wp('13%') / 2,
+                      width: wp("13%"),
+                      height: wp("13%"),
+                      marginLeft: wp("2%"),
+                      borderRadius: wp("13%") / 2,
                     }}
                     source={
-                      this.state.propertyDetail.owner.image == ''
+                      this.state.propertyDetail.owner.image == ""
                         ? Constants.Images.profile
                         : { uri: this.state.propertyDetail.owner.image }
                     }
@@ -2464,48 +2676,60 @@ class EstateDetail extends Component {
           </View>
           <View
             style={{
-              flexDirection: 'column',
-              width: '90%',
-              marginTop: hp('4%'),
-              justifyContent: 'flex-end',
-            }}>
+              flexDirection: "column",
+              width: "90%",
+              marginTop: hp("4%"),
+              justifyContent: "flex-end",
+            }}
+          >
             <Text
               style={{
-                fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-                color: '#444040',
-                fontSize: wp('4%'),
+                fontFamily:
+                  Constants.API.Language == "en"
+                    ? Constants.Fonts.SF_Pro_Text_Bold
+                    : Constants.Fonts.shamelBold,
+                color: "#444040",
+                fontSize: wp("4%"),
                 marginBottom: 3,
-                textAlign: 'right',
-              }}>
-              {Common.Translations.translate('address_of_property')}
+                textAlign: "right",
+              }}
+            >
+              {Common.Translations.translate("address_of_property")}
             </Text>
             <View
               style={{
-                flexDirection: 'row',
-                width: '100%',
-                justifyContent: 'flex-end',
-              }}>
+                flexDirection: "row",
+                width: "100%",
+                justifyContent: "flex-end",
+              }}
+            >
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: '#444040',
-                  fontSize: wp('3%'),
-                  marginRight: wp('2%'),
-                }}>
-                {`${this.state.propertyDetail.region} ${Constants.API.Language == 'ar' ? this.state.propertyDetail.city_id_arabic : this.state.propertyDetail.city_id} ${this.state.propertyDetail.address}`}
+                  color: "#444040",
+                  fontSize: wp("3%"),
+                  marginRight: wp("2%"),
+                }}
+              >
+                {`${this.state.propertyDetail.region} ${
+                  Constants.API.Language == "ar"
+                    ? this.state.propertyDetail.city_id_arabic
+                    : this.state.propertyDetail.city_id
+                } ${this.state.propertyDetail.address}`}
               </Text>
               <Image source={Constants.Images.locationBlack} />
             </View>
           </View>
           <View
             style={{
-              width: '90%',
-              height: hp('15%'),
-              marginTop: wp('2%'),
-            }}>
-            {this.state.propertyRegion &&
-              (<Components.AmlakMap
-                containerStyles={{ width: '100%', height: '100%' }}
+              width: "90%",
+              height: hp("15%"),
+              marginTop: wp("2%"),
+            }}
+          >
+            {this.state.propertyRegion && (
+              <Components.AmlakMap
+                containerStyles={{ width: "100%", height: "100%" }}
                 provider={1}
                 showsUserLocation={this.state.isShowLocation}
                 forceRefresh={this.state.forceRefresh}
@@ -2515,22 +2739,26 @@ class EstateDetail extends Component {
                 onMapPress={(e) => {
                   // alert(e);
                 }}
-              />)}
-
+              />
+            )}
           </View>
         </View>
         <Text
           style={{
-            fontFamily: Constants.API.Language == 'en' ? Constants.Fonts.SF_Pro_Text_Bold : Constants.Fonts.shamelBold,
-            color: '#444040',
-            fontSize: wp('3%'),
-            textAlign: 'right',
-            width: '90%',
-            marginTop: wp('5%'),
-          }}>
+            fontFamily:
+              Constants.API.Language == "en"
+                ? Constants.Fonts.SF_Pro_Text_Bold
+                : Constants.Fonts.shamelBold,
+            color: "#444040",
+            fontSize: wp("3%"),
+            textAlign: "right",
+            width: "90%",
+            marginTop: wp("5%"),
+          }}
+        >
           {this.state.similerAds.length > 0
-            ? Common.Translations.translate('similar_ads')
-            : ''}
+            ? Common.Translations.translate("similar_ads")
+            : ""}
         </Text>
         {/* <Text
           style={{
@@ -2544,7 +2772,7 @@ class EstateDetail extends Component {
           {Common.Translations.translate('similar_ads')}
         </Text> */}
       </View>
-    )
+    );
   };
   renderProerties = (item) => {
     switch (item.category_id) {
@@ -2552,83 +2780,92 @@ class EstateDetail extends Component {
         return (
           <React.Fragment>
             {item?.details?.office_area &&
-              item?.details?.office_area != undefined ? (
+            item?.details?.office_area != undefined ? (
               <View
                 style={{
-                  width: wp('90%'),
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  paddingRight: wp('6%'),
-                  backgroundColor: 'transparent',
-                }}>
+                  width: wp("90%"),
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  paddingRight: wp("6%"),
+                  backgroundColor: "transparent",
+                }}
+              >
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.floor_number == undefined
-                      ? ''
+                      ? ""
                       : item?.details?.floor_number +
-                      ' ' +
-                      Common.Translations.translate('bathRoom')}
+                        " " +
+                        Common.Translations.translate("bathRoom")}
                   </Text>
                   <Image source={Constants.Images.bathroom} />
                 </View>
 
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.door_type == undefined
-                      ? ''
-                      : Constants.API.Language == 'ar' ? item?.details?.door_type_arabic : item?.details?.door_type +
-                        ' ' +
-                        Common.Translations.translate('door_type')}
+                      ? ""
+                      : Constants.API.Language == "ar"
+                      ? item?.details?.door_type_arabic
+                      : item?.details?.door_type +
+                        " " +
+                        Common.Translations.translate("door_type")}
                   </Text>
                   <Image source={Constants.Images.tub} />
                 </View>
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.office_area == undefined
-                      ? ''
+                      ? ""
                       : item?.details?.office_area +
-                      ' ' +
-                      Common.Translations.translate('m2')}
+                        " " +
+                        Common.Translations.translate("m2")}
                   </Text>
                   <Image source={Constants.Images.expand} />
                 </View>
@@ -2641,55 +2878,62 @@ class EstateDetail extends Component {
         return (
           <React.Fragment>
             {item?.details?.land_area &&
-              item?.details?.land_area != undefined ? (
+            item?.details?.land_area != undefined ? (
               <View
                 style={{
-                  width: wp('90%'),
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  paddingRight: wp('6%'),
-                  backgroundColor: 'transparent',
-                }}>
+                  width: wp("90%"),
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  paddingRight: wp("6%"),
+                  backgroundColor: "transparent",
+                }}
+              >
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.land_type == undefined
-                      ? ''
-                      : Constants.API.Language == 'ar' ? item?.details?.land_type_arabic : item?.details?.land_type}
+                      ? ""
+                      : Constants.API.Language == "ar"
+                      ? item?.details?.land_type_arabic
+                      : item?.details?.land_type}
                   </Text>
                   <Image source={Constants.Images.typeBlack} />
                 </View>
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.land_area == undefined
-                      ? ''
-                      : item?.details?.land_area + ' '}
+                      ? ""
+                      : item?.details?.land_area + " "}
                   </Text>
                   <Image source={Constants.Images.expand} />
                 </View>
@@ -2704,33 +2948,36 @@ class EstateDetail extends Component {
             {item?.details?.warehouse_area != undefined ? (
               <View
                 style={{
-                  width: wp('90%'),
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  paddingRight: wp('6%'),
-                  backgroundColor: 'transparent',
-                }}>
+                  width: wp("90%"),
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  paddingRight: wp("6%"),
+                  backgroundColor: "transparent",
+                }}
+              >
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.no_of_bath == undefined
-                      ? ''
+                      ? ""
                       : item?.details?.no_of_bath +
-                      ' ' +
-                      Common.Translations.translate('bathRoom')}
+                        " " +
+                        Common.Translations.translate("bathRoom")}
                   </Text>
                   <Image source={Constants.Images.bathroom} />
                 </View>
@@ -2760,24 +3007,26 @@ class EstateDetail extends Component {
                   </View> */}
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.warehouse_street_width == undefined
-                      ? ''
+                      ? ""
                       : item?.details?.warehouse_street_width +
-                      ' ' +
-                      Common.Translations.translate('m')}
+                        " " +
+                        Common.Translations.translate("m")}
                   </Text>
                   <Image source={Constants.Images.expand} />
                 </View>
@@ -2792,55 +3041,60 @@ class EstateDetail extends Component {
               //item?.details?.warehouse_area != undefined ? (
               <View
                 style={{
-                  width: wp('90%'),
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  paddingRight: wp('6%'),
-                  backgroundColor: 'transparent',
-                }}>
+                  width: wp("90%"),
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  paddingRight: wp("6%"),
+                  backgroundColor: "transparent",
+                }}
+              >
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.bath == undefined
-                      ? ''
-                      : '1' + Common.Translations.translate('bathRoom')}
+                      ? ""
+                      : "1" + Common.Translations.translate("bathRoom")}
                   </Text>
                   <Image source={Constants.Images.bathroom} />
                 </View>
 
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.shop_area == undefined
-                      ? ''
+                      ? ""
                       : item?.details?.shop_area +
-                      ' ' +
-                      Common.Translations.translate('m2')}
+                        " " +
+                        Common.Translations.translate("m2")}
                   </Text>
                   <Image
                     style={{ width: 10, height: 10 }}
@@ -2859,104 +3113,113 @@ class EstateDetail extends Component {
             {item?.details?.number_of_baths != undefined ? (
               <View
                 style={{
-                  width: wp('90%'),
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  paddingRight: wp('6%'),
-                  backgroundColor: 'transparent',
-                }}>
+                  width: wp("90%"),
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "flex-end",
+                  paddingRight: wp("6%"),
+                  backgroundColor: "transparent",
+                }}
+              >
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.number_of_baths == undefined
-                      ? ''
+                      ? ""
                       : item?.details?.number_of_baths +
-                      ' ' +
-                      Common.Translations.translate('bathRoom')}
+                        " " +
+                        Common.Translations.translate("bathRoom")}
                   </Text>
                   <Image source={Constants.Images.bathroom} />
                 </View>
 
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.number_of_bedrooms == undefined
-                      ? ''
+                      ? ""
                       : item?.details?.number_of_bedrooms +
-                      ' ' +
-                      Common.Translations.translate('bedRoom')}
+                        " " +
+                        Common.Translations.translate("bedRoom")}
                   </Text>
                   <Image source={Constants.Images.bed} />
                 </View>
 
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.number_of_halls == undefined
-                      ? ''
+                      ? ""
                       : item?.details?.number_of_halls +
-                      ' ' +
-                      Common.Translations.translate('galleries')}
+                        " " +
+                        Common.Translations.translate("galleries")}
                   </Text>
                   <Image source={Constants.Images.tub} />
                 </View>
                 <View
                   style={{
-                    marginRight: wp('2%'),
-                    height: hp('2%'),
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                    marginRight: wp("2%"),
+                    height: hp("2%"),
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
+                      color: "#444040",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('2%'),
-                    }}>
+                      fontSize: wp("3%"),
+                      marginRight: wp("2%"),
+                    }}
+                  >
                     {item?.details?.total_area == undefined
-                      ? ''
+                      ? ""
                       : item?.details?.total_area +
-                      ' ' +
-                      Common.Translations.translate('m2')}
+                        " " +
+                        Common.Translations.translate("m2")}
                   </Text>
                   <Image source={Constants.Images.expand} />
                 </View>
@@ -2975,115 +3238,151 @@ class EstateDetail extends Component {
       Image_Http_URL =
         value.item.picture.length > 0
           ? { uri: value.item.picture[0].picture }
-          // : Constants.Images.cover;
-          : itemName == 'land' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.landSale : Constants.Images.landRent)
-            : itemName == 'shop' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.shopSale : Constants.Images.shopRent)
-              : itemName == 'apartment' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.appartmentSale : Constants.Images.appartmentRent)
-                : itemName == 'office' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.officeSale : Constants.Images.officeRent)
-                  : itemName == 'Vialla / Home' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.homeSale : Constants.Images.homeRent)
-                    : itemName == 'warehouse' ? (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.wareHouseSale : Constants.Images.wareHouseRent) :
-                      (selectedFilter !== null && selectedFilter?.type == 'sale' ? Constants.Images.buildingSale : Constants.Images.buildingRent);
+          : // : Constants.Images.cover;
+          itemName == "land"
+          ? selectedFilter !== null && selectedFilter?.type == "sale"
+            ? Constants.Images.landSale
+            : Constants.Images.landRent
+          : itemName == "shop"
+          ? selectedFilter !== null && selectedFilter?.type == "sale"
+            ? Constants.Images.shopSale
+            : Constants.Images.shopRent
+          : itemName == "apartment"
+          ? selectedFilter !== null && selectedFilter?.type == "sale"
+            ? Constants.Images.appartmentSale
+            : Constants.Images.appartmentRent
+          : itemName == "office"
+          ? selectedFilter !== null && selectedFilter?.type == "sale"
+            ? Constants.Images.officeSale
+            : Constants.Images.officeRent
+          : itemName == "Vialla / Home"
+          ? selectedFilter !== null && selectedFilter?.type == "sale"
+            ? Constants.Images.homeSale
+            : Constants.Images.homeRent
+          : itemName == "warehouse"
+          ? selectedFilter !== null && selectedFilter?.type == "sale"
+            ? Constants.Images.wareHouseSale
+            : Constants.Images.wareHouseRent
+          : selectedFilter !== null && selectedFilter?.type == "sale"
+          ? Constants.Images.buildingSale
+          : Constants.Images.buildingRent;
     } catch (error) {
       return <View />;
     }
     return (
       <View
         style={{
-          width: wp('100%'),
-          backgroundColor: 'white',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginVertical: wp('2%'),
-        }}>
-        <TouchableOpacity onPress={async () => {
-          if (Constants.API.Token == null) {
-            Common.Helper.logEvent('Similar_Property_Click', {
-              Customer_ID: "With_out_login",
-              Propert_Id: value.item.id
-            });
-          } else {
-            let userInstance = await User.getInstance();
-            Common.Helper.logEvent('Similar_Property_Click', {
-              Customer_ID: userInstance.getUser().info.id,
-              Propert_Id: value.item.id
-            });
-          }
-          this.refreshDetail(value.item.id)
-        }
-        }>
+          width: wp("100%"),
+          backgroundColor: "white",
+          justifyContent: "center",
+          alignItems: "center",
+          marginVertical: wp("2%"),
+        }}
+      >
+        <TouchableOpacity
+          onPress={async () => {
+            if (Constants.API.Token == null) {
+              Common.Helper.logEvent("Similar_Property_Click", {
+                Customer_ID: "With_out_login",
+                Propert_Id: value.item.id,
+              });
+            } else {
+              let userInstance = await User.getInstance();
+              Common.Helper.logEvent("Similar_Property_Click", {
+                Customer_ID: userInstance.getUser().info.id,
+                Propert_Id: value.item.id,
+              });
+            }
+            this.refreshDetail(value.item.id);
+          }}
+        >
           <View
             style={{
-              width: wp('90%'),
-              backgroundColor: 'white',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginVertical: wp('2%'),
-            }}>
+              width: wp("90%"),
+              backgroundColor: "white",
+              justifyContent: "center",
+              alignItems: "center",
+              marginVertical: wp("2%"),
+            }}
+          >
             <View
               style={{
-                width: wp('90%'),
-                minHeight: hp('23%'),
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'white',
-              }}>
+                width: wp("90%"),
+                minHeight: hp("23%"),
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "white",
+              }}
+            >
               <Image
-                style={{ width: wp('80%'), height: hp('23%'), resizeMode: 'stretch' }}
+                style={{
+                  width: wp("80%"),
+                  height: hp("23%"),
+                  resizeMode: "stretch",
+                }}
                 source={Image_Http_URL}
               />
               <View
                 style={{
-                  position: 'absolute',
-                  backgroundColor: '#444040',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  paddingHorizontal: wp('4%'),
-                  paddingVertical: wp('0.5%'),
-                  right: wp('7%'),
-                  top: wp('1%'),
-                  borderRadius: wp('1.2%'),
-                }}>
+                  position: "absolute",
+                  backgroundColor: "#444040",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  paddingHorizontal: wp("4%"),
+                  paddingVertical: wp("0.5%"),
+                  right: wp("7%"),
+                  top: wp("1%"),
+                  borderRadius: wp("1.2%"),
+                }}
+              >
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    fontSize: wp('3%'),
-                    color: 'white',
+                    fontSize: wp("3%"),
+                    color: "white",
                     marginTop: 2,
-                  }}>
-                  {Common.Helper.capitalize(Common.Translations.translate(value.item.sale_or_rent))}
+                  }}
+                >
+                  {Common.Helper.capitalize(
+                    Common.Translations.translate(value.item.sale_or_rent)
+                  )}
                 </Text>
               </View>
             </View>
             <View
               style={{
-                marginVertical: wp('2%'),
-                width: wp('90%'),
-                alignItems: 'center',
-                flexDirection: 'column',
-                backgroundColor: 'white',
-              }}>
+                marginVertical: wp("2%"),
+                width: wp("90%"),
+                alignItems: "center",
+                flexDirection: "column",
+                backgroundColor: "white",
+              }}
+            >
               <View
                 style={{
-                  width: wp('70%'),
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
+                  width: wp("70%"),
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Text
                   style={{
-                    color: '#B9B9B9',
+                    color: "#B9B9B9",
                     fontFamily: Constants.Fonts.shamel,
-                    fontSize: wp('3%'),
-                  }}>
+                    fontSize: wp("3%"),
+                  }}
+                >
                   {moment(value.item.property_announcement_date).format(
-                    'DD/MM/YYYY',
+                    "DD/MM/YYYY"
                   )}
                 </Text>
                 <Text
                   style={{
-                    color: '#006FEB',
+                    color: "#006FEB",
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('3.5%'),
-                  }}>
+                    fontSize: wp("3.5%"),
+                  }}
+                >
                   {`${Common.Helper.sign(value.item.currancy)}` +
                     value.item.price}
                 </Text>
@@ -3091,42 +3390,52 @@ class EstateDetail extends Component {
 
               <View
                 style={{
-                  width: wp('90%'),
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  marginVertical: wp('1%'),
-                }}>
+                  width: wp("90%"),
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  marginVertical: wp("1%"),
+                }}
+              >
                 <Text
                   style={{
-                    color: '#444040',
-                    width: wp('80%'),
-                    textAlign: 'right',
+                    color: "#444040",
+                    width: wp("80%"),
+                    textAlign: "right",
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('3'),
-                  }}>
+                    fontSize: wp("3"),
+                  }}
+                >
                   {value.item.category_name +
-                    ' ' +
-                    Common.Helper.capitalize(Common.Translations.translate(value.item.sale_or_rent))}
+                    " " +
+                    Common.Helper.capitalize(
+                      Common.Translations.translate(value.item.sale_or_rent)
+                    )}
                 </Text>
                 {this.renderProerties(value.item)}
               </View>
               <View
                 style={{
-                  width: wp('90%'),
-                  height: hp('2%'),
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  alignItems: 'center',
-                  paddingRight: wp('8%'),
-                }}>
+                  width: wp("90%"),
+                  height: hp("2%"),
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  paddingRight: wp("8%"),
+                }}
+              >
                 <Text
                   style={{
-                    color: '#444040',
+                    color: "#444040",
                     fontFamily: Constants.Fonts.shamel,
-                    fontSize: wp('2.5%'),
-                    marginRight: wp('2%'),
-                  }}>
-                  {`${value.item.region} ${Constants.API.Language == 'ar' ? value.item.city_id_arabic : value.item.city_id} ${value.item.address}`}
+                    fontSize: wp("2.5%"),
+                    marginRight: wp("2%"),
+                  }}
+                >
+                  {`${value.item.region} ${
+                    Constants.API.Language == "ar"
+                      ? value.item.city_id_arabic
+                      : value.item.city_id
+                  } ${value.item.address}`}
                 </Text>
                 <Image source={Constants.Images.locationBlack} />
               </View>
@@ -3135,17 +3444,18 @@ class EstateDetail extends Component {
         </TouchableOpacity>
         <View
           style={{
-            position: 'absolute',
-            padding: wp('3%'),
-            backgroundColor: 'rgba(255,255,255,0.56)',
-            width: wp('10%'),
-            height: wp('10%'),
-            borderRadius: wp('10%') / 2,
-            justifyContent: 'center',
-            alignItems: 'center',
-            top: wp('2.5%'),
-            left: wp('12%'),
-          }}>
+            position: "absolute",
+            padding: wp("3%"),
+            backgroundColor: "rgba(255,255,255,0.56)",
+            width: wp("10%"),
+            height: wp("10%"),
+            borderRadius: wp("10%") / 2,
+            justifyContent: "center",
+            alignItems: "center",
+            top: wp("2.5%"),
+            left: wp("12%"),
+          }}
+        >
           <TouchableOpacity>
             <Image
               source={
@@ -3165,7 +3475,13 @@ class EstateDetail extends Component {
       <View style={styles.container}>
         <View
           style={{
-            height: 64, position: "absolute", bottom: 20, zIndex: 12345, width: "100%", flexDirection: "row", alignItems: "center",
+            height: 64,
+            position: "absolute",
+            bottom: 20,
+            zIndex: 12345,
+            width: "100%",
+            flexDirection: "row",
+            alignItems: "center",
             justifyContent: "space-evenly",
             backgroundColor: "white",
             shadowColor: "#000",
@@ -3176,17 +3492,19 @@ class EstateDetail extends Component {
             shadowOpacity: 0.25,
             shadowRadius: 3.84,
             elevation: 5,
-          }}>
+          }}
+        >
           <TouchableOpacity onPress={() => this.actionLike()}>
             <View
               style={{
-                width: wp('12%'),
+                width: wp("12%"),
                 height: 43,
                 borderRadius: 5,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'rgba(240,241,243,0.76)',
-              }}>
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "rgba(240,241,243,0.76)",
+              }}
+            >
               <Image
                 style={{ height: "60%", width: "60%", resizeMode: "contain" }}
                 source={
@@ -3208,44 +3526,50 @@ class EstateDetail extends Component {
                 });
             }}
             style={{
-              width: wp('12%'),
+              width: wp("12%"),
               height: 43,
-              backgroundColor: '#05B433',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 5
-            }}>
+              backgroundColor: "#05B433",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: 5,
+            }}
+          >
             <Image
               style={{
                 width: "60%",
                 height: "60%",
                 tintColor: "white",
-                resizeMode: 'contain'
+                resizeMode: "contain",
               }}
               source={Constants.Images.shareIcon}
             />
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              this.onCall()
-            }}>
+              this.onCall();
+            }}
+          >
             <View
               style={{
                 height: 43,
-                width: wp('60%'),
+                width: wp("60%"),
                 backgroundColor: "#006feb",
-                alignItems: 'center',
+                alignItems: "center",
                 justifyContent: "space-evenly",
                 flexDirection: "row",
                 borderRadius: 5,
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontFamily: Constants.Fonts.SF_Display_Bold,
                   fontSize: 18,
-                  color: 'white',
-                }}>
-                {Common.Helper.capitalize(Common.Translations.translate("phoneNumber"))}
+                  color: "white",
+                }}
+              >
+                {Common.Helper.capitalize(
+                  Common.Translations.translate("phoneNumber")
+                )}
               </Text>
               <Image
                 style={{ height: "60%", resizeMode: "contain" }}
@@ -3256,13 +3580,14 @@ class EstateDetail extends Component {
         </View>
         <View
           style={{
-            flexDirection: 'column',
-          }}>
+            flexDirection: "column",
+          }}
+        >
           <FlatList
             ref={(ref) => (this.flatListRef = ref)}
             contentContainerStyle={{
-              justifyContent: 'center',
-              alignItems: 'center',
+              justifyContent: "center",
+              alignItems: "center",
             }}
             data={this.state.similerAds}
             renderItem={this.renderItem}
@@ -3274,7 +3599,7 @@ class EstateDetail extends Component {
         </View>
         {this.state.showReport && (
           <Components.AmlakReport
-            title={''}
+            title={""}
             reload={this.state.selectedFilter == null ? true : true}
             item={
               this.state.selectedFilter == null
@@ -3300,10 +3625,101 @@ class EstateDetail extends Component {
             containerStyle={{
               top: null,
               bottom: 0,
-              backgroundColor: 'white',
+              backgroundColor: "white",
             }}
           />
         )}
+
+        <RBSheet
+          ref={(ref) => {
+            this.RBSheet = ref;
+          }}
+          height={180}
+          openDuration={250}
+          customStyles={{
+            container: {
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              // justifyContent: "center",
+              // alignItems: "center",
+            },
+          }}
+        >
+          <View
+            style={{
+              height: "30%",
+              width: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              paddingHorizontal: 30,
+            }}
+          >
+            <Text style={{ fontSize: wp(4) }}>
+              {Common.Translations.translate("login_required")}
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: "space-around",
+              flexDirection: "row",
+              paddingHorizontal: 15,
+            }}
+          >
+            <Pressable
+              onPress={() => this.RBSheet.close()}
+              style={{
+                height: 50,
+                width: 150,
+                marginHorizontal: 30,
+                backgroundColor: "#c0c6bd",
+                marginTop: 20,
+                borderRadius: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: wp(3.5),
+                  fontFamily: Constants.Fonts.shamel,
+                }}
+              >
+                {Common.Translations.translate("ok")}
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                this.RBSheet.close();
+                this.props.restorePropertyId(this.props.route.params.id),
+                  setTimeout(() => {
+                    this.props.navigation.navigate(
+                      Constants.Navigations.Onboarding.LOGIN
+                    );
+                  }, 500);
+              }}
+              style={{
+                height: 50,
+                width: 150,
+                marginHorizontal: 30,
+                backgroundColor: Constants.Colors.buttonBackground,
+                marginTop: 20,
+                borderRadius: 10,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: wp(3.5),
+                  fontFamily: Constants.Fonts.shamel,
+                  color: "white",
+                }}
+              >
+                {Common.Translations.translate("login")}
+              </Text>
+            </Pressable>
+          </View>
+        </RBSheet>
       </View>
     );
   }
@@ -3320,8 +3736,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     //   justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    alignItems: "center",
+    backgroundColor: "white",
   },
   mainContainer: {
     width: Common.Helper.dimensions().width,
