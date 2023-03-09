@@ -1715,7 +1715,7 @@ class Dashboard extends Component {
                 fontSize: wp("3%"),
               }}
               dropdownTextStyle={{
-                textAlign: "right",
+                textAlign: "center",
                 color: "black",
                 fontFamily: Constants.Fonts.shamel,
                 fontSize: wp("3%"),

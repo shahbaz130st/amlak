@@ -3475,7 +3475,7 @@ class EstateDetail extends Component {
       <View style={styles.container}>
         <View
           style={{
-            height: 64,
+            height: 70,
             position: "absolute",
             bottom: 20,
             zIndex: 12345,
@@ -3497,16 +3497,16 @@ class EstateDetail extends Component {
           <TouchableOpacity onPress={() => this.actionLike()}>
             <View
               style={{
-                width: wp("12%"),
-                height: 43,
-                borderRadius: 5,
+                width: 50,
+                height: 50,
+                borderRadius: 8,
                 alignItems: "center",
                 justifyContent: "center",
-                backgroundColor: "rgba(240,241,243,0.76)",
+                backgroundColor: "#E9EEFC",
               }}
             >
               <Image
-                style={{ height: "60%", width: "60%", resizeMode: "contain" }}
+                style={{ height: 22, width: 22, resizeMode: "contain" }}
                 source={
                   this.state.isLiked == false
                     ? Constants.Images.heartGray
@@ -3526,9 +3526,9 @@ class EstateDetail extends Component {
                 });
             }}
             style={{
-              width: wp("12%"),
-              height: 43,
-              backgroundColor: "#05B433",
+              width: 50,
+              height: 50,
+              // backgroundColor: "#05B433",
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 5,
@@ -3536,12 +3536,11 @@ class EstateDetail extends Component {
           >
             <Image
               style={{
-                width: "60%",
-                height: "60%",
-                tintColor: "white",
+                height: 45,
+                width: 45,
                 resizeMode: "contain",
               }}
-              source={Constants.Images.shareIcon}
+              source={Constants.Images.whatsapp}
             />
           </TouchableOpacity>
           <TouchableOpacity
@@ -3551,28 +3550,33 @@ class EstateDetail extends Component {
           >
             <View
               style={{
-                height: 43,
+                height: 50,
                 width: wp("60%"),
-                backgroundColor: "#006feb",
+                backgroundColor: "#006FEB",
                 alignItems: "center",
-                justifyContent: "space-evenly",
+                justifyContent: "center",
+                // justifyContent: "space-evenly",
                 flexDirection: "row",
-                borderRadius: 5,
+                borderRadius: 8,
               }}
             >
               <Text
                 style={{
-                  fontFamily: Constants.Fonts.SF_Display_Bold,
-                  fontSize: 18,
+                  fontFamily: Constants.Fonts.SF_Display_Semi_Bold,
+                  fontSize: 15,
                   color: "white",
                 }}
               >
                 {Common.Helper.capitalize(
-                  Common.Translations.translate("phoneNumber")
+                  Common.Translations.translate("callAdvertiser")
                 )}
               </Text>
               <Image
-                style={{ height: "60%", resizeMode: "contain" }}
+                style={{
+                  height: "60%",
+                  resizeMode: "contain",
+                  marginLeft: 10,
+                }}
                 source={Constants.Images.phone}
               />
             </View>
@@ -3631,15 +3635,16 @@ class EstateDetail extends Component {
         )}
 
         <RBSheet
+          closeOnDragDown
           ref={(ref) => {
             this.RBSheet = ref;
           }}
-          height={180}
+          height={230}
           openDuration={250}
           customStyles={{
             container: {
-              borderTopLeftRadius: 10,
-              borderTopRightRadius: 10,
+              borderTopLeftRadius: 20,
+              borderTopRightRadius: 20,
               // justifyContent: "center",
               // alignItems: "center",
             },
@@ -3649,13 +3654,39 @@ class EstateDetail extends Component {
             style={{
               height: "30%",
               width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              paddingHorizontal: 30,
+              // justifyContent: "center",
+              // alignItems: "center",
+              paddingHorizontal: 40,
             }}
           >
-            <Text style={{ fontSize: wp(4) }}>
-              {Common.Translations.translate("login_required")}
+            <Text
+              style={{
+                fontSize: Constants.API.Language == "ar" ? 14 : 16,
+                textAlign: "right",
+                fontFamily:
+                  Constants.API.Language == "ar"
+                    ? null
+                    : Constants.Fonts.SF_Display_Semi_Bold,
+
+                marginTop: 20,
+              }}
+            >
+              {Common.Translations.translate("title_bottomSheet")}
+            </Text>
+
+            <Text
+              style={{
+                fontSize: Constants.API.Language == "ar" ? 12 : 14,
+                textAlign: "right",
+                marginTop: Constants.API.Language == "ar" ? 18 : 15,
+
+                fontFamily:
+                  Constants.API.Language == "ar"
+                    ? null
+                    : Constants.Fonts.shamelBold,
+              }}
+            >
+              {Common.Translations.translate("desc_bottomSheet")}
             </Text>
           </View>
           <View
@@ -3663,15 +3694,16 @@ class EstateDetail extends Component {
               justifyContent: "space-around",
               flexDirection: "row",
               paddingHorizontal: 15,
+              marginTop: 30,
             }}
           >
             <Pressable
               onPress={() => this.RBSheet.close()}
               style={{
-                height: 50,
-                width: 150,
+                height: 45,
+                width: 160,
                 marginHorizontal: 30,
-                backgroundColor: "#c0c6bd",
+                backgroundColor: "#E8E9F3",
                 marginTop: 20,
                 borderRadius: 10,
                 justifyContent: "center",
@@ -3684,7 +3716,7 @@ class EstateDetail extends Component {
                   fontFamily: Constants.Fonts.shamel,
                 }}
               >
-                {Common.Translations.translate("ok")}
+                {Common.Translations.translate("register_bottomSheet")}
               </Text>
             </Pressable>
             <Pressable
@@ -3698,10 +3730,11 @@ class EstateDetail extends Component {
                   }, 500);
               }}
               style={{
-                height: 50,
-                width: 150,
+                height: 45,
+                width: 160,
+
                 marginHorizontal: 30,
-                backgroundColor: Constants.Colors.buttonBackground,
+                backgroundColor: "#006FEB",
                 marginTop: 20,
                 borderRadius: 10,
                 justifyContent: "center",
@@ -3715,7 +3748,7 @@ class EstateDetail extends Component {
                   color: "white",
                 }}
               >
-                {Common.Translations.translate("login")}
+                {Common.Translations.translate("login_bottomSheet")}
               </Text>
             </Pressable>
           </View>
