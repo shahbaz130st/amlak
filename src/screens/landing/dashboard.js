@@ -128,6 +128,7 @@ class Dashboard extends Component {
 
   async componentDidMount() {
     this.cityList();
+    // console.log();
     let tempArray = [];
     this.props.toggleLoader(true);
     let token = await Common.KeyChain.get("authToken");
@@ -190,6 +191,7 @@ class Dashboard extends Component {
             return a.concat(b);
           });
         duplicated.unshift(tempArray);
+        console.log("duplicated--------------------->", duplicated);
         this.setState({ items: duplicated });
       }
     }
@@ -1572,11 +1574,8 @@ class Dashboard extends Component {
           style={{
             height: hp(8),
             width: "100%",
-            // justifyContent: "center",
             paddingHorizontal: 20,
             paddingVertical: 10,
-            // alignItems: "flex-end",
-            // backgroundColor: "red",
             flexDirection: "row",
             justifyContent: "space-around",
           }}
@@ -1609,6 +1608,7 @@ class Dashboard extends Component {
                 justifyContent: "center",
                 alignItems: "center",
                 backgroundColor: this.state.showBlueColor ? "#006feb" : "white",
+                // backgroundColor: "pink",
                 borderWidth: this.state.showBlueColor ? 0 : 0.5,
                 borderColor: "grey",
               }}
@@ -1616,8 +1616,10 @@ class Dashboard extends Component {
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp(3.5),
+                  fontSize: 13,
                   color: this.state.showBlueColor ? "white" : "black",
+                  paddingTop: Constants.API.Language == "ar" ? 4 : 0,
+                  // lineHeight: 17,
                 }}
               >
                 {Common.Translations.translate(
@@ -1628,7 +1630,7 @@ class Dashboard extends Component {
                 style={{
                   height: 15,
                   width: 15,
-                  marginLeft: wp(2),
+                  marginLeft: wp(1),
                   tintColor: this.state.showBlueColor ? "white" : "black",
                 }}
                 source={
@@ -1665,7 +1667,8 @@ class Dashboard extends Component {
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp("3"),
+                  fontSize: 13,
+                  paddingTop: Constants.API.Language == "ar" ? 4 : 0,
                 }}
               >
                 {Common.Translations.translate("filter")}
@@ -1712,7 +1715,7 @@ class Dashboard extends Component {
                 fontSize: wp("3%"),
               }}
               dropdownTextStyle={{
-                textAlign: "right",
+                textAlign: "center",
                 color: "black",
                 fontFamily: Constants.Fonts.shamel,
                 fontSize: wp("3%"),
@@ -1757,7 +1760,7 @@ class Dashboard extends Component {
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "row",
-              // backgroundColor: "green",
+              backgroundColor: "white",
             }}
           >
             <TouchableOpacity
@@ -1821,103 +1824,11 @@ class Dashboard extends Component {
           </View>
           <View
             style={{
-              marginTop: hp("1.5%"),
               width: wp("100%"),
               height: hp("4%"),
-              backgroundColor: "white",
-              // backgroundColor: "orange",
-              justifyContent: "center",
-              alignItems: "center",
               flexDirection: "row",
             }}
           >
-            {/* <TouchableOpacity
-              onPress={() => {
-                this.setState({ isList: !this.state.isList, showInfo: false });
-                setTimeout(() => {
-                  this.setState({ loadMore: this.state.isList });
-                }, 1000);
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  backgroundColor: "white",
-                  width: wp("33%"),
-                  // height: hp('4%'),
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp("3"),
-                  }}
-                >
-                  {Common.Translations.translate(
-                    this.state.isList == true ? "map" : "list"
-                  )}
-                </Text>
-                <Image
-                  style={{
-                    marginLeft: wp("2%"),
-                  }}
-                  source={
-                    this.state.isList == true
-                      ? Constants.Images.map
-                      : Constants.Images.list
-                  }
-                />
-              </View>
-            </TouchableOpacity> */}
-            <View
-              style={{
-                width: 1,
-                height: hp("3%"),
-                backgroundColor: "#F3F3F3",
-                // backgroundColor: "pink",
-                // marginHorizontal: wp('6%'),
-              }}
-            />
-            {/* <TouchableOpacity
-              onPress={() => {
-                this.setState({
-                  isFilterEvent: true,
-                  loadMore: false,
-                  searchKeyword: "",
-                });
-                this.props.navigation.push(
-                  Constants.Navigations.Dashboard.FILTER
-                );
-              }}
-            >
-              <View
-                style={{
-                  flexDirection: "row",
-                  backgroundColor: "white",
-                  width: wp("33%"),
-                  // height: hp('4%'),
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Text
-                  style={{
-                    fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp("3"),
-                  }}
-                >
-                  {Common.Translations.translate("filter")}
-                </Text>
-                <Image
-                  style={{
-                    marginLeft: wp("2%"),
-                  }}
-                  source={Constants.Images.filter}
-                />
-              </View>
-            </TouchableOpacity> */}
             <TouchableOpacity
             // onPress={() =>
             //   this.setState({isFilter: false, showPicker: false})
@@ -1925,17 +1836,14 @@ class Dashboard extends Component {
             >
               <View
                 style={{
-                  flexDirection: "row",
-                  width: wp("33%"),
-                  // height: hp('4%'),
-                  justifyContent: "center",
-                  alignItems: "center",
+                  paddingLeft: 23,
+                  paddingTop: 2,
                 }}
               >
                 <Text
                   style={{
                     // fontFamily: Constants.Fonts.shamel,
-                    fontSize: wp("3"),
+                    fontSize: wp(3),
                     color: "#E1E1E1",
                   }}
                 >

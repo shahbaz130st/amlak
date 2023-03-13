@@ -6,6 +6,21 @@
   "dontHaveAccount": "Don’t have an account? Register here",
   "name": "Name",
   "phoneNumber": "Mobile Number",
+  "callAdvertiser":"Call Advertiser",
+
+
+  "title_bottomSheet":" Please Login",
+  "desc_bottomSheet":"To show phone number you should login first",
+  "login_bottomSheet":"Login",
+  "register_bottomSheet":"Register",
+
+
+
+
+
+
+
+
   "email": "Email",
   "idNumber": "ID Number",
   "password": "Password",

@@ -431,7 +431,7 @@
 				CODE_SIGN_ENTITLEMENTS = Amlak/Amlak.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = XL2NNZKQXQ;
 				ENABLE_BITCODE = NO;
@@ -462,7 +462,7 @@
 				CODE_SIGN_ENTITLEMENTS = Amlak/AmlakRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_TEAM = XL2NNZKQXQ;
 				INFOPLIST_FILE = Amlak/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

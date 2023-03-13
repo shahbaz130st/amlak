@@ -6,6 +6,16 @@
   "dontHaveAccount": "ليس لديك حساب؟ إنشاء حساب من هنا",
   "name": "الإسم",
   "phoneNumber": "رقم الجوال",
+  "callAdvertiser":"إتصل بالمعلن",
+
+  "title_bottomSheet":"تسجيل الدخول",
+  "desc_bottomSheet":"لإظهار بيانات التواصل يُرجى تسجيل الدخول أولا",
+  "login_bottomSheet":"تسجيل دخول",
+  "register_bottomSheet":"إنشاء حساب",
+
+
+
+
   "email": " البريد الإلكتروني",
   "idNumber": " رقم الهوية",
   "password": "كلمه السر",
