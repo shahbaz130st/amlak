@@ -191,7 +191,6 @@ class Dashboard extends Component {
             return a.concat(b);
           });
         duplicated.unshift(tempArray);
-        console.log("duplicated--------------------->", duplicated);
         this.setState({ items: duplicated });
       }
     }
@@ -1531,7 +1530,7 @@ class Dashboard extends Component {
   }
 
   getFilterList = async (item) => {
-    // console.log(item)
+    console.log(item);
     this.props.toggleLoader(true);
     if (item.id == 0) {
       this.refreshList();
@@ -1547,7 +1546,7 @@ class Dashboard extends Component {
       console.log("my response filter===>", res);
       this.props.toggleLoader(false);
       if (res?.data) {
-        console.log("res", JSON.stringify(res));
+        // console.log("res", JSON.stringify(res));
         // this.setState({ arrayEstates: res.data });
         if (res.data.length > 0) {
           Common.KeyChain.save("isFilter", "true");
@@ -1796,7 +1795,7 @@ class Dashboard extends Component {
                       sortActive: false,
                     });
                     this.getFilterList(item);
-                    // this.sortList();
+                    this.sortList();
                   }}
                   style={
                     this.state.flagAdded === index

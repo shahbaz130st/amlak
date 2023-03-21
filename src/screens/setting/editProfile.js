@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 import {
   View,
@@ -9,34 +9,34 @@ import {
   Keyboard,
   TextInput,
   Platform,
-} from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import PhoneInput from 'react-native-phone-number-input';
-import ImagePicker from 'react-native-image-picker';
-import ImageResizer from 'react-native-image-resizer';
-import { connect } from 'react-redux';
-import { Actions } from '../../redux/index';
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import PhoneInput from "react-native-phone-number-input";
+import ImagePicker from "react-native-image-picker";
+import ImageResizer from "react-native-image-resizer";
+import { connect } from "react-redux";
+import { Actions } from "../../redux/index";
 
-import * as Constants from '../../constants/index';
-import * as Services from '../../services/index';
+import * as Constants from "../../constants/index";
+import * as Services from "../../services/index";
 
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import * as Components from '../../components/index';
-import * as Common from '../../common/index';
-import User from '../../models/user';
+} from "react-native-responsive-screen";
+import * as Components from "../../components/index";
+import * as Common from "../../common/index";
+import User from "../../models/user";
 
 class EditProfile extends Component {
   state = {
-    phone: '',
-    code: '',
-    name: '',
-    idNumber: '',
+    phone: "",
+    code: "",
+    name: "",
+    idNumber: "",
     imageURI: null,
-    errorFieldName: '',
-    email: ''
+    errorFieldName: "",
+    email: "",
   };
   async componentDidMount() {
     let userInstance = User.getInstance();
@@ -47,33 +47,33 @@ class EditProfile extends Component {
       this.setState({ name: userInstance.getUser().info.name });
       this.setState({ idNumber: userInstance.getUser().info.national_id });
       this.setState({ email: userInstance.getUser().info.email });
-      this.setState({ imageURI: { uri: userInstance.getUser().info.profile_pic } });
-
+      this.setState({
+        imageURI: { uri: userInstance.getUser().info.profile_pic },
+      });
     }
-    Common.Helper.logEvent('profile', {
-    });
+    Common.Helper.logEvent("profile", {});
   }
 
   presentImagePicker = () => {
     const options = {
-      title: `${Common.Translations.translate('selectProfilePic')}`,
+      title: `${Common.Translations.translate("selectProfilePic")}`,
       storageOptions: {
         skipBackup: true,
-        path: 'images',
+        path: "images",
       },
     };
 
     ImagePicker.showImagePicker(options, async (response) => {
       if (response.didCancel) {
-        console.log('User cancelled image picker');
+        console.log("User cancelled image picker");
       } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
+        console.log("ImagePicker Error: ", response.error);
       } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
+        console.log("User tapped custom button: ", response.customButton);
       } else {
         // You can also display the image using data:
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-        ImageResizer.createResizedImage(response.uri, 700, 700, 'JPEG', 30, 0)
+        ImageResizer.createResizedImage(response.uri, 700, 700, "JPEG", 30, 0)
           .then((response) => {
             const source = { uri: response.uri };
             this.setState({
@@ -95,13 +95,13 @@ class EditProfile extends Component {
   createFormData = (photo, body) => {
     const data = new FormData();
     let filePath =
-      Platform.OS === 'android' ? photo.uri : photo.uri.replace('file://', '');
-    data.append('profile_pic', {
+      Platform.OS === "android" ? photo.uri : photo.uri.replace("file://", "");
+    data.append("profile_pic", {
       name:
         photo.fileName == undefined
           ? `${Math.random().toString(36).substring(7)}.jpg`
           : photo.fileName,
-      type: photo.type == undefined ? 'image/jpg' : photo.type,
+      type: photo.type == undefined ? "image/jpg" : photo.type,
       uri: filePath,
     });
 
@@ -113,34 +113,34 @@ class EditProfile extends Component {
   };
 
   submitAction = async () => {
-    if (this.state.name == '') {
-      this.setState({ errorFieldName: 'name' });
-      Common.Alert.show('alert', Common.Translations.translate('enterName'));
-    } else if (this.state.phone == '') {
+    if (this.state.name == "") {
+      this.setState({ errorFieldName: "name" });
+      Common.Alert.show("alert", Common.Translations.translate("enterName"));
+    } else if (this.state.phone == "") {
       Common.Alert.show(
-        'alert',
-        Common.Translations.translate('errorEnterMobileNumber'),
+        "alert",
+        Common.Translations.translate("errorEnterMobileNumber")
       );
-      this.setState({ errorFieldName: 'mobileNumberError' });
+      this.setState({ errorFieldName: "mobileNumberError" });
     } else if (this.state.phone.length != 10 && this.state.phone.length != 9) {
       Common.Alert.show(
-        'alert',
-        Common.Translations.translate('errorMobileNumberLength'),
+        "alert",
+        Common.Translations.translate("errorMobileNumberLength")
       );
-      this.setState({ errorFieldName: 'mobileNumberError' });
-    } else if (this.state.idNumber == '') {
-      this.setState({ errorFieldName: 'enterIDNumber' });
+      this.setState({ errorFieldName: "mobileNumberError" });
+    } else if (this.state.idNumber == "") {
+      this.setState({ errorFieldName: "enterIDNumber" });
       Common.Alert.show(
-        'alert',
-        Common.Translations.translate('enterIDNumber'),
+        "alert",
+        Common.Translations.translate("enterIDNumber")
       );
     } else if (this.state.imageURI == null) {
       Common.Alert.show(
-        'alert',
-        Common.Translations.translate('selectProfilePic'),
+        "alert",
+        Common.Translations.translate("selectProfilePic")
       );
     } else {
-      this.setState({ errorFieldName: '' });
+      this.setState({ errorFieldName: "" });
       this.props.toggleLoader(true);
       let params = {};
       // params.national_id = this.state.idNumber;
@@ -151,8 +151,8 @@ class EditProfile extends Component {
       let userData = await Services.AuthServices.updateProfile(formParams);
       this.props.toggleLoader(false);
       if (userData) {
-        console.log('signup------>', userData);
-        let token = await Common.KeyChain.get('authToken');
+        console.log("signup------>", userData);
+        let token = await Common.KeyChain.get("authToken");
         if (token != null) {
           this.props.toggleLoader(true);
           Constants.API.Token = token;
@@ -175,87 +175,103 @@ class EditProfile extends Component {
     return (
       <View style={styles.container}>
         <Components.AmlakHeader
-          height={hp('11%')}
+          height={hp("11%")}
           isButtons={true}
           leftButton={Constants.Images.setting}
-          title={Common.Translations.translate('my_account')}
+          title={Common.Translations.translate("my_account")}
           onBackButtonClick={() => {
             this.props.navigation.pop();
           }}
-
         />
-        <View style={{ width: '100%' }}>
+        <View style={{ width: "100%" }}>
           <KeyboardAwareScrollView
             enableOnAndroid={true}
             contentContainerStyle={styles.mainContainer}
-            keyboardShouldPersistTaps="handled">
-            <View style={{ alignItems: 'center', flexDirection: 'column' }}>
+            keyboardShouldPersistTaps="handled"
+          >
+            <View style={{ alignItems: "center", flexDirection: "column" }}>
               <View
                 style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: hp('3%'),
-                }}>
-                <TouchableOpacity
-                >
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: hp("3%"),
+                }}
+              >
+                <TouchableOpacity>
                   <Image
                     style={{
-                      width: wp('30%'),
-                      height: wp('30%'),
-                      borderRadius: wp('30%') / 2,
+                      width: wp("30%"),
+                      height: wp("30%"),
+                      borderRadius: wp("30%") / 2,
                     }}
                     source={
-                      (this.state.imageURI == null || this?.state?.imageURI?.uri == "http://49.12.234.75/assets/upload/profile_pic")
+                      this.state.imageURI == null ||
+                      this?.state?.imageURI?.uri ==
+                        "http://49.12.234.75/assets/upload/profile_pic"
                         ? Constants.Images.profile
                         : this.state.imageURI
                     }
                   />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ height: 25, width: 25, borderRadius: 12.5, borderColor: 'rgb(211,211,211)', borderWidth: 1, alignItems: "center", justifyContent: "center", position: "absolute", bottom: 0, right: 15, backgroundColor: 'rgb(211,211,211)' }} onPress={() => {
-                  this.presentImagePicker();
-                }}>
+                <TouchableOpacity
+                  style={{
+                    height: 25,
+                    width: 25,
+                    borderRadius: 12.5,
+                    borderColor: "rgb(211,211,211)",
+                    borderWidth: 1,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    position: "absolute",
+                    bottom: 0,
+                    right: 15,
+                    backgroundColor: "rgb(211,211,211)",
+                  }}
+                  onPress={() => {
+                    this.presentImagePicker();
+                  }}
+                >
                   <Image
                     style={{
                       width: 11,
                       height: 11,
-                      resizeMode: "contain"
+                      resizeMode: "contain",
                     }}
-                    source={
-                      Constants.Images.editProfile
-                    }
+                    source={Constants.Images.editProfile}
                   />
-
                 </TouchableOpacity>
               </View>
               <View
                 style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: hp('3%'),
-                }}>
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: hp("3%"),
+                }}
+              >
                 <Text
                   style={{
-                    textAlign: 'right',
-                    width: wp('75%'),
-                    marginBottom: hp('1%'),
+                    textAlign: "right",
+                    width: wp("75%"),
+                    marginBottom: hp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('3.2%'),
-                  }}>
-                  {Common.Translations.translate('name')}
+                    fontSize: wp("3.2%"),
+                  }}
+                >
+                  {Common.Translations.translate("name")}
                 </Text>
                 <Components.AmlakField
                   containerStyle={{
                     borderColor:
-                      this.state.errorFieldName == 'name'
-                        ? 'red'
-                        : 'rgb(211,211,211)',
+                      this.state.errorFieldName == "name"
+                        ? "red"
+                        : "rgb(211,211,211)",
                     borderRadius: 0,
-                    borderWidth: 1
+                    borderWidth: 1,
                   }}
                   onChangeText={(text) => this.setState({ name: text })}
                   value={this.state.name}
                   maxLength={20}
-                  error={this.state.errorFieldName == 'name' ? true : undefined}
+                  error={this.state.errorFieldName == "name" ? true : undefined}
                 />
               </View>
               {/* <View
@@ -292,32 +308,35 @@ class EditProfile extends Component {
 
               <View
                 style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: hp('3%'),
-                }}>
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: hp("3%"),
+                }}
+              >
                 <Text
                   style={{
-                    textAlign: 'right',
-                    width: wp('75%'),
-                    marginBottom: hp('1%'),
+                    textAlign: "right",
+                    width: wp("75%"),
+                    marginBottom: hp("1%"),
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('3.2%'),
-                  }}>
-                  {Common.Translations.translate('enterMobileNumber')}
+                    fontSize: wp("3.2%"),
+                  }}
+                >
+                  {Common.Translations.translate("enterMobileNumber")}
                 </Text>
                 <View
                   style={[
                     styles.textContainer,
                     {
                       borderColor:
-                        this.state.errorFieldName == 'mobileNumberError'
-                          ? 'rgb(255,0,0)'
-                          : 'rgb(211,211,211)',
+                        this.state.errorFieldName == "mobileNumberError"
+                          ? "rgb(255,0,0)"
+                          : "rgb(211,211,211)",
                       borderRadius: 0,
-                      borderWidth: 1
+                      borderWidth: 1,
                     },
-                  ]}>
+                  ]}
+                >
                   <PhoneInput
                     ref={(ref) => {
                       this.phoneInput = ref;
@@ -333,47 +352,48 @@ class EditProfile extends Component {
                     textInputStyle={styles.textAreaContainer}
                     codeTextStyle={{
                       fontFamily: Constants.Fonts.shamelBold,
-                      fontSize: wp('3.2%'),
-                      height: hp('2.5%'),
+                      fontSize: wp("3.2%"),
+                      height: hp("2.5%"),
                     }}
                     flagButtonStyle={{
-                      justifyContent: 'center',
-                      width: wp('12%'),
+                      justifyContent: "center",
+                      width: wp("12%"),
                       height: "100%",
-                      marginLeft: wp('3%')
+                      marginLeft: wp("3%"),
                     }}
                     textInputProps={{
                       maxLength: 10,
-                      placeholder: ' 59 XXXXXXX',
-                      keyboardType: 'number-pad',
+                      placeholder: " 59 XXXXXXX",
+                      keyboardType: "number-pad",
                       style: {
                         paddingVertical: 0,
                         fontFamily: Constants.Fonts.shamel,
-                        fontSize: wp('3.2%'),
-                        height: hp('5%'),
-                        width: wp('50%'),
-                        paddingLeft: wp('2.5%'),
+                        fontSize: wp("3.2%"),
+                        height: hp("5%"),
+                        width: wp("50%"),
+                        paddingLeft: wp("2.5%"),
                         borderStartWidth: 0.7,
-                        borderStartColor: '#E1E1E1',
-                        justifyContent: "center"
+                        borderStartColor: "#E1E1E1",
+                        justifyContent: "center",
                       },
                     }}
+                    disabled={true}
                     // disableArrowIcon={true}
                     getCallingCode={(text) => {
                       this.setState({ code: text });
                     }}
                     containerStyle={{
-                      width: wp('80%'),
-                      height: hp('5%'),
-                      justifyContent: 'center',
-                      alignItems: 'center',
+                      width: wp("80%"),
+                      height: hp("5%"),
+                      justifyContent: "center",
+                      alignItems: "center",
                       borderWidth: 1,
-                      borderColor: 'rgb(211,211,211)',
+                      borderColor: "rgb(211,211,211)",
                     }}
                     textContainerStyle={{
                       backgroundColor: "white",
-                      width: wp('79%'),
-                      height: hp('4.8%'),
+                      width: wp("79%"),
+                      height: hp("4.8%"),
                     }}
                   />
                   {/* <PhoneInput
@@ -431,9 +451,9 @@ class EditProfile extends Component {
                       this.setState({ code: text });
                     }}
                   /> */}
-                  {this.state.errorFieldName == 'mobileNumberError' && (
+                  {this.state.errorFieldName == "mobileNumberError" && (
                     <Image
-                      style={{ position: 'absolute', right: wp('3%') }}
+                      style={{ position: "absolute", right: wp("3%") }}
                       source={Constants.Images.warning}
                     />
                   )}
@@ -475,16 +495,19 @@ class EditProfile extends Component {
                 />
               </View> */}
 
-
               <View
                 style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: hp('3%'),
-                }}>
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: hp("3%"),
+                }}
+              >
                 <Components.AmlakButton
                   title="save_changes"
-                  titleStyles={{ color: Constants.Colors.white, fontFamily: Constants.Fonts.shamelBold }}
+                  titleStyles={{
+                    color: Constants.Colors.white,
+                    fontFamily: Constants.Fonts.shamelBold,
+                  }}
                   containerStyles={{
                     backgroundColor: Constants.Colors.buttonBackground,
                   }}
@@ -510,26 +533,26 @@ export default connect(null, mapDispatchToProps)(EditProfile);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'white',
+    alignItems: "center",
+    backgroundColor: "white",
   },
   mainContainer: {
     // flexGrow: 1,
   },
   textContainer: {
-    width: wp('80%'),
-    height: hp('5%'),
-    borderRadius: hp('5%') / 2,
-    justifyContent: 'center',
-    alignItems: 'center',
+    width: wp("80%"),
+    height: hp("5%"),
+    borderRadius: hp("5%") / 2,
+    justifyContent: "center",
+    alignItems: "center",
     borderWidth: 1,
-    borderColor: 'rgb(211,211,211)',
-    flexDirection: 'row',
+    borderColor: "rgb(211,211,211)",
+    flexDirection: "row",
     paddingHorizontal: 0,
   },
   textAreaContainer: {
-    width: wp('50%'),
-    height: hp('4%'),
+    width: wp("50%"),
+    height: hp("4%"),
     borderWidth: 1,
   },
 });
