@@ -1284,7 +1284,7 @@ class Dashboard extends Component {
       <View
         style={{
           height: hp("70%"),
-          backgroundColor: "white",
+          backgroundColor: "#e8e9f3",
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -1695,6 +1695,7 @@ class Dashboard extends Component {
             <ModalDropdown
               style={{
                 backgroundColor: "#F0F0F0",
+                // backgroundColor: "red",
                 borderRadius: 5,
                 marginLeft: 15,
                 borderColor: "lightgrey",
@@ -1747,7 +1748,7 @@ class Dashboard extends Component {
           style={{
             width: wp("100%"),
             height: hp("11%"),
-            backgroundColor: "white",
+            backgroundColor: "#e8e9f3",
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -1759,7 +1760,7 @@ class Dashboard extends Component {
               justifyContent: "center",
               alignItems: "center",
               flexDirection: "row",
-              backgroundColor: "white",
+              backgroundColor: "#e8e9f3",
             }}
           >
             <TouchableOpacity

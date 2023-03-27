@@ -1,13 +1,13 @@
-import React from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
-import * as Constants from '../constants/index';
-import * as Screens from '../screens/index';
-import {Navigations} from '../constants/index';
-import {TouchableOpacity, Image} from 'react-native';
-import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
-import Dashboard from './dashboard.stack';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import * as Constants from "../constants/index";
+import * as Screens from "../screens/index";
+import { Navigations } from "../constants/index";
+import { TouchableOpacity, Image } from "react-native";
+import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import Dashboard from "./dashboard.stack";
 
-const {Navigator, Screen} = createStackNavigator();
+const { Navigator, Screen } = createStackNavigator();
 
 const AuthStack = () => (
   <Navigator
@@ -15,10 +15,11 @@ const AuthStack = () => (
     screenOptions={{
       headerTitle: null,
       headerStyle: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
       },
-      headerTintColor: '#fff',
-    }}>
+      headerTintColor: "#fff",
+    }}
+  >
     <Screen
       name={Navigations.Onboarding.SPLASH}
       component={Screens.Splash}
@@ -38,17 +39,22 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Onboarding.LOGIN}
       component={Screens.Login}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         headerRight: () => (
           <TouchableOpacity
             onPress={() => {
               navigation.pop();
-            }}>
+            }}
+          >
             <Image
               source={Constants.Images.rightArrow}
-              style={{width: wp('6%'), height: wp('6%'), marginRight: wp('2%')}}
+              style={{
+                width: wp("6%"),
+                height: wp("6%"),
+                marginRight: wp("2%"),
+              }}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -59,7 +65,7 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Onboarding.SIGNUP}
       component={Screens.Signup}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         //   headerRight: () => (
@@ -72,27 +78,32 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Onboarding.VERIFICATION}
       component={Screens.Verificaton}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         headerRight: () => (
           <TouchableOpacity
             onPress={() => {
               navigation.pop();
-            }}>
+            }}
+          >
             <Image
               source={Constants.Images.rightArrow}
-              style={{width: wp('6%'), height: wp('6%'), marginRight: wp('2%')}}
+              style={{
+                width: wp("6%"),
+                height: wp("6%"),
+                marginRight: wp("2%"),
+              }}
               resizeMode="contain"
             />
           </TouchableOpacity>
         ),
       })}
     />
-  <Screen
+    <Screen
       name={Navigations.Rating.Rating}
       component={Screens.Rating}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         animationEnabled: false,
         gestureEnabled: false,
@@ -102,7 +113,7 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Onboarding.DASHBOARD}
       component={Dashboard}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         animationEnabled: false,
         gestureEnabled: false,
@@ -112,7 +123,7 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Dashboard.DETAIL}
       component={Screens.EstateDetail}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
       })}
@@ -120,7 +131,7 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Dashboard.FILTER}
       component={Screens.Filter}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         animationEnabled: false,
         headerTransparent: true,
         headerLeft: () => null,
@@ -131,7 +142,7 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Setting.PROFILE}
       component={Screens.Profile}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         headerRight: () => null,
@@ -140,7 +151,7 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Property.Category}
       component={Screens.Property}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         headerRight: () => null,
@@ -150,7 +161,7 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Setting.MY_ADS}
       component={Screens.MyAds}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         headerRight: () => null,
@@ -160,7 +171,7 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Setting.SETTING}
       component={Screens.Setting}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         headerRight: () => null,
@@ -169,34 +180,44 @@ const AuthStack = () => (
     <Screen
       name={Navigations.Setting.LANGUAGE}
       component={Screens.Language}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         headerRight: () => null,
       })}
     />
-     <Screen
+    <Screen
       name={Navigations.Setting.EDIT_PROFILE}
       component={Screens.EditProfile}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         headerRight: () => null,
       })}
     />
-       <Screen
+    <Screen
       name={Navigations.Dashboard.MESSAGE}
       component={Screens.PostAdded}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         headerRight: () => null,
       })}
     />
-      <Screen
+    <Screen
       name={Navigations.Setting.HELP}
       component={Screens.Help}
-      options={({navigation, route}) => ({
+      options={({ navigation, route }) => ({
+        headerTransparent: true,
+        headerLeft: () => null,
+        headerRight: () => null,
+      })}
+    />
+
+    <Screen
+      name={Navigations.Dashboard.AddNEW}
+      component={Screens.AddNew}
+      options={({ navigation, route }) => ({
         headerTransparent: true,
         headerLeft: () => null,
         headerRight: () => null,
