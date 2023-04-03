@@ -940,10 +940,6 @@ class Dashboard extends Component {
     ]);
 
   renderItem = (value, index) => {
-    console.log(
-      "check for this.state.selectedFilter",
-      this.state.selectedFilter
-    );
     const { selectedFilter } = this.state;
     const defaultSource =
       itemName == "land"
@@ -974,7 +970,6 @@ class Dashboard extends Component {
         ? Constants.Images.buildingSale
         : Constants.Images.buildingRent;
     const itemName = value?.item?.category_name;
-    console.log("Show render item picture", value.item.is_fav);
     let Image_Http_URL =
       value.item.picture.length > 0
         ? // ? Constants.API.ImageBaseURL(value.item.picture[0].picture)
@@ -985,10 +980,10 @@ class Dashboard extends Component {
       <View
         style={{
           width: wp("100%"),
-          backgroundColor: "white",
+          // backgroundColor: "green",
           justifyContent: "center",
           alignItems: "center",
-          marginVertical: wp("2%"),
+          // marginVertical: wp("2%"),
         }}
       >
         <TouchableOpacity
@@ -1018,10 +1013,11 @@ class Dashboard extends Component {
           <View
             style={{
               width: wp("90%"),
-              backgroundColor: "white",
               justifyContent: "center",
               alignItems: "center",
               marginVertical: wp("2%"),
+              borderBottomRightRadius: 10,
+              borderBottomLeftRadius: 10,
             }}
           >
             <View
@@ -1031,6 +1027,7 @@ class Dashboard extends Component {
                 justifyContent: "center",
                 alignItems: "center",
                 backgroundColor: "#ffffff",
+                borderRadius: 5,
               }}
             >
               <AvatarComponent
@@ -1039,10 +1036,16 @@ class Dashboard extends Component {
                 // defaultSource={Constants.Images.cover}
                 defaultSource={defaultSource}
                 source={Image_Http_URL}
-                style={{ width: wp("80%"), height: hp("23%") }}
+                style={{
+                  width: wp("90%"),
+                  height: hp("23%"),
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
+                }}
                 imageStyle={{
                   width: wp("80%"),
                   height: hp("23%"),
+
                   resizeMode: "contain",
                 }}
               />
@@ -1055,7 +1058,7 @@ class Dashboard extends Component {
                   paddingHorizontal: wp("4%"),
                   paddingVertical: wp("0.5%"),
                   right: wp("7%"),
-                  top: wp("1%"),
+                  top: wp("2%"),
                   borderRadius: wp("1.2%"),
                 }}
               >
@@ -1075,18 +1078,22 @@ class Dashboard extends Component {
             </View>
             <View
               style={{
-                marginVertical: wp("2%"),
+                // marginVertical: wp("2%"),
                 width: wp("90%"),
                 alignItems: "center",
                 flexDirection: "column",
                 backgroundColor: "white",
+                borderBottomLeftRadius: 10,
+                borderBottomRightRadius: 10,
               }}
             >
               <View
                 style={{
-                  width: wp("70%"),
+                  width: wp("85%"),
                   flexDirection: "row",
                   justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingTop: 10,
                 }}
               >
                 <Text
@@ -1120,13 +1127,15 @@ class Dashboard extends Component {
                   marginVertical: wp("1%"),
                 }}
               >
-                <Text
+                {/* <Text
                   style={{
                     color: "#444040",
                     width: wp("80%"),
                     textAlign: "right",
                     fontFamily: Constants.Fonts.shamelBold,
                     fontSize: wp("3"),
+                    backgroundColor: "orange",
+                    marginLeft: 20,
                   }}
                 >
                   {value.item.category_name +
@@ -1134,17 +1143,19 @@ class Dashboard extends Component {
                     Common.Helper.capitalize(
                       Common.Translations.translate(value.item.sale_or_rent)
                     )}
+                </Text> */}
+                <Text style={{ marginLeft: 20 }}>
+                  {this.renderProerties(value.item)}
                 </Text>
-                {this.renderProerties(value.item)}
               </View>
               <View
                 style={{
                   width: wp("90%"),
-                  height: hp("2%"),
+                  height: hp("3%"),
                   flexDirection: "row",
                   justifyContent: "flex-end",
                   alignItems: "flex-start",
-                  paddingRight: wp("8%"),
+                  paddingRight: wp("3%"),
                 }}
               >
                 <Text
@@ -1747,10 +1758,11 @@ class Dashboard extends Component {
         <View
           style={{
             width: wp("100%"),
-            height: hp("11%"),
+            height: hp("7%"),
             backgroundColor: "#e8e9f3",
             justifyContent: "center",
             alignItems: "center",
+            // backgroundColor: "red",
           }}
         >
           <View
@@ -1761,6 +1773,7 @@ class Dashboard extends Component {
               alignItems: "center",
               flexDirection: "row",
               backgroundColor: "#e8e9f3",
+              // backgroundColor: "red",
             }}
           >
             <TouchableOpacity
@@ -1778,7 +1791,18 @@ class Dashboard extends Component {
               }}
             >
               {this.state.isList == true ? (
-                <Image source={Constants.Images.sort} />
+                <View
+                  style={{
+                    height: 35,
+                    width: 35,
+                    backgroundColor: "white",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    borderRadius: 5,
+                  }}
+                >
+                  <Image source={Constants.Images.sort} />
+                </View>
               ) : null}
             </TouchableOpacity>
 
@@ -1809,7 +1833,8 @@ class Dashboard extends Component {
                       color:
                         this.state.flagAdded === index
                           ? Constants.Colors.white
-                          : Constants.Colors.buttonBackground,
+                          : // : Constants.Colors.buttonBackground,
+                            "black",
                       fontSize: wp("3"),
                       textTransform: "capitalize",
                     }}
@@ -1822,7 +1847,7 @@ class Dashboard extends Component {
               )}
             />
           </View>
-          <View
+          {/* <View
             style={{
               width: wp("100%"),
               height: hp("4%"),
@@ -1838,6 +1863,7 @@ class Dashboard extends Component {
                 style={{
                   paddingLeft: 23,
                   paddingTop: 2,
+                  backgroundColor: "red",
                 }}
               >
                 <Text
@@ -1852,11 +1878,12 @@ class Dashboard extends Component {
                 </Text>
               </View>
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
         <View
           style={{
             flex: 1,
+            backgroundColor: "transparent",
             /* height: hp('75%'), */ width: wp("100%"),
           }}
         >
@@ -1997,17 +2024,18 @@ const styles = StyleSheet.create({
     height: hp("4%"),
     paddingHorizontal: 15,
     borderRadius: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: Constants.Colors.buttonBackground,
     justifyContent: "center",
     marginLeft: 15,
+    backgroundColor: "white",
   },
 
   edittchableclicked: {
     height: hp("4%"),
     paddingHorizontal: 15,
     borderRadius: 20,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: "#fff",
     justifyContent: "center",
     marginLeft: 15,
