@@ -1541,7 +1541,7 @@ class Dashboard extends Component {
   }
 
   getFilterList = async (item) => {
-    console.log(item);
+    console.log("item", item);
     this.props.toggleLoader(true);
     if (item.id == 0) {
       this.refreshList();

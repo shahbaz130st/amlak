@@ -23,33 +23,20 @@
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Editor</string>
-			<key>CFBundleURLName</key>
-			<string>Bundle ID</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.amlak.aeliasoft</string>
+				<string>fb501092878601018</string>
 			</array>
 		</dict>
 	</array>
-<key>CFBundleURLTypes</key>
-<array>
-  <dict>
-  <key>CFBundleURLSchemes</key>
-  <array>
-    <string>fb501092878601018</string>
-  </array>
-  </dict>
-</array>
-<key>FacebookAppID</key>
-<string>501092878601018</string>
-<key>FacebookClientToken</key>
-<string>7620cfd5b006a15899bb9014c0004f51</string>
-<key>FacebookDisplayName</key>
-<string>أملاك بيع  وتأجير عقارات</string>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>FacebookAppID</key>
+	<string>501092878601018</string>
+	<key>FacebookClientToken</key>
+	<string>7620cfd5b006a15899bb9014c0004f51</string>
+	<key>FacebookDisplayName</key>
+	<string>أملاك بيع  وتأجير عقارات</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<false/>
 	<key>FirebaseAutomaticScreenReportingEnabled</key>
