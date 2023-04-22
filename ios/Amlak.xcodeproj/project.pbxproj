@@ -209,7 +209,7 @@
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = XL2NNZKQXQ;
+						DevelopmentTeam = MXW7GCNMFK;
 						LastSwiftMigration = 1120;
 						ProvisioningStyle = Automatic;
 					};
@@ -431,9 +431,9 @@
 				CODE_SIGN_ENTITLEMENTS = Amlak/Amlak.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = XL2NNZKQXQ;
+				DEVELOPMENT_TEAM = MXW7GCNMFK;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Amlak/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -462,8 +462,8 @@
 				CODE_SIGN_ENTITLEMENTS = Amlak/AmlakRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = XL2NNZKQXQ;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = 47RPVW85PW;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Amlak/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;

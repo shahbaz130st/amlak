@@ -1,33 +1,44 @@
-import React, { Component } from 'react';
-import { View, StyleSheet, Image, Text, TouchableOpacity, Platform, Linking } from 'react-native';
+import React, { Component } from "react";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Text,
+  TouchableOpacity,
+  Platform,
+  Linking,
+} from "react-native";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
+} from "react-native-responsive-screen";
 
-import * as Components from '../../components/index';
-import * as Constants from '../../constants/index';
-import * as Common from '../../common/index';
-import * as Services from '../../services/index';
-import Rate, { AndroidMarket } from 'react-native-rate'
-import User from '../../models/user';
-import { connect } from 'react-redux';
-import { Actions } from '../../redux/index';
-import { CommonActions } from '@react-navigation/native';
-import Share from 'react-native-share';
-import VersionInfo from 'react-native-version-info';
-const url = Platform.OS === "android" ? "https://play.google.com/store/apps/details?id=com.app.amlak" : "https://apps.apple.com/il/app/%D8%A3%D9%85%D9%84%D8%A7%D9%83-%D8%A8%D9%8A%D8%B9-%D9%88%D8%AA%D8%A7%D8%AC%D9%8A%D8%B1-%D8%B9%D9%82%D8%A7%D8%B1%D8%A7%D8%AA/id1553908741?l=iw";
+import * as Components from "../../components/index";
+import * as Constants from "../../constants/index";
+import * as Common from "../../common/index";
+import * as Services from "../../services/index";
+import Rate, { AndroidMarket } from "react-native-rate";
+import User from "../../models/user";
+import { connect } from "react-redux";
+import { Actions } from "../../redux/index";
+import { CommonActions } from "@react-navigation/native";
+import Share from "react-native-share";
+import VersionInfo from "react-native-version-info";
+const url =
+  Platform.OS === "android"
+    ? "https://play.google.com/store/apps/details?id=com.app.amlak"
+    : "https://apps.apple.com/il/app/%D8%A3%D9%85%D9%84%D8%A7%D9%83-%D8%A8%D9%8A%D8%B9-%D9%88%D8%AA%D8%A7%D8%AC%D9%8A%D8%B1-%D8%B9%D9%82%D8%A7%D8%B1%D8%A7%D8%AA/id1553908741?l=iw";
 const options = {
-  url
+  url,
 };
 class More extends Component {
   state = {
     isDisplayContact: false,
-    rated: false
+    rated: false,
   };
 
   async componentDidMount() {
-    let token = await Common.KeyChain.get('authToken');
+    let token = await Common.KeyChain.get("authToken");
     if (token != null) {
       this.props.toggleLoader(true);
       Constants.API.Token = token;
@@ -38,9 +49,11 @@ class More extends Component {
         userInstance.setUser(userRes);
       }
     }
-    Common.Helper.logEvent('more', {});
-    this.props.navigation.addListener('focus', async () => {
-      let token = await Common.KeyChain.get('authToken');
+
+    Common.Helper.logEvent("more", {});
+
+    this.props.navigation.addListener("focus", async () => {
+      let token = await Common.KeyChain.get("authToken");
       if (token != null) {
         Constants.API.Token = token;
       }
@@ -51,41 +64,44 @@ class More extends Component {
     return (
       <View style={styles.container}>
         <Components.AmlakHeader
-          height={hp('11%')}
+          height={hp("11%")}
           title={Common.Translations.translate(
-            Constants.Navigations.Dashboard.MORE,
+            Constants.Navigations.Dashboard.MORE
           )}
         />
-        <View style={{ marginTop: wp('3%'), backgroundColor: '#FDFDFD' }}>
+        <View style={{ marginTop: wp("3%"), backgroundColor: "#FDFDFD" }}>
           {Constants.API.Token != null ? (
             <React.Fragment>
               <View
                 style={{
-                  width: '80%',
-                  marginBottom: wp('5%'),
-                  flexDirection: 'row',
-                  backgroundColor: 'white',
-                  alignItems: 'center',
-                }}>
+                  width: "80%",
+                  marginBottom: wp("5%"),
+                  flexDirection: "row",
+                  backgroundColor: "white",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
-                  style={{ flexDirection: 'row' }}
+                  style={{ flexDirection: "row" }}
                   onPress={() => {
                     this.props.navigation.push(
-                      Constants.Navigations.Setting.PROFILE,
+                      Constants.Navigations.Setting.PROFILE
                     );
-                  }}>
+                  }}
+                >
                   <Image source={Constants.Images.arrowDetail} />
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('3%'),
-                      marginLeft: wp('4%'),
-                      width: wp('60%'),
-                      textAlign: 'right',
-                    }}>
-                    {' '}
-                    {Common.Translations.translate('arithmetic')}{' '}
+                      fontSize: wp("3%"),
+                      marginRight: wp("3%"),
+                      marginLeft: wp("4%"),
+                      width: wp("60%"),
+                      textAlign: "right",
+                    }}
+                  >
+                    {" "}
+                    {Common.Translations.translate("arithmetic")}{" "}
                   </Text>
                   <Image source={Constants.Images.user} />
                 </TouchableOpacity>
@@ -93,31 +109,34 @@ class More extends Component {
 
               <View
                 style={{
-                  width: '80%',
-                  marginBottom: wp('5%'),
-                  flexDirection: 'row',
-                  backgroundColor: 'white',
-                  alignItems: 'center',
-                }}>
+                  width: "80%",
+                  marginBottom: wp("5%"),
+                  flexDirection: "row",
+                  backgroundColor: "white",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
-                  style={{ flexDirection: 'row' }}
+                  style={{ flexDirection: "row" }}
                   onPress={() => {
                     this.props.navigation.push(
-                      Constants.Navigations.Setting.MY_ADS,
+                      Constants.Navigations.Setting.MY_ADS
                     );
-                  }}>
+                  }}
+                >
                   <Image source={Constants.Images.arrowDetail} />
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('3%'),
-                      marginLeft: wp('4%'),
-                      width: wp('60%'),
-                      textAlign: 'right',
-                    }}>
-                    {' '}
-                    {Common.Translations.translate('myProperty')}{' '}
+                      fontSize: wp("3%"),
+                      marginRight: wp("3%"),
+                      marginLeft: wp("4%"),
+                      width: wp("60%"),
+                      textAlign: "right",
+                    }}
+                  >
+                    {" "}
+                    {Common.Translations.translate("myProperty")}{" "}
                   </Text>
                   <Image source={Constants.Images.myProperty} />
                 </TouchableOpacity>
@@ -126,31 +145,34 @@ class More extends Component {
           ) : (
             <View
               style={{
-                width: '80%',
-                marginBottom: wp('5%'),
-                flexDirection: 'row',
-                backgroundColor: 'white',
-                alignItems: 'center',
-              }}>
+                width: "80%",
+                marginBottom: wp("5%"),
+                flexDirection: "row",
+                backgroundColor: "white",
+                alignItems: "center",
+              }}
+            >
               <TouchableOpacity
-                style={{ flexDirection: 'row' }}
+                style={{ flexDirection: "row" }}
                 onPress={() => {
                   this.props.navigation.push(
-                    Constants.Navigations.Onboarding.WELCOME,
+                    Constants.Navigations.Onboarding.WELCOME
                   );
-                }}>
+                }}
+              >
                 <Image source={Constants.Images.arrowDetail} />
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    fontSize: wp('3%'),
-                    marginRight: wp('3%'),
-                    marginLeft: wp('4%'),
-                    width: wp('60%'),
-                    textAlign: 'right',
-                  }}>
-                  {' '}
-                  {Common.Translations.translate('login')}{' '}
+                    fontSize: wp("3%"),
+                    marginRight: wp("3%"),
+                    marginLeft: wp("4%"),
+                    width: wp("60%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {" "}
+                  {Common.Translations.translate("login")}{" "}
                 </Text>
                 <Image source={Constants.Images.user} />
               </TouchableOpacity>
@@ -183,31 +205,34 @@ class More extends Component {
 
           <View
             style={{
-              width: '80%',
-              flexDirection: 'row',
-              backgroundColor: 'white',
-              alignItems: 'center',
-              paddingVertical: wp('2%'),
-            }}>
+              width: "80%",
+              flexDirection: "row",
+              backgroundColor: "white",
+              alignItems: "center",
+              paddingVertical: wp("2%"),
+            }}
+          >
             <TouchableOpacity
-              style={{ flexDirection: 'row' }}
+              style={{ flexDirection: "row" }}
               onPress={() => {
                 this.props.navigation.push(
-                  Constants.Navigations.Setting.SETTING,
+                  Constants.Navigations.Setting.SETTING
                 );
-              }}>
+              }}
+            >
               <Image source={Constants.Images.arrowDetail} />
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                  marginRight: wp('3%'),
-                  marginLeft: wp('4%'),
-                  width: wp('60%'),
-                  textAlign: 'right',
-                }}>
-                {' '}
-                {Common.Translations.translate('settings')}{' '}
+                  fontSize: wp("3%"),
+                  marginRight: wp("3%"),
+                  marginLeft: wp("4%"),
+                  width: wp("60%"),
+                  textAlign: "right",
+                }}
+              >
+                {" "}
+                {Common.Translations.translate("settings")}{" "}
               </Text>
               <Image source={Constants.Images.setting} />
             </TouchableOpacity>
@@ -223,196 +248,230 @@ class More extends Component {
                 preferInApp: false,
                 openAppStoreIfInAppFails: true,
                 // fallbackPlatformURL:"http://www.mywebsite.com/myapp.html",
-              }
+              };
               Rate.rate(options, (success, errorMessage) => {
                 if (success) {
                   // this technically only tells us if the user successfully went to the Review Page. Whether they actually did anything, we do not know.
-                  this.setState({ rated: true })
+                  this.setState({ rated: true });
                 }
                 if (errorMessage) {
                   // errorMessage comes from the native code. Useful for debugging, but probably not for users to view
-                  console.error(`Example page Rate.rate() error: ${errorMessage}`)
+                  console.error(
+                    `Example page Rate.rate() error: ${errorMessage}`
+                  );
                 }
-              })
+              });
             }}
             style={{
-              width: '80%',
-              flexDirection: 'row',
-              backgroundColor: 'white',
-              alignItems: 'center',
-              paddingVertical: wp('2%'),
-            }} >
+              width: "80%",
+              flexDirection: "row",
+              backgroundColor: "white",
+              alignItems: "center",
+              paddingVertical: wp("2%"),
+            }}
+          >
             <Image source={Constants.Images.arrowDetail} />
             <Text
               style={{
                 fontFamily: Constants.Fonts.shamel,
-                fontSize: wp('3%'),
-                marginRight: wp('3%'),
-                marginLeft: wp('4%'),
-                width: wp('60%'),
-                textAlign: 'right',
-              }}>
-              {' '}
-              {Common.Translations.translate('rateApp')}{' '}
+                fontSize: wp("3%"),
+                marginRight: wp("3%"),
+                marginLeft: wp("4%"),
+                width: wp("60%"),
+                textAlign: "right",
+              }}
+            >
+              {" "}
+              {Common.Translations.translate("rateApp")}{" "}
             </Text>
             <Image source={Constants.Images.rateApp} />
           </TouchableOpacity>
 
           <View
             style={{
-              width: '80%',
-              marginTop: wp('10%'),
-              flexDirection: 'row',
-              backgroundColor: 'white',
-              alignItems: 'center',
-              paddingVertical: wp('2%'),
-            }}>
+              width: "80%",
+              marginTop: wp("10%"),
+              flexDirection: "row",
+              backgroundColor: "white",
+              alignItems: "center",
+              paddingVertical: wp("2%"),
+            }}
+          >
             <TouchableOpacity
-              style={{ flexDirection: 'row' }}
+              style={{ flexDirection: "row" }}
               onPress={() => {
                 this.props.navigation.push(Constants.Navigations.Setting.HELP);
-              }}>
+              }}
+            >
               <Image source={Constants.Images.arrowDetail} />
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                  marginRight: wp('3%'),
-                  marginLeft: wp('4%'),
-                  width: wp('60%'),
-                  textAlign: 'right',
-                }}>
-                {' '}
-                {Common.Translations.translate('help')}{' '}
+                  fontSize: wp("3%"),
+                  marginRight: wp("3%"),
+                  marginLeft: wp("4%"),
+                  width: wp("60%"),
+                  textAlign: "right",
+                }}
+              >
+                {" "}
+                {Common.Translations.translate("help")}{" "}
               </Text>
-              <Image source={Constants.Images.help} style={{ height: 16, width: 16, resizeMode: "contain" }} />
+              <Image
+                source={Constants.Images.help}
+                style={{ height: 16, width: 16, resizeMode: "contain" }}
+              />
             </TouchableOpacity>
           </View>
           <View
             style={{
-              width: '80%',
-              flexDirection: 'row',
-              backgroundColor: 'white',
-              alignItems: 'center',
-              paddingVertical: wp('2%'),
-            }}>
+              width: "80%",
+              flexDirection: "row",
+              backgroundColor: "white",
+              alignItems: "center",
+              paddingVertical: wp("2%"),
+            }}
+          >
             <TouchableOpacity
-              style={{ flexDirection: 'row' }}
+              style={{ flexDirection: "row" }}
               onPress={() => {
-                this.setState({ isDisplayContact: !this.state.isDisplayContact })
-              }}>
+                this.setState({
+                  isDisplayContact: !this.state.isDisplayContact,
+                });
+              }}
+            >
               <Image source={Constants.Images.arrowDetail} />
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                  marginRight: wp('3%'),
-                  marginLeft: wp('4%'),
-                  width: wp('60%'),
-                  textAlign: 'right',
-                }}>
-                {' '}
-                {Common.Translations.translate('contactUs')}{' '}
+                  fontSize: wp("3%"),
+                  marginRight: wp("3%"),
+                  marginLeft: wp("4%"),
+                  width: wp("60%"),
+                  textAlign: "right",
+                }}
+              >
+                {" "}
+                {Common.Translations.translate("contactUs")}{" "}
               </Text>
-              <Image source={Constants.Images.contact_us} style={{ height: 20, width: 20, resizeMode: "contain" }} />
+              <Image
+                source={Constants.Images.contact_us}
+                style={{ height: 20, width: 20, resizeMode: "contain" }}
+              />
             </TouchableOpacity>
           </View>
-          {
-            this.state.isDisplayContact &&
+          {this.state.isDisplayContact && (
             <View>
               <View
                 style={{
-                  flexDirection: 'row',
-                  backgroundColor: 'white',
-                  alignItems: 'center',
-                  paddingVertical: wp('2%')
-                }}>
+                  flexDirection: "row",
+                  backgroundColor: "white",
+                  alignItems: "center",
+                  paddingVertical: wp("2%"),
+                }}
+              >
                 <TouchableOpacity
                   style={{
-                    flexDirection: 'row'
+                    flexDirection: "row",
                   }}
                   onPress={() => {
-                    let phoneNumber = '';
+                    let phoneNumber = "";
 
-                    if (Platform.OS === 'android') {
-                      phoneNumber = 'tel:${00972 599 -552-438}';
-                    }
-                    else {
-                      phoneNumber = 'telprompt:${00972 599 -552-438}';
+                    if (Platform.OS === "android") {
+                      phoneNumber = "tel:${00972 599 -552-438}";
+                    } else {
+                      phoneNumber = "telprompt:${00972 599 -552-438}";
                     }
 
                     Linking.openURL(phoneNumber);
-                  }}>
+                  }}
+                >
                   <View style={{ width: 20 }} />
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('3%'),
-                      marginLeft: wp('4%'),
-                      width: wp('60%'),
-                      textAlign: 'right',
-                    }}>
-                    {' '}
-                    {Common.Translations.translate('contactByPhone')}{' '}
-                    <Text style={{
-                      fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('3%'),
-                      marginLeft: wp('4%'),
-                      width: wp('60%'),
-                      textAlign: 'right',
-                    }}>
-                      {' '}
-                      {Common.Translations.translate('number')}{' '}
+                      fontSize: wp("3%"),
+                      marginRight: wp("3%"),
+                      marginLeft: wp("4%"),
+                      width: wp("60%"),
+                      textAlign: "right",
+                    }}
+                  >
+                    {" "}
+                    {Common.Translations.translate("contactByPhone")}{" "}
+                    <Text
+                      style={{
+                        fontFamily: Constants.Fonts.shamel,
+                        fontSize: wp("3%"),
+                        marginRight: wp("3%"),
+                        marginLeft: wp("4%"),
+                        width: wp("60%"),
+                        textAlign: "right",
+                      }}
+                    >
+                      {" "}
+                      {Common.Translations.translate("number")}{" "}
                     </Text>
                   </Text>
-                  <Image source={Constants.Images.contactByPhone} style={{ height: 16, width: 16, resizeMode: "contain" }} />
+                  <Image
+                    source={Constants.Images.contactByPhone}
+                    style={{ height: 16, width: 16, resizeMode: "contain" }}
+                  />
                 </TouchableOpacity>
               </View>
               <View
                 style={{
-                  flexDirection: 'row',
-                  backgroundColor: 'white',
-                  alignItems: 'center',
-                  paddingVertical: wp('2%'),
-                }}>
+                  flexDirection: "row",
+                  backgroundColor: "white",
+                  alignItems: "center",
+                  paddingVertical: wp("2%"),
+                }}
+              >
                 <TouchableOpacity
-                  style={{ flexDirection: 'row' }}
+                  style={{ flexDirection: "row" }}
                   onPress={() => {
-                    Linking.openURL('mailto:info@aeliasoft.com').then(
-                      function (value) { /* code if successful */ },
-                      function (error) { console.log(error) }
+                    Linking.openURL("mailto:info@aeliasoft.com").then(
+                      function (value) {
+                        /* code if successful */
+                      },
+                      function (error) {
+                        console.log(error);
+                      }
                     );
-                  }}>
+                  }}
+                >
                   <View style={{ width: 20 }} />
                   <Text
                     style={{
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
-                      marginRight: wp('3%'),
-                      marginLeft: wp('4%'),
-                      width: wp('60%'),
-                      textAlign: 'right',
-                    }}>
-                    {' '}
-                    {Common.Translations.translate('contactByEmail')}{' '}
+                      fontSize: wp("3%"),
+                      marginRight: wp("3%"),
+                      marginLeft: wp("4%"),
+                      width: wp("60%"),
+                      textAlign: "right",
+                    }}
+                  >
+                    {" "}
+                    {Common.Translations.translate("contactByEmail")}{" "}
                   </Text>
-                  <Image source={Constants.Images.contactByEmail} style={{ height: 16, width: 16, resizeMode: "contain" }} />
+                  <Image
+                    source={Constants.Images.contactByEmail}
+                    style={{ height: 16, width: 16, resizeMode: "contain" }}
+                  />
                 </TouchableOpacity>
               </View>
             </View>
-          }
-
+          )}
 
           <TouchableOpacity
             style={{
-              width: '80%',
-              flexDirection: 'row',
-              backgroundColor: 'white',
-              alignItems: 'center',
-              paddingVertical: wp('2%')
-            }} onPress={() => {
+              width: "80%",
+              flexDirection: "row",
+              backgroundColor: "white",
+              alignItems: "center",
+              paddingVertical: wp("2%"),
+            }}
+            onPress={() => {
               Share.open(options)
                 .then((res) => {
                   console.log(res);
@@ -420,35 +479,38 @@ class More extends Component {
                 .catch((err) => {
                   err && console.log(err);
                 });
-            }}>
+            }}
+          >
             <Image source={Constants.Images.arrowDetail} />
             <Text
               style={{
                 fontFamily: Constants.Fonts.shamel,
-                fontSize: wp('3%'),
-                marginRight: wp('3%'),
-                marginLeft: wp('4%'),
-                width: wp('60%'),
-                textAlign: 'right',
-              }}>
-              {' '}
-              {Common.Translations.translate('share')}{' '}
+                fontSize: wp("3%"),
+                marginRight: wp("3%"),
+                marginLeft: wp("4%"),
+                width: wp("60%"),
+                textAlign: "right",
+              }}
+            >
+              {" "}
+              {Common.Translations.translate("share")}{" "}
             </Text>
             <Image source={Constants.Images.share} />
           </TouchableOpacity>
           {Constants.API.Token != null && (
             <View
               style={{
-                width: '80%',
-                flexDirection: 'row',
-                backgroundColor: 'white',
-                alignItems: 'center',
-                paddingVertical: wp('2%'),
-              }}>
+                width: "80%",
+                flexDirection: "row",
+                backgroundColor: "white",
+                alignItems: "center",
+                paddingVertical: wp("2%"),
+              }}
+            >
               <TouchableOpacity
-                style={{ flexDirection: 'row' }}
+                style={{ flexDirection: "row" }}
                 onPress={() => {
-                  Common.KeyChain.remove('authToken');
+                  Common.KeyChain.remove("authToken");
                   Constants.API.Token = null;
                   // this.props.navigation.push(
                   //   Constants.Navigations.Onboarding.WELCOME,
@@ -460,40 +522,49 @@ class More extends Component {
                       routes: [
                         { name: Constants.Navigations.Onboarding.DASHBOARD },
                       ],
-                    }),
+                    })
                   );
-                }}>
+                }}
+              >
                 <Image source={Constants.Images.arrowDetail} />
                 <Text
                   style={{
                     fontFamily: Constants.Fonts.shamel,
-                    fontSize: wp('3%'),
-                    marginRight: wp('3%'),
-                    marginLeft: wp('4%'),
-                    width: wp('60%'),
-                    textAlign: 'right',
-                  }}>
-                  {' '}
-                  {Common.Translations.translate('signOut')}{' '}
+                    fontSize: wp("3%"),
+                    marginRight: wp("3%"),
+                    marginLeft: wp("4%"),
+                    width: wp("60%"),
+                    textAlign: "right",
+                  }}
+                >
+                  {" "}
+                  {Common.Translations.translate("signOut")}{" "}
                 </Text>
                 <Image source={Constants.Images.logout} />
               </TouchableOpacity>
             </View>
           )}
-
         </View>
-        <View style={{
-          justifyContent: "center",
-          marginVertical: 20,
-          flexDirection: "row",
-        }}>
-        {
-          Platform.OS==="ios"?
-          <Text style={{ textAlign: "center", marginHorizontal: 20 }}>{`${VersionInfo.appVersion} (${VersionInfo.buildVersion})`}</Text>:
-          <Text style={{ textAlign: "center", marginHorizontal: 20 }}>{`${VersionInfo.buildVersion} (${VersionInfo.appVersion})`}</Text>
-        }
-          
-          <Text style={{ textAlign: "center" }}>{Common.Translations.translate('version')}</Text>
+        <View
+          style={{
+            justifyContent: "center",
+            marginVertical: 20,
+            flexDirection: "row",
+          }}
+        >
+          {Platform.OS === "ios" ? (
+            <Text
+              style={{ textAlign: "center", marginHorizontal: 20 }}
+            >{`${VersionInfo.appVersion} (${VersionInfo.buildVersion})`}</Text>
+          ) : (
+            <Text
+              style={{ textAlign: "center", marginHorizontal: 20 }}
+            >{`${VersionInfo.buildVersion} (${VersionInfo.appVersion})`}</Text>
+          )}
+
+          <Text style={{ textAlign: "center" }}>
+            {Common.Translations.translate("version")}
+          </Text>
         </View>
       </View>
     );
@@ -509,7 +580,7 @@ export default connect(null, mapDispatchToProps)(More);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: 'white',
+    alignItems: "center",
+    backgroundColor: "white",
   },
 });

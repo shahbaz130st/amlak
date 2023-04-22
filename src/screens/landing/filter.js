@@ -1,38 +1,46 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React, { Component } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
-} from 'react-native-responsive-screen';
-import { connect } from 'react-redux';
-import { EventRegister } from 'react-native-event-listeners';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import ModalDropdown from 'react-native-modal-dropdown-with-flatlist';
-import * as Services from '../../services/index';
-import User from '../../models/user';
-import * as Common from '../../common/index';
-import * as Constants from '../../constants/index';
-import { Actions } from '../../redux/index';
+} from "react-native-responsive-screen";
+import { connect } from "react-redux";
+import { EventRegister } from "react-native-event-listeners";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import MultiSlider from "@ptomasroos/react-native-multi-slider";
+import ModalDropdown from "react-native-modal-dropdown-with-flatlist";
+import * as Services from "../../services/index";
+import User from "../../models/user";
+import * as Common from "../../common/index";
+import * as Constants from "../../constants/index";
+import { Actions } from "../../redux/index";
 // import Preference from 'react-native-preference';
 class Filter extends Component {
   state = {
-    nonCollidingMultiSliderValue: /* Preference.get("nonCollidingMultiSliderValue") ? Preference.get("nonCollidingMultiSliderValue") :  */[100, 120000],
+    nonCollidingMultiSliderValue:
+      /* Preference.get("nonCollidingMultiSliderValue") ? Preference.get("nonCollidingMultiSliderValue") :  */ [
+        100, 120000,
+      ],
     // spaceValues: [100, 10000],
-    spaceValues: /* Preference.get("areaSpace") ? Preference.get("areaSpace") : */[0, 10000],
+    spaceValues:
+      /* Preference.get("areaSpace") ? Preference.get("areaSpace") : */ [
+        0, 10000,
+      ],
     roadWidth: [100],
     sliderOneChanging: false,
     items: [],
     currentRating: 0,
-    cat_id: /* Preference.get("category") ? Preference.get("category")?.id :  */null,
-    sale_rent: /* Preference.get("sale_rent") ? Preference.get("sale_rent") : */ null,
+    cat_id:
+      /* Preference.get("category") ? Preference.get("category")?.id :  */ null,
+    sale_rent:
+      /* Preference.get("sale_rent") ? Preference.get("sale_rent") : */ null,
     numberOfRooms: 0,
     numberOfHalls: 0,
     numberOfBathRooms: 0,
     priceMax: 120000,
     priceMin: 100,
-    floors: '',
+    floors: "",
     properties: [],
     appliedFilterCount: 1,
     swimming_pool: false,
@@ -47,20 +55,25 @@ class Filter extends Component {
     elevator: false,
     water: false,
     landTypes: [
-      Common.Translations.translate('living'),
-      Common.Translations.translate('agriculture'),
+      Common.Translations.translate("living"),
+      Common.Translations.translate("agriculture"),
     ],
-    land_type: /* (Preference.get("land_type") && Preference.get("category") && Preference.get("category")?.id == 30) ? Preference.get("land_type") : */ '',
+    land_type:
+      /* (Preference.get("land_type") && Preference.get("category") && Preference.get("category")?.id == 30) ? Preference.get("land_type") : */ "",
     categories: [],
     city: [],
     cityItems: [],
-    city_id: -1
+    city_id: -1,
   };
 
   async componentDidMount() {
     this.categroyList();
     this.cityList();
-    Common.Helper.logEvent('filter', {});
+
+    // Common.Helper.logEvent("filter", {});
+
+    // let eventResponse = await Services.UserServices.eventLogAPI({});
+    // console.log("Event log API response", eventResponse);
   }
 
   resetValues = () => {
@@ -81,7 +94,7 @@ class Filter extends Component {
       numberOfBathRooms: 0,
       priceMax: 120000,
       priceMin: 100,
-      floors: '',
+      floors: "",
       properties: [],
       appliedFilterCount: 1,
       swimming_pool: false,
@@ -92,10 +105,10 @@ class Filter extends Component {
       surrounded_wall: false,
       wareHouse_bathroom: false,
       landTypes: [
-        Common.Translations.translate('living'),
-        Common.Translations.translate('agriculture'),
+        Common.Translations.translate("living"),
+        Common.Translations.translate("agriculture"),
       ],
-      land_type: '',
+      land_type: "",
     });
   };
   checkAppliedCount = () => {
@@ -113,7 +126,7 @@ class Filter extends Component {
     if (this.state.numberOfHalls != 0) {
       this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
-    if (this.state.floors != '') {
+    if (this.state.floors != "") {
       this.setState({ appliedFilterCount: this.state.appliedFilterCount + 1 });
     }
     if (this.state.swimming_pool == true) {
@@ -140,7 +153,7 @@ class Filter extends Component {
     }
   };
   categroyList = async () => {
-    let values = await Services.EstateServices.categories()
+    let values = await Services.EstateServices.categories();
     let items = [];
     let categories = [];
     for (let i = 0; i < values.length; i++) {
@@ -150,12 +163,14 @@ class Filter extends Component {
     this.setState({ items: items, categories: categories });
   };
   cityList = async () => {
-    let values = await Services.EstateServices.cityList()
-    console.log(values)
+    let values = await Services.EstateServices.cityList();
+    console.log(values);
     let items = [];
     let city = [];
     for (let i = 0; i < values.length; i++) {
-      items.push(Constants.API.Language == 'en' ? values[i].name : values[i].name_ar);
+      items.push(
+        Constants.API.Language == "en" ? values[i].name : values[i].name_ar
+      );
       city.push(values[i]);
     }
     this.setState({ cityItems: items, city: city });
@@ -167,7 +182,7 @@ class Filter extends Component {
       params.category_id = this.state.cat_id;
       params.rent_or_sale = this.state.sale_rent;
       let res = await Services.EstateServices.priceRange(params);
-      console.log('pricerange----->', res);
+      console.log("pricerange----->", res);
       if (res && res.max) {
         if (res.max && res.min) {
           // this.setState({priceMax: res.max});
@@ -180,10 +195,10 @@ class Filter extends Component {
   sortList = async () => {
     // floors:LowFloors
     if (this.state.cat_id == null) {
-      Common.Alert.show('select_category_type');
+      Common.Alert.show("select_category_type");
       return;
     } else if (this.state.sale_rent == null) {
-      Common.Alert.show('select_property_type');
+      Common.Alert.show("select_property_type");
       return;
     }
     this.props.toggleLoader(true);
@@ -214,7 +229,7 @@ class Filter extends Component {
       if (this.state.numberOfRooms != 0) {
         params.number_of_rooms = this.state.numberOfRooms;
       }
-      if (this.state.floors != '') {
+      if (this.state.floors != "") {
         params.floor_level = this.state.floors.toLowerCase();
       }
     }
@@ -227,7 +242,7 @@ class Filter extends Component {
         params.number_of_baths = this.state.numberOfBathRooms;
       }
 
-      if (this.state.floors != '') {
+      if (this.state.floors != "") {
         params.floor_number = this.state.floors.toLowerCase();
       }
       params.brenda = this.state.varandas;
@@ -241,15 +256,15 @@ class Filter extends Component {
       params.land_type = this.state.land_type;
 
       if (this.state.tabo == false) {
-        params.tapu = 'No';
+        params.tapu = "No";
       } else {
-        params.tapu = 'Yes';
+        params.tapu = "Yes";
       }
 
       if (this.state.surrounded_wall == false) {
-        params.wall_around = 'No';
+        params.wall_around = "No";
       } else {
-        params.wall_around = 'Yes';
+        params.wall_around = "Yes";
       }
     }
 
@@ -273,7 +288,7 @@ class Filter extends Component {
       params.max_area = this.state.spaceValues[1];
       params.no_of_bath = this.state.wareHouse_bathroom == true ? 1 : 0;
 
-      if (this.state.floors != '') {
+      if (this.state.floors != "") {
         params.floor_number = this.state.floors.toLowerCase();
       }
 
@@ -302,12 +317,12 @@ class Filter extends Component {
         params.water = this.state.water;
       }
       if (this.state.surrounded_wall == true) {
-        params.bath = this.state.surrounded_wall == true ? 'yes' : 'no';
+        params.bath = this.state.surrounded_wall == true ? "yes" : "no";
       }
 
       params.min_area = this.state.spaceValues[0];
       params.max_area = this.state.spaceValues[1];
-      if (this.state.floors != '') {
+      if (this.state.floors != "") {
         params.floor_number = this.state.floors.toLowerCase();
       }
     }
@@ -317,33 +332,32 @@ class Filter extends Component {
     // params.category_id = this.state.cat_id;
     params.rent_or_sale = this.state.sale_rent.toLowerCase();
     params.type = this.state.cat_id;
-    params.city_id = this.state.city_id
+    params.city_id = this.state.city_id;
 
-    console.log('parameter request', params);
+    console.log("parameter request", params);
 
     let res = await Services.EstateServices.sortList(params);
-    console.log('my response filter===>', res);
+    console.log("my response filter===>", res);
     this.props.toggleLoader(false);
     if (res && res.data) {
-      console.log('res', res);
+      console.log("res", res);
       this.setState({ properties: res.data });
       if (res.data.length > 0) {
-        Common.KeyChain.save('isFilter', 'true');
-        EventRegister.emit('filterProperties', res.data);
+        Common.KeyChain.save("isFilter", "true");
+        EventRegister.emit("filterProperties", res.data);
         setTimeout(() => {
           this.props.navigation.pop();
         }, 2000);
       } else {
         setTimeout(() => {
-          Common.Alert.show('no_result_found');
+          Common.Alert.show("no_result_found");
         }, 1000);
       }
-    }
-    else if (res.status == false) {
-      EventRegister.emit('filterProperties', []);
+    } else if (res.status == false) {
+      EventRegister.emit("filterProperties", []);
       this.props.navigation.pop();
       setTimeout(() => {
-        Common.Alert.show('no_result_found');
+        Common.Alert.show("no_result_found");
       }, 1000);
     }
   };
@@ -352,44 +366,47 @@ class Filter extends Component {
     let items = this.state.landTypes[idx];
     if (idx == 0) {
       // Preference.set("land_type", 'Building')
-      this.setState({ land_type: 'Building' });
+      this.setState({ land_type: "Building" });
     }
     if (idx == 1) {
       // Preference.set("land_type", 'Agriculture')
-      this.setState({ land_type: 'Agriculture' });
+      this.setState({ land_type: "Agriculture" });
     }
   };
 
   showVillas = () => {
     return (
-      <View style={{ width: '90%', flexDirection: 'column' }}>
+      <View style={{ width: "90%", flexDirection: "column" }}>
         <Text
           style={{
-            marginTop: wp('6%'),
-            width: '100%',
-            color: '#444040',
-            textAlign: 'right',
+            marginTop: wp("6%"),
+            width: "100%",
+            color: "#444040",
+            textAlign: "right",
             fontFamily: Constants.Fonts.shamelBold,
-            fontSize: wp('3%'),
-            marginBottom: wp('3%'),
-          }}>
-          {Common.Translations.translate('roleNumber')}
+            fontSize: wp("3%"),
+            marginBottom: wp("3%"),
+          }}
+        >
+          {Common.Translations.translate("roleNumber")}
         </Text>
-        <View style={{ width: '100%', flexDirection: 'column' }}>
+        <View style={{ width: "100%", flexDirection: "column" }}>
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ swimming_pool: !this.state.swimming_pool });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.swimming_pool == true
@@ -398,33 +415,36 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('swimming_pool')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("swimming_pool")}
               </Text>
             </View>
           </View>
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: wp('2%'),
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: wp("2%"),
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ maid_room: !this.state.maid_room });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.maid_room == true
@@ -433,34 +453,37 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('maid_room')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("maid_room")}
               </Text>
             </View>
           </View>
 
           <View
             style={{
-              marginTop: wp('2%'),
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              marginTop: wp("2%"),
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ varandas: !this.state.varandas });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.varandas == true
@@ -469,15 +492,16 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('varandas')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("varandas")}
               </Text>
             </View>
           </View>
@@ -488,24 +512,31 @@ class Filter extends Component {
 
   showLands = () => {
     return (
-      <View style={{ width: '90%', flexDirection: 'column' }}>
+      <View style={{ width: "90%", flexDirection: "column" }}>
         <View
-          style={{ width: '100%', flexDirection: 'column', marginTop: wp('6%') }}>
+          style={{
+            width: "100%",
+            flexDirection: "column",
+            marginTop: wp("6%"),
+          }}
+        >
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: wp('2%'),
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: wp("2%"),
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ tabo: !this.state.tabo });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.tabo == true
@@ -514,34 +545,37 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('tabo')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("tabo")}
               </Text>
             </View>
           </View>
 
           <View
             style={{
-              marginTop: wp('2%'),
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              marginTop: wp("2%"),
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ surrounded_wall: !this.state.surrounded_wall });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.surrounded_wall == true
@@ -550,15 +584,16 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('surrounded_with_wall')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("surrounded_with_wall")}
               </Text>
             </View>
           </View>
@@ -569,23 +604,30 @@ class Filter extends Component {
 
   showShop = () => {
     return (
-      <View style={{ width: '90%', flexDirection: 'column' }}>
+      <View style={{ width: "90%", flexDirection: "column" }}>
         <View
-          style={{ width: '100%', flexDirection: 'column', marginTop: wp('6%') }}>
+          style={{
+            width: "100%",
+            flexDirection: "column",
+            marginTop: wp("6%"),
+          }}
+        >
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ electricity: !this.state.electricity });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.electricity == true
@@ -594,33 +636,36 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('bathRoom')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("bathRoom")}
               </Text>
             </View>
           </View>
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: wp('2%'),
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: wp("2%"),
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ garage: !this.state.garage });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.garage == true
@@ -629,34 +674,37 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('garage')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("garage")}
               </Text>
             </View>
           </View>
 
           <View
             style={{
-              marginTop: wp('2%'),
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              marginTop: wp("2%"),
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ elevator: !this.state.elevator });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.elevator == true
@@ -665,15 +713,16 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('elevator')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("elevator")}
               </Text>
             </View>
           </View>
@@ -684,23 +733,30 @@ class Filter extends Component {
 
   showOffice = () => {
     return (
-      <View style={{ width: '90%', flexDirection: 'column' }}>
+      <View style={{ width: "90%", flexDirection: "column" }}>
         <View
-          style={{ width: '100%', flexDirection: 'column', marginTop: wp('6%') }}>
+          style={{
+            width: "100%",
+            flexDirection: "column",
+            marginTop: wp("6%"),
+          }}
+        >
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ electricity: !this.state.electricity });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.electricity == true
@@ -709,33 +765,36 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('electricity')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("electricity")}
               </Text>
             </View>
           </View>
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: wp('2%'),
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: wp("2%"),
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ garage: !this.state.garage });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.garage == true
@@ -744,34 +803,37 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('garage')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("garage")}
               </Text>
             </View>
           </View>
 
           <View
             style={{
-              marginTop: wp('2%'),
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              marginTop: wp("2%"),
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ elevator: !this.state.elevator });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.elevator == true
@@ -780,34 +842,37 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('elevator')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("elevator")}
               </Text>
             </View>
           </View>
 
           <View
             style={{
-              marginTop: wp('2%'),
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              marginTop: wp("2%"),
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ water: !this.state.water });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.water == true
@@ -816,34 +881,37 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('water')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("water")}
               </Text>
             </View>
           </View>
         </View>
         <View
           style={{
-            marginTop: wp('2%'),
-            width: '95%',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
+            marginTop: wp("2%"),
+            width: "95%",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
           <TouchableOpacity
             onPress={() => {
               this.setState({ surrounded_wall: !this.state.surrounded_wall });
               setTimeout(() => {
                 this.checkAppliedCount();
               }, 1000);
-            }}>
+            }}
+          >
             <Image
               source={
                 this.state.surrounded_wall == true
@@ -852,15 +920,16 @@ class Filter extends Component {
               }
             />
           </TouchableOpacity>
-          <View style={{ flexDirection: 'column' }}>
+          <View style={{ flexDirection: "column" }}>
             <Text
               style={{
-                color: '#444040',
-                textAlign: 'right',
+                color: "#444040",
+                textAlign: "right",
                 fontFamily: Constants.Fonts.shamel,
-                fontSize: wp('3%'),
-              }}>
-              {Common.Translations.translate('bathRoom')}
+                fontSize: wp("3%"),
+              }}
+            >
+              {Common.Translations.translate("bathRoom")}
             </Text>
           </View>
         </View>
@@ -870,164 +939,178 @@ class Filter extends Component {
 
   showWarehouse = () => {
     return (
-      <View style={{ width: '90%', flexDirection: 'column' }}>
+      <View style={{ width: "90%", flexDirection: "column" }}>
         <Text
           style={{
-            marginTop: wp('6%'),
-            width: '100%',
-            color: '#444040',
-            textAlign: 'right',
+            marginTop: wp("6%"),
+            width: "100%",
+            color: "#444040",
+            textAlign: "right",
             fontFamily: Constants.Fonts.shamelBold,
-            fontSize: wp('3%'),
-            marginBottom: wp('3%'),
-          }}>
-          {Common.Translations.translate('roleNumber')}
+            fontSize: wp("3%"),
+            marginBottom: wp("3%"),
+          }}
+        >
+          {Common.Translations.translate("roleNumber")}
         </Text>
-        <View style={{ width: '100%', flexDirection: 'column' }}>
+        <View style={{ width: "100%", flexDirection: "column" }}>
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
-                this.setState({ floors: '1' });
+                this.setState({ floors: "1" });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
-                  this.state.floors == '1'
+                  this.state.floors == "1"
                     ? Constants.Images.filterCheck
                     : Constants.Images.filterUncheck
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('basements')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("basements")}
               </Text>
               <Text
                 style={{
-                  marginTop: wp('1%'),
-                  color: '#444040',
-                  textAlign: 'right',
+                  marginTop: wp("1%"),
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('2%'),
-                }}>
-                {Common.Translations.translate('basementMessage')}
+                  fontSize: wp("2%"),
+                }}
+              >
+                {Common.Translations.translate("basementMessage")}
               </Text>
             </View>
           </View>
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: wp('2%'),
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: wp("2%"),
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
-                this.setState({ floors: '4' });
+                this.setState({ floors: "4" });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
-                  this.state.floors == '4'
+                  this.state.floors == "4"
                     ? Constants.Images.filterCheck
                     : Constants.Images.filterUncheck
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('mezzanines')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("mezzanines")}
               </Text>
               <Text
                 style={{
-                  marginTop: wp('0.3%'),
-                  color: '#444040',
-                  textAlign: 'right',
+                  marginTop: wp("0.3%"),
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('2.5%'),
-                }}>
-                {Common.Translations.translate('mezzaninesMessage')}
-              </Text>
-            </View>
-          </View>
-
-          <View
-            style={{
-              marginTop: wp('2%'),
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                this.setState({ floors: '10' });
-                setTimeout(() => {
-                  this.checkAppliedCount();
-                }, 1000);
-              }}>
-              <Image
-                source={
-                  this.state.floors == '10'
-                    ? Constants.Images.filterCheck
-                    : Constants.Images.filterUncheck
-                }
-              />
-            </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
-              <Text
-                style={{
-                  color: '#444040',
-                  textAlign: 'right',
-                  fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('upperFloors')}
-              </Text>
-              <Text
-                style={{
-                  marginTop: wp('0.3%'),
-                  color: '#444040',
-                  textAlign: 'right',
-                  fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('2.5%'),
-                }}>
-                {Common.Translations.translate('upperFloorsMessage')}
+                  fontSize: wp("2.5%"),
+                }}
+              >
+                {Common.Translations.translate("mezzaninesMessage")}
               </Text>
             </View>
           </View>
 
           <View
             style={{
-              marginTop: wp('3%'),
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              marginTop: wp("2%"),
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                this.setState({ floors: "10" });
+                setTimeout(() => {
+                  this.checkAppliedCount();
+                }, 1000);
+              }}
+            >
+              <Image
+                source={
+                  this.state.floors == "10"
+                    ? Constants.Images.filterCheck
+                    : Constants.Images.filterUncheck
+                }
+              />
+            </TouchableOpacity>
+            <View style={{ flexDirection: "column" }}>
+              <Text
+                style={{
+                  color: "#444040",
+                  textAlign: "right",
+                  fontFamily: Constants.Fonts.shamel,
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("upperFloors")}
+              </Text>
+              <Text
+                style={{
+                  marginTop: wp("0.3%"),
+                  color: "#444040",
+                  textAlign: "right",
+                  fontFamily: Constants.Fonts.shamel,
+                  fontSize: wp("2.5%"),
+                }}
+              >
+                {Common.Translations.translate("upperFloorsMessage")}
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              marginTop: wp("3%"),
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({
@@ -1036,7 +1119,8 @@ class Filter extends Component {
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.wareHouse_bathroom == true
@@ -1045,44 +1129,48 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('numberOfBathRooms')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("numberOfBathRooms")}
               </Text>
               <Text
                 style={{
-                  marginTop: wp('0.3%'),
-                  color: '#444040',
-                  textAlign: 'right',
+                  marginTop: wp("0.3%"),
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('2.5%'),
-                }}>
-                {Common.Translations.translate('wareHouse_bathroom')}
+                  fontSize: wp("2.5%"),
+                }}
+              >
+                {Common.Translations.translate("wareHouse_bathroom")}
               </Text>
             </View>
           </View>
 
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: wp('2%'),
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: wp("2%"),
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ garage: !this.state.garage });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.garage == true
@@ -1091,34 +1179,37 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('garage')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("garage")}
               </Text>
             </View>
           </View>
 
           <View
             style={{
-              marginTop: wp('2%'),
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              marginTop: wp("2%"),
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ water: !this.state.water });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
                   this.state.water == true
@@ -1127,15 +1218,16 @@ class Filter extends Component {
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('elevator')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("elevator")}
               </Text>
             </View>
           </View>
@@ -1145,152 +1237,165 @@ class Filter extends Component {
   };
   showApartments = () => {
     return (
-      <View style={{ width: '90%', flexDirection: 'column' }}>
+      <View style={{ width: "90%", flexDirection: "column" }}>
         <Text
           style={{
-            marginTop: wp('6%'),
-            width: '100%',
-            color: '#444040',
-            textAlign: 'right',
+            marginTop: wp("6%"),
+            width: "100%",
+            color: "#444040",
+            textAlign: "right",
             fontFamily: Constants.Fonts.shamelBold,
-            fontSize: wp('3%'),
-            marginBottom: wp('3%'),
-          }}>
-          {Common.Translations.translate('roleNumber')}
+            fontSize: wp("3%"),
+            marginBottom: wp("3%"),
+          }}
+        >
+          {Common.Translations.translate("roleNumber")}
         </Text>
-        <View style={{ width: '100%', flexDirection: 'column' }}>
+        <View style={{ width: "100%", flexDirection: "column" }}>
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
-                this.setState({ floors: '1' });
+                this.setState({ floors: "1" });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
-                  this.state.floors == '1'
+                  this.state.floors == "1"
                     ? Constants.Images.filterCheck
                     : Constants.Images.filterUncheck
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('basements')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("basements")}
               </Text>
               <Text
                 style={{
-                  marginTop: wp('1%'),
-                  color: '#444040',
-                  textAlign: 'right',
+                  marginTop: wp("1%"),
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('2%'),
-                }}>
-                {Common.Translations.translate('basementMessage')}
+                  fontSize: wp("2%"),
+                }}
+              >
+                {Common.Translations.translate("basementMessage")}
               </Text>
             </View>
           </View>
           <View
             style={{
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginTop: wp('2%'),
-            }}>
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              marginTop: wp("2%"),
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
-                this.setState({ floors: '4' });
+                this.setState({ floors: "4" });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
-                  this.state.floors == '4'
+                  this.state.floors == "4"
                     ? Constants.Images.filterCheck
                     : Constants.Images.filterUncheck
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('mezzanines')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("mezzanines")}
               </Text>
               <Text
                 style={{
-                  marginTop: wp('0.3%'),
-                  color: '#444040',
-                  textAlign: 'right',
+                  marginTop: wp("0.3%"),
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('2.5%'),
-                }}>
-                {Common.Translations.translate('mezzaninesMessage')}
+                  fontSize: wp("2.5%"),
+                }}
+              >
+                {Common.Translations.translate("mezzaninesMessage")}
               </Text>
             </View>
           </View>
 
           <View
             style={{
-              marginTop: wp('2%'),
-              width: '95%',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}>
+              marginTop: wp("2%"),
+              width: "95%",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
-                this.setState({ floors: '10' });
+                this.setState({ floors: "10" });
                 setTimeout(() => {
                   this.checkAppliedCount();
                 }, 1000);
-              }}>
+              }}
+            >
               <Image
                 source={
-                  this.state.floors == '10'
+                  this.state.floors == "10"
                     ? Constants.Images.filterCheck
                     : Constants.Images.filterUncheck
                 }
               />
             </TouchableOpacity>
-            <View style={{ flexDirection: 'column' }}>
+            <View style={{ flexDirection: "column" }}>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                }}>
-                {Common.Translations.translate('upperFloors')}
+                  fontSize: wp("3%"),
+                }}
+              >
+                {Common.Translations.translate("upperFloors")}
               </Text>
               <Text
                 style={{
-                  marginTop: wp('0.3%'),
-                  color: '#444040',
-                  textAlign: 'right',
+                  marginTop: wp("0.3%"),
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('2.5%'),
-                }}>
-                {Common.Translations.translate('upperFloorsMessage')}
+                  fontSize: wp("2.5%"),
+                }}
+              >
+                {Common.Translations.translate("upperFloorsMessage")}
               </Text>
             </View>
           </View>
@@ -1300,43 +1405,52 @@ class Filter extends Component {
   };
   showAttachments = () => {
     return (
-      <View style={{ width: '100%' }}>
+      <View style={{ width: "100%" }}>
         <Text
           style={{
-            marginTop: wp('10%'),
-            width: '95%',
-            color: '#444040',
-            textAlign: 'right',
+            marginTop: wp("10%"),
+            width: "95%",
+            color: "#444040",
+            textAlign: "right",
             fontFamily: Constants.Fonts.shamelBold,
-            fontSize: wp('3%'),
-          }}>
-          {Common.Translations.translate('attachments')}
+            fontSize: wp("3%"),
+          }}
+        >
+          {Common.Translations.translate("attachments")}
         </Text>
         <View
-          style={{ width: '95%', flexDirection: 'column', alignItems: 'center' }}>
+          style={{
+            width: "95%",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              width: '100%',
-            }}>
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginLeft: wp('5%'),
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                marginLeft: wp("5%"),
+              }}
+            >
               <View
                 style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  borderRadius: wp('10%') / 2,
+                  width: wp("10%"),
+                  height: wp("10%"),
+                  borderRadius: wp("10%") / 2,
                   borderWidth: 0.7,
-                  borderColor: 'rgba(68,68,64,0.76)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                  borderColor: "rgba(68,68,64,0.76)",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
                   onPress={() => {
                     this.setState({
@@ -1347,34 +1461,37 @@ class Filter extends Component {
                     }, 1000);
                   }}
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                    width: "100%",
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <Image source={Constants.Images.plusIcon} />
                 </TouchableOpacity>
               </View>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3.5%'),
-                  marginHorizontal: wp('4%'),
-                }}>
+                  fontSize: wp("3.5%"),
+                  marginHorizontal: wp("4%"),
+                }}
+              >
                 {this.state.numberOfRooms == 0 ? "-" : this.state.numberOfRooms}
               </Text>
               <View
                 style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  borderRadius: wp('10%') / 2,
+                  width: wp("10%"),
+                  height: wp("10%"),
+                  borderRadius: wp("10%") / 2,
                   borderWidth: 0.7,
-                  borderColor: 'rgba(68,68,64,0.76)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                  borderColor: "rgba(68,68,64,0.76)",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
                   onPress={() => {
                     this.setState({
@@ -1388,50 +1505,55 @@ class Filter extends Component {
                     }, 1000);
                   }}
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                    width: "100%",
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <Image source={Constants.Images.minusIcon} />
                 </TouchableOpacity>
               </View>
             </View>
             <Text
               style={{
-                color: '#444040',
-                textAlign: 'right',
+                color: "#444040",
+                textAlign: "right",
                 fontFamily: Constants.Fonts.shamel,
-                fontSize: wp('2.5%'),
-              }}>
-              {Common.Translations.translate('numberOfRooms')}
+                fontSize: wp("2.5%"),
+              }}
+            >
+              {Common.Translations.translate("numberOfRooms")}
             </Text>
           </View>
 
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: wp('2%'),
-              width: '100%',
-            }}>
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: wp("2%"),
+              width: "100%",
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginLeft: wp('5%'),
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                marginLeft: wp("5%"),
+              }}
+            >
               <View
                 style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  borderRadius: wp('10%') / 2,
+                  width: wp("10%"),
+                  height: wp("10%"),
+                  borderRadius: wp("10%") / 2,
                   borderWidth: 0.7,
-                  borderColor: 'rgba(68,68,64,0.76)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                  borderColor: "rgba(68,68,64,0.76)",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
                   onPress={() => {
                     this.setState({
@@ -1442,34 +1564,37 @@ class Filter extends Component {
                     }, 1000);
                   }}
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                    width: "100%",
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <Image source={Constants.Images.plusIcon} />
                 </TouchableOpacity>
               </View>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3.5%'),
-                  marginHorizontal: wp('4%'),
-                }}>
+                  fontSize: wp("3.5%"),
+                  marginHorizontal: wp("4%"),
+                }}
+              >
                 {this.state.numberOfHalls == 0 ? "-" : this.state.numberOfHalls}
               </Text>
               <View
                 style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  borderRadius: wp('10%') / 2,
+                  width: wp("10%"),
+                  height: wp("10%"),
+                  borderRadius: wp("10%") / 2,
                   borderWidth: 0.7,
-                  borderColor: 'rgba(68,68,64,0.76)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                  borderColor: "rgba(68,68,64,0.76)",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
                   onPress={() => {
                     this.setState({
@@ -1483,50 +1608,55 @@ class Filter extends Component {
                     }, 1000);
                   }}
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                    width: "100%",
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <Image source={Constants.Images.minusIcon} />
                 </TouchableOpacity>
               </View>
             </View>
             <Text
               style={{
-                color: '#444040',
-                textAlign: 'right',
+                color: "#444040",
+                textAlign: "right",
                 fontFamily: Constants.Fonts.shamel,
-                fontSize: wp('2.5%'),
-              }}>
-              {Common.Translations.translate('numberOfHalls')}
+                fontSize: wp("2.5%"),
+              }}
+            >
+              {Common.Translations.translate("numberOfHalls")}
             </Text>
           </View>
 
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: wp('2%'),
-              width: '100%',
-            }}>
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: wp("2%"),
+              width: "100%",
+            }}
+          >
             <View
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginLeft: wp('5%'),
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                marginLeft: wp("5%"),
+              }}
+            >
               <View
                 style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  borderRadius: wp('10%') / 2,
+                  width: wp("10%"),
+                  height: wp("10%"),
+                  borderRadius: wp("10%") / 2,
                   borderWidth: 0.7,
-                  borderColor: 'rgba(68,68,64,0.76)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                  borderColor: "rgba(68,68,64,0.76)",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
                   onPress={() => {
                     this.setState({
@@ -1537,34 +1667,39 @@ class Filter extends Component {
                     }, 1000);
                   }}
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                    width: "100%",
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <Image source={Constants.Images.plusIcon} />
                 </TouchableOpacity>
               </View>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3.5%'),
-                  marginHorizontal: wp('4%'),
-                }}>
-                {this.state.numberOfBathRooms == 0 ? "-" : this.state.numberOfBathRooms}
+                  fontSize: wp("3.5%"),
+                  marginHorizontal: wp("4%"),
+                }}
+              >
+                {this.state.numberOfBathRooms == 0
+                  ? "-"
+                  : this.state.numberOfBathRooms}
               </Text>
               <View
                 style={{
-                  width: wp('10%'),
-                  height: wp('10%'),
-                  borderRadius: wp('10%') / 2,
+                  width: wp("10%"),
+                  height: wp("10%"),
+                  borderRadius: wp("10%") / 2,
                   borderWidth: 0.7,
-                  borderColor: 'rgba(68,68,64,0.76)',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}>
+                  borderColor: "rgba(68,68,64,0.76)",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <TouchableOpacity
                   onPress={() => {
                     this.setState({
@@ -1578,23 +1713,25 @@ class Filter extends Component {
                     }, 1000);
                   }}
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
+                    width: "100%",
+                    height: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <Image source={Constants.Images.minusIcon} />
                 </TouchableOpacity>
               </View>
             </View>
             <Text
               style={{
-                color: '#444040',
-                textAlign: 'right',
+                color: "#444040",
+                textAlign: "right",
                 fontFamily: Constants.Fonts.shamel,
-                fontSize: wp('2.5%'),
-              }}>
-              {Common.Translations.translate('numberOfBathRooms')}
+                fontSize: wp("2.5%"),
+              }}
+            >
+              {Common.Translations.translate("numberOfBathRooms")}
             </Text>
           </View>
         </View>
@@ -1604,34 +1741,38 @@ class Filter extends Component {
   showRating = () => {
     return (
       <View
-        style={{ flexDirection: 'column', alignItems: 'center', width: '100%' }}>
+        style={{ flexDirection: "column", alignItems: "center", width: "100%" }}
+      >
         <Text
           style={{
-            marginTop: wp('7%'),
-            width: '90%',
-            color: '#444040',
-            textAlign: 'right',
+            marginTop: wp("7%"),
+            width: "90%",
+            color: "#444040",
+            textAlign: "right",
             fontFamily: Constants.Fonts.shamelBold,
-            fontSize: wp('3%'),
-            marginBottom: wp('2%'),
-          }}>
-          {Common.Translations.translate('evaluation')}
+            fontSize: wp("3%"),
+            marginBottom: wp("2%"),
+          }}
+        >
+          {Common.Translations.translate("evaluation")}
         </Text>
         <View
           style={{
-            width: '90%',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
+            width: "90%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
           <View
             style={{
-              width: wp('13%'),
-              height: wp('8%'),
+              width: wp("13%"),
+              height: wp("8%"),
               backgroundColor:
-                this.state.currentRating == 1 ? '#006FEB' : '#F0F0F0',
-              borderRadius: wp('1%'),
-              overflow: 'hidden',
-            }}>
+                this.state.currentRating == 1 ? "#006FEB" : "#F0F0F0",
+              borderRadius: wp("1%"),
+              overflow: "hidden",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ currentRating: 1 });
@@ -1640,19 +1781,21 @@ class Filter extends Component {
                 }, 1000);
               }}
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <Text
                 style={{
-                  color: this.state.currentRating == 1 ? 'white' : '#969696',
-                  textAlign: 'right',
+                  color: this.state.currentRating == 1 ? "white" : "#969696",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('3.5%'),
-                  marginRight: wp('1%'),
-                  marginTop: wp('1.5%'),
-                }}>
+                  fontSize: wp("3.5%"),
+                  marginRight: wp("1%"),
+                  marginTop: wp("1.5%"),
+                }}
+              >
                 1
               </Text>
               <Image
@@ -1666,13 +1809,14 @@ class Filter extends Component {
           </View>
           <View
             style={{
-              width: wp('13%'),
-              height: wp('8%'),
+              width: wp("13%"),
+              height: wp("8%"),
               backgroundColor:
-                this.state.currentRating == 2 ? '#006FEB' : '#F0F0F0',
-              borderRadius: wp('1%'),
-              overflow: 'hidden',
-            }}>
+                this.state.currentRating == 2 ? "#006FEB" : "#F0F0F0",
+              borderRadius: wp("1%"),
+              overflow: "hidden",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ currentRating: 2 });
@@ -1681,19 +1825,21 @@ class Filter extends Component {
                 }, 1000);
               }}
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <Text
                 style={{
-                  color: this.state.currentRating == 2 ? 'white' : '#969696',
-                  textAlign: 'right',
+                  color: this.state.currentRating == 2 ? "white" : "#969696",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('3.5%'),
-                  marginRight: wp('1%'),
-                  marginTop: wp('1.5%'),
-                }}>
+                  fontSize: wp("3.5%"),
+                  marginRight: wp("1%"),
+                  marginTop: wp("1.5%"),
+                }}
+              >
                 2
               </Text>
               <Image
@@ -1708,13 +1854,14 @@ class Filter extends Component {
 
           <View
             style={{
-              width: wp('13%'),
-              height: wp('8%'),
+              width: wp("13%"),
+              height: wp("8%"),
               backgroundColor:
-                this.state.currentRating == 3 ? '#006FEB' : '#F0F0F0',
-              borderRadius: wp('1%'),
-              overflow: 'hidden',
-            }}>
+                this.state.currentRating == 3 ? "#006FEB" : "#F0F0F0",
+              borderRadius: wp("1%"),
+              overflow: "hidden",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ currentRating: 3 });
@@ -1723,19 +1870,21 @@ class Filter extends Component {
                 }, 1000);
               }}
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <Text
                 style={{
-                  color: this.state.currentRating == 3 ? 'white' : '#969696',
-                  textAlign: 'right',
+                  color: this.state.currentRating == 3 ? "white" : "#969696",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('3.5%'),
-                  marginRight: wp('1%'),
-                  marginTop: wp('1.5%'),
-                }}>
+                  fontSize: wp("3.5%"),
+                  marginRight: wp("1%"),
+                  marginTop: wp("1.5%"),
+                }}
+              >
                 3
               </Text>
               <Image
@@ -1749,13 +1898,14 @@ class Filter extends Component {
           </View>
           <View
             style={{
-              width: wp('13%'),
-              height: wp('8%'),
+              width: wp("13%"),
+              height: wp("8%"),
               backgroundColor:
-                this.state.currentRating == 4 ? '#006FEB' : '#F0F0F0',
-              borderRadius: wp('1%'),
-              overflow: 'hidden',
-            }}>
+                this.state.currentRating == 4 ? "#006FEB" : "#F0F0F0",
+              borderRadius: wp("1%"),
+              overflow: "hidden",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ currentRating: 4 });
@@ -1764,19 +1914,21 @@ class Filter extends Component {
                 }, 1000);
               }}
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <Text
                 style={{
-                  color: this.state.currentRating == 4 ? 'white' : '#969696',
-                  textAlign: 'right',
+                  color: this.state.currentRating == 4 ? "white" : "#969696",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('3.5%'),
-                  marginRight: wp('1%'),
-                  marginTop: wp('1.5%'),
-                }}>
+                  fontSize: wp("3.5%"),
+                  marginRight: wp("1%"),
+                  marginTop: wp("1.5%"),
+                }}
+              >
                 4
               </Text>
               <Image
@@ -1790,13 +1942,14 @@ class Filter extends Component {
           </View>
           <View
             style={{
-              width: wp('13%'),
-              height: wp('8%'),
+              width: wp("13%"),
+              height: wp("8%"),
               backgroundColor:
-                this.state.currentRating == 5 ? '#006FEB' : '#F0F0F0',
-              borderRadius: wp('1%'),
-              overflow: 'hidden',
-            }}>
+                this.state.currentRating == 5 ? "#006FEB" : "#F0F0F0",
+              borderRadius: wp("1%"),
+              overflow: "hidden",
+            }}
+          >
             <TouchableOpacity
               onPress={() => {
                 this.setState({ currentRating: 5 });
@@ -1805,19 +1958,21 @@ class Filter extends Component {
                 }, 1000);
               }}
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <Text
                 style={{
-                  color: this.state.currentRating == 5 ? 'white' : '#969696',
-                  textAlign: 'right',
+                  color: this.state.currentRating == 5 ? "white" : "#969696",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('3.5%'),
-                  marginRight: wp('1%'),
-                  marginTop: wp('1.5%'),
-                }}>
+                  fontSize: wp("3.5%"),
+                  marginRight: wp("1%"),
+                  marginTop: wp("1.5%"),
+                }}
+              >
                 5
               </Text>
               <Image
@@ -1865,41 +2020,44 @@ class Filter extends Component {
         return (
           <View
             style={{
-              flexDirection: 'column',
-              width: '100%',
-              alignItems: 'center',
-            }}>
+              flexDirection: "column",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
             <Text
               style={{
-                marginTop: wp('7%'),
-                width: '90%',
-                color: '#444040',
-                textAlign: 'right',
+                marginTop: wp("7%"),
+                width: "90%",
+                color: "#444040",
+                textAlign: "right",
                 fontFamily: Constants.Fonts.shamelBold,
-                fontSize: wp('2.5%'),
-              }}>
-              {Common.Translations.translate('area_scale')}
+                fontSize: wp("2.5%"),
+              }}
+            >
+              {Common.Translations.translate("area_scale")}
             </Text>
 
             <View
               style={{
-                width: '90%',
-                backgroundColor: '#F0F0F0',
-                borderRadius: wp('1%'),
-                overflow: 'hidden',
-                marginTop: wp('2%'),
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+                width: "90%",
+                backgroundColor: "#F0F0F0",
+                borderRadius: wp("1%"),
+                overflow: "hidden",
+                marginTop: wp("2%"),
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <MultiSlider
                 // containerStyle = {{backgroundColor:'trasparent'}}
                 imageBackgroundSource={null}
-                trackStyle={{ backgroundColor: '#CDCDCD' }}
+                trackStyle={{ backgroundColor: "#CDCDCD" }}
                 markerStyle={{
-                  backgroundColor: '#006FEB',
-                  width: wp('5%'),
-                  height: wp('5%'),
+                  backgroundColor: "#006FEB",
+                  width: wp("5%"),
+                  height: wp("5%"),
                 }}
                 values={[this.state.spaceValues[0], this.state.spaceValues[1]]}
                 sliderLength={slideWidth}
@@ -1913,28 +2071,31 @@ class Filter extends Component {
               />
               <View
                 style={{
-                  width: '89%',
-                  height: hp('3%'),
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
+                  width: "89%",
+                  height: hp("3%"),
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Text
                   style={{
-                    color: '#444040',
-                    textAlign: 'right',
+                    color: "#444040",
+                    textAlign: "right",
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('2.5%'),
-                  }}>
+                    fontSize: wp("2.5%"),
+                  }}
+                >
                   m² {this.state.spaceValues[0]}
                 </Text>
                 <Text
                   style={{
-                    color: '#444040',
-                    textAlign: 'right',
+                    color: "#444040",
+                    textAlign: "right",
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('2.5%'),
-                  }}>
+                    fontSize: wp("2.5%"),
+                  }}
+                >
                   m² {this.state.spaceValues[1]}
                 </Text>
               </View>
@@ -1947,41 +2108,44 @@ class Filter extends Component {
         return (
           <View
             style={{
-              flexDirection: 'column',
-              width: '100%',
-              alignItems: 'center',
-            }}>
+              flexDirection: "column",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
             <Text
               style={{
-                marginTop: wp('7%'),
-                width: '90%',
-                color: '#444040',
-                textAlign: 'right',
+                marginTop: wp("7%"),
+                width: "90%",
+                color: "#444040",
+                textAlign: "right",
                 fontFamily: Constants.Fonts.shamelBold,
-                fontSize: wp('2.5%'),
-              }}>
-              {Common.Translations.translate('area_scale')}
+                fontSize: wp("2.5%"),
+              }}
+            >
+              {Common.Translations.translate("area_scale")}
             </Text>
 
             <View
               style={{
-                width: '90%',
-                backgroundColor: '#F0F0F0',
-                borderRadius: wp('1%'),
-                overflow: 'hidden',
-                marginTop: wp('2%'),
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+                width: "90%",
+                backgroundColor: "#F0F0F0",
+                borderRadius: wp("1%"),
+                overflow: "hidden",
+                marginTop: wp("2%"),
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <MultiSlider
                 // containerStyle = {{backgroundColor:'trasparent'}}
                 imageBackgroundSource={null}
-                trackStyle={{ backgroundColor: '#CDCDCD' }}
+                trackStyle={{ backgroundColor: "#CDCDCD" }}
                 markerStyle={{
-                  backgroundColor: '#006FEB',
-                  width: wp('5%'),
-                  height: wp('5%'),
+                  backgroundColor: "#006FEB",
+                  width: wp("5%"),
+                  height: wp("5%"),
                 }}
                 values={[this.state.spaceValues[0], this.state.spaceValues[1]]}
                 sliderLength={slideWidth}
@@ -1995,28 +2159,31 @@ class Filter extends Component {
               />
               <View
                 style={{
-                  width: '89%',
-                  height: hp('3%'),
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
+                  width: "89%",
+                  height: hp("3%"),
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Text
                   style={{
-                    color: '#444040',
-                    textAlign: 'right',
+                    color: "#444040",
+                    textAlign: "right",
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('2.5%'),
-                  }}>
+                    fontSize: wp("2.5%"),
+                  }}
+                >
                   m² {this.state.spaceValues[0]}
                 </Text>
                 <Text
                   style={{
-                    color: '#444040',
-                    textAlign: 'right',
+                    color: "#444040",
+                    textAlign: "right",
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('2.5%'),
-                  }}>
+                    fontSize: wp("2.5%"),
+                  }}
+                >
                   m² {this.state.spaceValues[1]}
                 </Text>
               </View>
@@ -2029,41 +2196,44 @@ class Filter extends Component {
         return (
           <View
             style={{
-              flexDirection: 'column',
-              width: '100%',
-              alignItems: 'center',
-            }}>
+              flexDirection: "column",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
             <Text
               style={{
-                marginTop: wp('7%'),
-                width: '90%',
-                color: '#444040',
-                textAlign: 'right',
+                marginTop: wp("7%"),
+                width: "90%",
+                color: "#444040",
+                textAlign: "right",
                 fontFamily: Constants.Fonts.shamelBold,
-                fontSize: wp('2.5%'),
-              }}>
-              {Common.Translations.translate('area_scale')}
+                fontSize: wp("2.5%"),
+              }}
+            >
+              {Common.Translations.translate("area_scale")}
             </Text>
 
             <View
               style={{
-                width: '90%',
-                backgroundColor: '#F0F0F0',
-                borderRadius: wp('1%'),
-                overflow: 'hidden',
-                marginTop: wp('2%'),
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+                width: "90%",
+                backgroundColor: "#F0F0F0",
+                borderRadius: wp("1%"),
+                overflow: "hidden",
+                marginTop: wp("2%"),
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <MultiSlider
                 // containerStyle = {{backgroundColor:'trasparent'}}
                 imageBackgroundSource={null}
-                trackStyle={{ backgroundColor: '#CDCDCD' }}
+                trackStyle={{ backgroundColor: "#CDCDCD" }}
                 markerStyle={{
-                  backgroundColor: '#006FEB',
-                  width: wp('5%'),
-                  height: wp('5%'),
+                  backgroundColor: "#006FEB",
+                  width: wp("5%"),
+                  height: wp("5%"),
                 }}
                 values={[this.state.spaceValues[0], this.state.spaceValues[1]]}
                 sliderLength={slideWidth}
@@ -2077,28 +2247,31 @@ class Filter extends Component {
               />
               <View
                 style={{
-                  width: '89%',
-                  height: hp('3%'),
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
+                  width: "89%",
+                  height: hp("3%"),
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Text
                   style={{
-                    color: '#444040',
-                    textAlign: 'right',
+                    color: "#444040",
+                    textAlign: "right",
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('2.5%'),
-                  }}>
+                    fontSize: wp("2.5%"),
+                  }}
+                >
                   m² {this.state.spaceValues[0]}
                 </Text>
                 <Text
                   style={{
-                    color: '#444040',
-                    textAlign: 'right',
+                    color: "#444040",
+                    textAlign: "right",
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('2.5%'),
-                  }}>
+                    fontSize: wp("2.5%"),
+                  }}
+                >
                   m² {this.state.spaceValues[1]}
                 </Text>
               </View>
@@ -2111,41 +2284,44 @@ class Filter extends Component {
         return (
           <View
             style={{
-              flexDirection: 'column',
-              width: '100%',
-              alignItems: 'center',
-            }}>
+              flexDirection: "column",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
             <Text
               style={{
-                marginTop: wp('7%'),
-                width: '90%',
-                color: '#444040',
-                textAlign: 'right',
+                marginTop: wp("7%"),
+                width: "90%",
+                color: "#444040",
+                textAlign: "right",
                 fontFamily: Constants.Fonts.shamelBold,
-                fontSize: wp('2.5%'),
-              }}>
-              {Common.Translations.translate('area_scale')}
+                fontSize: wp("2.5%"),
+              }}
+            >
+              {Common.Translations.translate("area_scale")}
             </Text>
 
             <View
               style={{
-                width: '90%',
-                backgroundColor: '#F0F0F0',
-                borderRadius: wp('1%'),
-                overflow: 'hidden',
-                marginTop: wp('2%'),
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+                width: "90%",
+                backgroundColor: "#F0F0F0",
+                borderRadius: wp("1%"),
+                overflow: "hidden",
+                marginTop: wp("2%"),
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <MultiSlider
                 // containerStyle = {{backgroundColor:'trasparent'}}
                 imageBackgroundSource={null}
-                trackStyle={{ backgroundColor: '#CDCDCD' }}
+                trackStyle={{ backgroundColor: "#CDCDCD" }}
                 markerStyle={{
-                  backgroundColor: '#006FEB',
-                  width: wp('5%'),
-                  height: wp('5%'),
+                  backgroundColor: "#006FEB",
+                  width: wp("5%"),
+                  height: wp("5%"),
                 }}
                 values={[this.state.spaceValues[0], this.state.spaceValues[1]]}
                 sliderLength={slideWidth}
@@ -2159,28 +2335,31 @@ class Filter extends Component {
               />
               <View
                 style={{
-                  width: '89%',
-                  height: hp('3%'),
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}>
+                  width: "89%",
+                  height: hp("3%"),
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
                 <Text
                   style={{
-                    color: '#444040',
-                    textAlign: 'right',
+                    color: "#444040",
+                    textAlign: "right",
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('2.5%'),
-                  }}>
+                    fontSize: wp("2.5%"),
+                  }}
+                >
                   m² {this.state.spaceValues[0]}
                 </Text>
                 <Text
                   style={{
-                    color: '#444040',
-                    textAlign: 'right',
+                    color: "#444040",
+                    textAlign: "right",
                     fontFamily: Constants.Fonts.shamelBold,
-                    fontSize: wp('2.5%'),
-                  }}>
+                    fontSize: wp("2.5%"),
+                  }}
+                >
                   m² {this.state.spaceValues[1]}
                 </Text>
               </View>
@@ -2222,46 +2401,55 @@ class Filter extends Component {
     }, 1000);
   };
   render() {
-    let slideWidth = Common.Helper.dimensions().width - wp('20%');
+    let slideWidth = Common.Helper.dimensions().width - wp("20%");
     return (
       <View style={styles.container}>
         <View
           style={{
-            width: '90%',
-            height: hp('5%'),
-            marginTop: hp('4%'),
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexDirection: 'row',
-          }}>
+            width: "90%",
+            height: hp("5%"),
+            marginTop: hp("4%"),
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+        >
           <TouchableOpacity
             onPress={() => {
               this.resetValues();
-            }}>
+            }}
+          >
             <Text
               style={{
-                color: '#006FEB',
+                color: "#006FEB",
                 fontFamily: Constants.Fonts.shamel,
-                fontSize: wp('3%'),
-              }}>
-              {Common.Translations.translate('reset')}
+                fontSize: wp("3%"),
+              }}
+            >
+              {Common.Translations.translate("reset")}
             </Text>
           </TouchableOpacity>
           <Text
             style={{
-              color: '#444040',
+              color: "#444040",
               fontFamily: Constants.Fonts.shamelBold,
-              fontSize: wp('3.5%'),
-            }}>
-            {Common.Translations.translate('filtering')}
+              fontSize: wp("3.5%"),
+            }}
+          >
+            {Common.Translations.translate("filtering")}
           </Text>
           <TouchableOpacity
             onPress={() => {
               this.props.navigation.pop();
-            }}>
+            }}
+          >
             <Image
               source={Constants.Images.closeIcon}
-              style={{ width: wp('3%'), height: wp('3%'), marginRight: wp('2%') }}
+              style={{
+                width: wp("3%"),
+                height: wp("3%"),
+                marginRight: wp("2%"),
+              }}
               resizeMode="contain"
             />
           </TouchableOpacity>
@@ -2270,218 +2458,243 @@ class Filter extends Component {
         <KeyboardAwareScrollView
           enableOnAndroid={true}
           contentContainerStyle={styles.mainContainer}
-          keyboardShouldPersistTaps="handled">
+          keyboardShouldPersistTaps="handled"
+        >
           <Text
             style={{
-              marginTop: wp('4%'),
-              width: '90%',
-              color: '#444040',
-              textAlign: 'right',
+              marginTop: wp("4%"),
+              width: "90%",
+              color: "#444040",
+              textAlign: "right",
               fontFamily: Constants.Fonts.shamelBold,
-              fontSize: wp('2.5%'),
-            }}>
-            {Common.Translations.translate('filtering')}
+              fontSize: wp("2.5%"),
+            }}
+          >
+            {Common.Translations.translate("filtering")}
           </Text>
 
           <Text
             style={{
-              marginTop: wp('4%'),
-              width: '90%',
-              color: '#444040',
-              textAlign: 'right',
+              marginTop: wp("4%"),
+              width: "90%",
+              color: "#444040",
+              textAlign: "right",
               fontFamily: Constants.Fonts.shamelBold,
-              fontSize: wp('2.5%'),
-            }}>
-            {Common.Translations.translate('category')}
+              fontSize: wp("2.5%"),
+            }}
+          >
+            {Common.Translations.translate("category")}
             <Text
               style={{
-                color: 'red',
-                paddingHorizontal: wp('1%'),
-                fontSize: wp('3%'),
-              }}>
+                color: "red",
+                paddingHorizontal: wp("1%"),
+                fontSize: wp("3%"),
+              }}
+            >
               *
             </Text>
           </Text>
           <View
             style={{
-              width: '90%',
-              backgroundColor: '#F0F0F0',
-              borderRadius: wp('1%'),
-              overflow: 'hidden',
-              marginTop: wp('2%'),
-            }}>
+              width: "90%",
+              backgroundColor: "#F0F0F0",
+              borderRadius: wp("1%"),
+              overflow: "hidden",
+              marginTop: wp("2%"),
+            }}
+          >
             <TouchableOpacity
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: wp('2%'),
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                paddingVertical: wp("2%"),
+              }}
+            >
               <Image
                 source={Constants.Images.menuIcon}
                 style={{
-                  width: wp('3%'),
-                  height: wp('3%'),
-                  marginLeft: wp('3%'),
+                  width: wp("3%"),
+                  height: wp("3%"),
+                  marginLeft: wp("3%"),
                 }}
                 resizeMode="contain"
               />
               <ModalDropdown
                 style={{
-                  width: '90%',
+                  width: "90%",
                 }}
                 textStyle={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('2.5%'),
+                  fontSize: wp("2.5%"),
                 }}
-                dropdownStyle={{ width: '80%' }}
+                dropdownStyle={{ width: "80%" }}
                 dropdownTextStyle={{
-                  textAlign: 'right',
-                  color: 'black',
+                  textAlign: "right",
+                  color: "black",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
-                  marginRight: wp('2%'),
+                  fontSize: wp("3%"),
+                  marginRight: wp("2%"),
                 }}
                 options={this.state.items}
                 onSelect={(idx, value) =>
                   this.dropdown_category_onSelect(idx, value)
                 }
                 value={this.state.cat_id}
-                defaultValue={/* Preference.get("category") ? Preference.get("category")?.name : */ Common.Translations.translate('category')}
+                defaultValue={
+                  /* Preference.get("category") ? Preference.get("category")?.name : */ Common.Translations.translate(
+                    "category"
+                  )
+                }
               />
             </TouchableOpacity>
           </View>
           <Text
             style={{
-              marginTop: wp('4%'),
-              width: '90%',
-              color: '#444040',
-              textAlign: 'right',
+              marginTop: wp("4%"),
+              width: "90%",
+              color: "#444040",
+              textAlign: "right",
               fontFamily: Constants.Fonts.shamelBold,
-              fontSize: wp('2.5%'),
-            }}>
-            {Common.Translations.translate('property_type')}
+              fontSize: wp("2.5%"),
+            }}
+          >
+            {Common.Translations.translate("property_type")}
             <Text
               style={{
-                color: 'red',
-                paddingHorizontal: wp('1%'),
-                fontSize: wp('3%'),
-              }}>
+                color: "red",
+                paddingHorizontal: wp("1%"),
+                fontSize: wp("3%"),
+              }}
+            >
               *
             </Text>
           </Text>
           <View
             style={{
-              width: '90%',
-              backgroundColor: '#F0F0F0',
-              borderRadius: wp('1%'),
-              overflow: 'hidden',
-              marginTop: wp('2%'),
-            }}>
+              width: "90%",
+              backgroundColor: "#F0F0F0",
+              borderRadius: wp("1%"),
+              overflow: "hidden",
+              marginTop: wp("2%"),
+            }}
+          >
             <TouchableOpacity
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: wp('2%'),
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                paddingVertical: wp("2%"),
+              }}
+            >
               <Image
                 source={Constants.Images.menuIcon}
                 style={{
-                  width: wp('3%'),
-                  height: wp('3%'),
-                  marginLeft: wp('3%'),
+                  width: wp("3%"),
+                  height: wp("3%"),
+                  marginLeft: wp("3%"),
                 }}
                 resizeMode="contain"
               />
               <ModalDropdown
                 style={{
-                  width: '90%',
+                  width: "90%",
                 }}
                 textStyle={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('2.5%'),
+                  fontSize: wp("2.5%"),
                 }}
-                dropdownStyle={{ width: '80%' }}
+                dropdownStyle={{ width: "80%" }}
                 dropdownTextStyle={{
-                  textAlign: 'right',
-                  color: 'black',
+                  textAlign: "right",
+                  color: "black",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
+                  fontSize: wp("3%"),
                 }}
                 options={[
-                  Common.Translations.translate('sale'),
-                  Common.Translations.translate('rent'),
+                  Common.Translations.translate("sale"),
+                  Common.Translations.translate("rent"),
                 ]}
                 onSelect={(idx, value) =>
                   this.dropdown_propertyType_onSelect(idx, value)
                 }
-                defaultValue={/* Preference.get("sale_rent") ? Preference.get("sale_rent") :  */Common.Translations.translate('property_type')}
+                defaultValue={
+                  /* Preference.get("sale_rent") ? Preference.get("sale_rent") :  */ Common.Translations.translate(
+                    "property_type"
+                  )
+                }
               />
             </TouchableOpacity>
           </View>
           <Text
             style={{
-              marginTop: wp('4%'),
-              width: '90%',
-              color: '#444040',
-              textAlign: 'right',
+              marginTop: wp("4%"),
+              width: "90%",
+              color: "#444040",
+              textAlign: "right",
               fontFamily: Constants.Fonts.shamelBold,
-              fontSize: wp('2.5%'),
-            }}>
-            {Common.Translations.translate('city')}
+              fontSize: wp("2.5%"),
+            }}
+          >
+            {Common.Translations.translate("city")}
           </Text>
           <View
             style={{
-              width: '90%',
-              backgroundColor: '#F0F0F0',
-              borderRadius: wp('1%'),
-              overflow: 'hidden',
-              marginTop: wp('2%'),
-            }}>
+              width: "90%",
+              backgroundColor: "#F0F0F0",
+              borderRadius: wp("1%"),
+              overflow: "hidden",
+              marginTop: wp("2%"),
+            }}
+          >
             <TouchableOpacity
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: wp('2%'),
-              }}>
+                flexDirection: "row",
+                alignItems: "center",
+                paddingVertical: wp("2%"),
+              }}
+            >
               <Image
                 source={Constants.Images.menuIcon}
                 style={{
-                  width: wp('3%'),
-                  height: wp('3%'),
-                  marginLeft: wp('3%'),
+                  width: wp("3%"),
+                  height: wp("3%"),
+                  marginLeft: wp("3%"),
                 }}
                 resizeMode="contain"
               />
               <ModalDropdown
                 style={{
-                  width: '90%',
+                  width: "90%",
                 }}
                 textStyle={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('2.5%'),
+                  fontSize: wp("2.5%"),
                 }}
-                dropdownStyle={{ width: '80%' }}
+                dropdownStyle={{ width: "80%" }}
                 dropdownTextStyle={{
-                  textAlign: 'right',
-                  color: 'black',
+                  textAlign: "right",
+                  color: "black",
                   fontFamily: Constants.Fonts.shamel,
-                  fontSize: wp('3%'),
+                  fontSize: wp("3%"),
                 }}
                 options={this.state.cityItems}
                 onSelect={(idx, value) => {
-                  console.log(value)
+                  console.log(value);
                   this.setState({
                     city_id: this.state.city[idx].id,
-                  })
+                  });
                   // Preference.set("city", value)
                 }}
-                defaultValue={/* Preference.get("city") ? Preference.get("city") : */ Common.Translations.translate('city')}
+                defaultValue={
+                  /* Preference.get("city") ? Preference.get("city") : */ Common.Translations.translate(
+                    "city"
+                  )
+                }
               />
             </TouchableOpacity>
           </View>
@@ -2490,68 +2703,76 @@ class Filter extends Component {
             <React.Fragment>
               <Text
                 style={{
-                  marginTop: wp('4%'),
-                  width: '90%',
-                  color: '#444040',
-                  textAlign: 'right',
+                  marginTop: wp("4%"),
+                  width: "90%",
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('2.5%'),
-                }}>
-                {Common.Translations.translate('type_land')}
+                  fontSize: wp("2.5%"),
+                }}
+              >
+                {Common.Translations.translate("type_land")}
                 <Text
                   style={{
-                    color: 'red',
-                    paddingHorizontal: wp('1%'),
-                    fontSize: wp('3%'),
-                  }}>
+                    color: "red",
+                    paddingHorizontal: wp("1%"),
+                    fontSize: wp("3%"),
+                  }}
+                >
                   *
                 </Text>
               </Text>
               <View
                 style={{
-                  width: '90%',
-                  backgroundColor: '#F0F0F0',
-                  borderRadius: wp('1%'),
-                  overflow: 'hidden',
-                  marginTop: wp('2%'),
-                }}>
+                  width: "90%",
+                  backgroundColor: "#F0F0F0",
+                  borderRadius: wp("1%"),
+                  overflow: "hidden",
+                  marginTop: wp("2%"),
+                }}
+              >
                 <TouchableOpacity
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingVertical: wp('2%'),
-                  }}>
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingVertical: wp("2%"),
+                  }}
+                >
                   <Image
                     source={Constants.Images.menuIcon}
                     style={{
-                      width: wp('3%'),
-                      height: wp('3%'),
-                      marginLeft: wp('3%'),
+                      width: wp("3%"),
+                      height: wp("3%"),
+                      marginLeft: wp("3%"),
                     }}
                     resizeMode="contain"
                   />
                   <ModalDropdown
                     style={{
-                      width: '90%',
+                      width: "90%",
                     }}
                     textStyle={{
-                      color: '#444040',
-                      textAlign: 'right',
+                      color: "#444040",
+                      textAlign: "right",
                       fontFamily: Constants.Fonts.shamelBold,
-                      fontSize: wp('2.5%'),
+                      fontSize: wp("2.5%"),
                     }}
-                    dropdownStyle={{ width: '80%' }}
+                    dropdownStyle={{ width: "80%" }}
                     dropdownTextStyle={{
-                      textAlign: 'right',
-                      color: 'black',
+                      textAlign: "right",
+                      color: "black",
                       fontFamily: Constants.Fonts.shamel,
-                      fontSize: wp('3%'),
+                      fontSize: wp("3%"),
                     }}
                     options={this.state.landTypes}
                     onSelect={(idx, value) =>
                       this.dropdown_landType_onSelect(idx, value)
                     }
-                    defaultValue={/* Preference.get("land_type") ? Preference.get("land_type") : */ Common.Translations.translate('type_land')}
+                    defaultValue={
+                      /* Preference.get("land_type") ? Preference.get("land_type") : */ Common.Translations.translate(
+                        "type_land"
+                      )
+                    }
                   />
                 </TouchableOpacity>
               </View>
@@ -2560,35 +2781,37 @@ class Filter extends Component {
 
           <Text
             style={{
-              marginTop: wp('7%'),
-              width: '90%',
-              color: '#444040',
-              textAlign: 'right',
+              marginTop: wp("7%"),
+              width: "90%",
+              color: "#444040",
+              textAlign: "right",
               fontFamily: Constants.Fonts.shamelBold,
-              fontSize: wp('2.5%'),
-            }}>
-            {Common.Translations.translate('price')}
+              fontSize: wp("2.5%"),
+            }}
+          >
+            {Common.Translations.translate("price")}
           </Text>
 
           <View
             style={{
-              width: '90%',
-              backgroundColor: '#F0F0F0',
-              borderRadius: wp('1%'),
-              overflow: 'hidden',
-              marginTop: wp('2%'),
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+              width: "90%",
+              backgroundColor: "#F0F0F0",
+              borderRadius: wp("1%"),
+              overflow: "hidden",
+              marginTop: wp("2%"),
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <MultiSlider
               // containerStyle = {{backgroundColor:'trasparent'}}
               imageBackgroundSource={null}
-              trackStyle={{ backgroundColor: '#CDCDCD' }}
+              trackStyle={{ backgroundColor: "#CDCDCD" }}
               markerStyle={{
-                backgroundColor: '#006FEB',
-                width: wp('5%'),
-                height: wp('5%'),
+                backgroundColor: "#006FEB",
+                width: wp("5%"),
+                height: wp("5%"),
               }}
               values={[
                 this.state.nonCollidingMultiSliderValue[0],
@@ -2605,28 +2828,31 @@ class Filter extends Component {
             />
             <View
               style={{
-                width: '89%',
-                height: hp('3%'),
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}>
+                width: "89%",
+                height: hp("3%"),
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('2.5%'),
-                }}>
+                  fontSize: wp("2.5%"),
+                }}
+              >
                 $ {this.state.nonCollidingMultiSliderValue[0]}
               </Text>
               <Text
                 style={{
-                  color: '#444040',
-                  textAlign: 'right',
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('2.5%'),
-                }}>
+                  fontSize: wp("2.5%"),
+                }}
+              >
                 $ {this.state.nonCollidingMultiSliderValue[1]}
               </Text>
             </View>
@@ -2636,39 +2862,42 @@ class Filter extends Component {
           {this.state.cat_id == 50 ? (
             <View
               style={{
-                flexDirection: 'column',
-                width: '100%',
-                alignItems: 'center',
-              }}>
+                flexDirection: "column",
+                width: "100%",
+                alignItems: "center",
+              }}
+            >
               <Text
                 style={{
-                  marginTop: wp('7%'),
-                  width: '90%',
-                  color: '#444040',
-                  textAlign: 'right',
+                  marginTop: wp("7%"),
+                  width: "90%",
+                  color: "#444040",
+                  textAlign: "right",
                   fontFamily: Constants.Fonts.shamelBold,
-                  fontSize: wp('2.5%'),
-                }}>
-                {Common.Translations.translate('road_width')}
+                  fontSize: wp("2.5%"),
+                }}
+              >
+                {Common.Translations.translate("road_width")}
               </Text>
 
               <View
                 style={{
-                  width: '90%',
-                  backgroundColor: '#F0F0F0',
-                  borderRadius: wp('1%'),
-                  overflow: 'hidden',
-                  marginTop: wp('2%'),
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+                  width: "90%",
+                  backgroundColor: "#F0F0F0",
+                  borderRadius: wp("1%"),
+                  overflow: "hidden",
+                  marginTop: wp("2%"),
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <MultiSlider
-                  trackStyle={{ backgroundColor: '#CDCDCD' }}
+                  trackStyle={{ backgroundColor: "#CDCDCD" }}
                   markerStyle={{
-                    backgroundColor: '#006FEB',
-                    width: wp('5%'),
-                    height: wp('5%'),
+                    backgroundColor: "#006FEB",
+                    width: wp("5%"),
+                    height: wp("5%"),
                   }}
                   min={10}
                   max={100}
@@ -2679,18 +2908,20 @@ class Filter extends Component {
                 />
                 <View
                   style={{
-                    width: '89%',
-                    height: hp('3%'),
-                    alignItems: 'center',
-                  }}>
+                    width: "89%",
+                    height: hp("3%"),
+                    alignItems: "center",
+                  }}
+                >
                   <Text
                     style={{
-                      color: '#444040',
-                      textAlign: 'right',
+                      color: "#444040",
+                      textAlign: "right",
                       fontFamily: Constants.Fonts.shamelBold,
-                      fontSize: wp('2.5%'),
-                      width: '100%',
-                    }}>
+                      fontSize: wp("2.5%"),
+                      width: "100%",
+                    }}
+                  >
                     m² {this.state.roadWidth[0]}
                   </Text>
                 </View>
@@ -2703,35 +2934,38 @@ class Filter extends Component {
           <View />
           <View
             style={{
-              width: '90%',
+              width: "90%",
               backgroundColor: Constants.Colors.buttonBackground,
-              marginTop: wp('8%'),
-              height: hp('5%'),
-              overflow: 'hidden',
-              borderRadius: wp('6%'),
-              marginBottom: wp('4%'),
-            }}>
+              marginTop: wp("8%"),
+              height: hp("5%"),
+              overflow: "hidden",
+              borderRadius: wp("6%"),
+              marginBottom: wp("4%"),
+            }}
+          >
             <TouchableOpacity
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                height: '100%',
+                flexDirection: "row",
+                alignItems: "center",
+                height: "100%",
               }}
               onPress={() => {
                 this.sortList();
-              }}>
+              }}
+            >
               <Text
                 style={{
                   fontFamily: Constants.Fonts.shamel,
-                  color: 'white',
-                  fontSize: wp('4.0%'),
-                  width: '100%',
-                  textAlign: 'center',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginTop: 10
-                }}>
-                {Common.Translations.translate('view_results')}
+                  color: "white",
+                  fontSize: wp("4.0%"),
+                  width: "100%",
+                  textAlign: "center",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 10,
+                }}
+              >
+                {Common.Translations.translate("view_results")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -2750,14 +2984,14 @@ export default connect(null, mapDispatchToProps)(Filter);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    justifyContent: "flex-start",
+    alignItems: "center",
+    backgroundColor: "white",
   },
   mainContainer: {
     width: Common.Helper.dimensions().width,
-    alignItems: 'center',
-    paddingBottom: wp('2%'),
+    alignItems: "center",
+    paddingBottom: wp("2%"),
     // flexGrow: 1,
   },
 });

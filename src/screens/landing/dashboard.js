@@ -164,9 +164,16 @@ class Dashboard extends Component {
             duplicated.unshift(tempArray);
             this.setState({ items: duplicated });
           }
-          Common.Helper.logEvent("dashboard", {
-            user: userInstance.getUser().info.name,
+
+          // Common.Helper.logEvent("dashboard", {
+          //   user: userInstance.getUser().info.name,
+          // });
+
+          let eventResponse = await Services.UserServices.eventLogAPI({
+            customer_name: userInstance.getUser().info.name,
+            event_name: "dashboard",
           });
+          console.log("Event log API response", eventResponse);
         }
       } catch (error) {}
     } else {
@@ -993,16 +1000,31 @@ class Dashboard extends Component {
             //   return;
             // }
             if (Constants.API.Token == null) {
-              Common.Helper.logEvent("Dashboard_List_Property_Click", {
-                Customer_ID: "With_out_login",
-                Propert_Id: value.item.id,
+              // Common.Helper.logEvent("Dashboard_List_Property_Click", {
+              //   Customer_ID: "With_out_login",
+              //   Propert_Id: value.item.id,
+              // });
+
+              let eventResponse = await Services.UserServices.eventLogAPI({
+                customer_id: "With_out_login",
+                event_name: "Dashboard_List_Property_Click",
+                property_id: value.item.id,
               });
+              console.log("Event log API response", eventResponse);
             } else {
               let userInstance = await User.getInstance();
-              Common.Helper.logEvent("Dashboard_List_Property_Click", {
-                Customer_ID: userInstance.getUser().info.id,
-                Propert_Id: value.item.id,
+
+              // Common.Helper.logEvent("Dashboard_List_Property_Click", {
+              //   Customer_ID: userInstance.getUser().info.id,
+              //   Propert_Id: value.item.id,
+              // });
+
+              let eventResponse = await Services.UserServices.eventLogAPI({
+                customer_id: userInstance.getUser().info.id,
+                property_id: value.item.id,
+                event_name: "Dashboard_List_Property_Click",
               });
+              console.log("Event log API response", eventResponse);
             }
             this.props.navigation.navigate(
               Constants.Navigations.Dashboard.DETAIL,
@@ -1238,16 +1260,28 @@ class Dashboard extends Component {
         markers={arrayFilter}
         onMapPress={async (e) => {
           if (Constants.API.Token == null) {
-            Common.Helper.logEvent("Dashboard_Map_Property_Click", {
-              Customer_ID: "With_out_login",
-              Propert_Id: e.product.id,
+            // Common.Helper.logEvent("Dashboard_Map_Property_Click", {
+            //   Customer_ID: "With_out_login",
+            //   Propert_Id: e.product.id,
+            // });
+            let eventResponse = await Services.UserServices.eventLogAPI({
+              customer_id: "With_out_login",
+              property_id: e.product.id,
+              event_name: "Dashboard_Map_Property_Click",
             });
+            console.log("Event log API response", eventResponse);
           } else {
             let userInstance = await User.getInstance();
-            Common.Helper.logEvent("Dashboard_Map_Property_Click", {
-              Customer_ID: userInstance.getUser().info.id,
-              Propert_Id: e.product.id,
+            // Common.Helper.logEvent("Dashboard_Map_Property_Click", {
+            //   Customer_ID: userInstance.getUser().info.id,
+            //   Propert_Id: e.product.id,
+            // });
+            let eventResponse = await Services.UserServices.eventLogAPI({
+              customer_id: userInstance.getUser().info.id,
+              property_id: e.product.id,
+              event_name: "Dashboard_Map_Property_Click",
             });
+            console.log("Event log API response", eventResponse);
           }
           this.setState({ showInfo: true, markerInfo: e });
         }}

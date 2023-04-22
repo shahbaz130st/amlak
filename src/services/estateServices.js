@@ -1,5 +1,6 @@
-import * as Common from '../common/index';
-import * as Constants from '../constants/index';
+import { log } from "react-native-reanimated";
+import * as Common from "../common/index";
+import * as Constants from "../constants/index";
 
 const cityList = async () => {
   try {
@@ -13,17 +14,17 @@ const cityList = async () => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
 
     return null;
   }
 };
 
 const estates = async (estateID) => {
-  console.log(Constants.API.Dashboard.ESTATES_DETAIL + `${estateID}`)
+  console.log(Constants.API.Dashboard.ESTATES_DETAIL + `${estateID}`);
   try {
     const response = await Common.axios.get(
-      Constants.API.Dashboard.ESTATES_DETAIL + `${estateID}`,
+      Constants.API.Dashboard.ESTATES_DETAIL + `${estateID}`
     );
 
     if (response && response.status == 200) {
@@ -34,7 +35,7 @@ const estates = async (estateID) => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
     return null;
   }
 };
@@ -45,10 +46,10 @@ const searchEstatesByArea = async (data) => {
       city: data.city,
       area: data.area,
     };
-    console.log('Request------>', body);
+    console.log("Request------>", body);
     const response = await Common.axios.post(
       Constants.API.Dashboard.ESTATES_SEACRH_AREA,
-      body,
+      body
     );
     if (response && response.status == 200) {
       if (response.data && response.data.access_token) {
@@ -57,7 +58,7 @@ const searchEstatesByArea = async (data) => {
     }
   } catch (error) {
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return error.message;
   }
@@ -76,9 +77,9 @@ const categories = async () => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return null;
   }
@@ -86,7 +87,7 @@ const categories = async () => {
 const addToFav = async (estateID) => {
   try {
     const response = await Common.axios.get(
-      Constants.API.Dashboard.ADD_TO_FAV + `${estateID}`,
+      Constants.API.Dashboard.ADD_TO_FAV + `${estateID}`
     );
     console.log(response);
 
@@ -98,9 +99,9 @@ const addToFav = async (estateID) => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return null;
   }
@@ -120,7 +121,7 @@ const filterEstates = async (data) => {
     };
     const response = await Common.axios.post(
       Constants.API.Dashboard.ESTATES_SEACRH_AREA,
-      body,
+      body
     );
     if (response && response.status == 200) {
       if (response.data && response.data.access_token) {
@@ -129,7 +130,7 @@ const filterEstates = async (data) => {
     }
   } catch (error) {
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return error.message;
   }
@@ -139,18 +140,18 @@ const homeSearch = async (keyword) => {
     const body = {
       key_words: keyword,
     };
-    console.log('homeSearch body', body)
+    console.log("homeSearch body", body);
     const response = await Common.axios.post(
       Constants.API.Dashboard.HOME_SEARCH,
-      body,
+      body
     );
-    console.log('home/Searchresponse ', response)
+    console.log("home/Searchresponse ", response);
     if (response && response.status == 200) {
       return response.data.data;
     }
   } catch (error) {
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return error.message;
   }
@@ -161,13 +162,16 @@ const defaultEstates = async (data) => {
       latitude: data.latitude,
       longitude: data.longitude,
       zoom: data.zoom,
-      city_id: data.city_id
+      city_id: data.city_id,
     };
-    console.log("urlasd", `${Constants.API.Dashboard.ESTATES_SEACRH}/page=${data.page}`)
-    console.log("urlasd=====data", data, body)
+    console.log(
+      "urlasd",
+      `${Constants.API.Dashboard.ESTATES_SEACRH}/page=${data.page}`
+    );
+    console.log("urlasd=====data", data, body);
     const response = await Common.axios.post(
       `${Constants.API.Dashboard.ESTATES_SEACRH}?page=${data.page}`,
-      body,
+      body
     );
     if (response && response.status == 200) {
       if (response.data && response.data.access_token) {
@@ -178,7 +182,7 @@ const defaultEstates = async (data) => {
     // setTimeout(function () {
     //   Common.Alert.show('alert', error.message);
     // }, 2000);
-    console.log('error--', error);
+    console.log("error--", error);
 
     return error.message;
   }
@@ -191,7 +195,7 @@ const priceRange = async (data) => {
     };
     const response = await Common.axios.post(
       Constants.API.Dashboard.PRICE_MAX_MIN,
-      body,
+      body
     );
     if (response && response.status == 200) {
       if (response.data && response.data.access_token) {
@@ -200,14 +204,19 @@ const priceRange = async (data) => {
     }
   } catch (error) {
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return error.message;
   }
 };
 
 const sortList = async (data) => {
-  console.log("Api url", Constants.API.Dashboard.ESTATES_SORT, data)
+  console.log(
+    "Constants.API.Dashboard.ESTATES_SORT",
+    Constants.API.Dashboard.ESTATES_SORT
+  );
+  console.log("data", data);
+  // console.log("Api url", Constants.API.Dashboard.ESTATES_SORT, data)
   try {
     // const body = {
     //   starts: data.starts,
@@ -225,7 +234,7 @@ const sortList = async (data) => {
     // };
     const response = await Common.axios.post(
       Constants.API.Dashboard.ESTATES_SORT,
-      data,
+      data
     );
 
     if (response && response.status == 200) {
@@ -233,7 +242,7 @@ const sortList = async (data) => {
     }
   } catch (error) {
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return error.message;
   }
@@ -242,22 +251,22 @@ const addEstates = async (data) => {
   try {
     const response = await Common.axios.post(
       Constants.API.Dashboard.ADD_ESTATE,
-      data,
+      data
     );
-    console.log('Add Estates----->', response);
+    console.log("Add Estates----->", response);
     if (response && response.status == 200) {
       if (response.data && response.data.status == true) {
-        return response.data
+        return response.data;
       } else {
         setTimeout(function () {
-          Common.Alert.show('alert', `${JSON.stringify(response.data.errors)}`);
+          Common.Alert.show("alert", `${JSON.stringify(response.data.errors)}`);
         }, 2000);
         return null;
       }
     }
   } catch (error) {
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return null;
   }
@@ -272,15 +281,15 @@ const report = async (data) => {
     };
     const response = await Common.axios.post(
       Constants.API.Dashboard.REPORT_ESTATE,
-      body,
+      body
     );
-    console.log('report---->', response);
+    console.log("report---->", response);
     if (response && response.status == 200) {
       return response.data;
     }
   } catch (error) {
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return error.message;
   }
@@ -294,10 +303,10 @@ const postReview = async (data) => {
       value: data.value,
       user_name: data.user_name,
     };
-    console.log("Post review", body)
+    console.log("Post review", body);
     const response = await Common.axios.post(
       Constants.API.Dashboard.POST_REVIEW,
-      body,
+      body
     );
 
     if (response && response.status == 200) {
@@ -305,7 +314,7 @@ const postReview = async (data) => {
     }
   } catch (error) {
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return error.message;
   }
@@ -314,7 +323,7 @@ const postReview = async (data) => {
 const rePost = async (estateID) => {
   try {
     const response = await Common.axios.get(
-      Constants.API.Dashboard.REPOST + `${estateID}`,
+      Constants.API.Dashboard.REPOST + `${estateID}`
     );
 
     if (response && response.status == 200) {
@@ -326,9 +335,9 @@ const rePost = async (estateID) => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return null;
   }
@@ -337,7 +346,7 @@ const rePost = async (estateID) => {
 const deletePost = async (estateID) => {
   try {
     const response = await Common.axios.get(
-      Constants.API.Dashboard.DELETE_POST + `${estateID}`,
+      Constants.API.Dashboard.DELETE_POST + `${estateID}`
     );
 
     if (response && response.status == 200) {
@@ -349,9 +358,9 @@ const deletePost = async (estateID) => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return null;
   }
@@ -370,9 +379,9 @@ const myAds = async () => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return null;
   }
@@ -381,7 +390,7 @@ const myAds = async () => {
 const similarAds = async (estateID) => {
   try {
     const response = await Common.axios.get(
-      Constants.API.Dashboard.SIMILER_ADS + `${estateID}`,
+      Constants.API.Dashboard.SIMILER_ADS + `${estateID}`
     );
 
     if (response && response.status == 200) {
@@ -393,9 +402,9 @@ const similarAds = async (estateID) => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return null;
   }
@@ -404,7 +413,7 @@ const similarAds = async (estateID) => {
 const similarProps = async (estateID) => {
   try {
     const response = await Common.axios.get(
-      Constants.API.Dashboard.SIMILER_ADS + `${estateID}`,
+      Constants.API.Dashboard.SIMILER_ADS + `${estateID}`
     );
     if (response && response.status == 200) {
       if (response.data && response.data.status == true) {
@@ -415,9 +424,9 @@ const similarProps = async (estateID) => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return null;
   }
@@ -427,7 +436,7 @@ const similarProps = async (estateID) => {
 const deletefav = async (favID) => {
   try {
     const response = await Common.axios.get(
-      Constants.API.Dashboard.DELETE_ESTATE_FAV + `${favID}`,
+      Constants.API.Dashboard.DELETE_ESTATE_FAV + `${favID}`
     );
 
     if (response && response.status == 200) {
@@ -439,9 +448,9 @@ const deletefav = async (favID) => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
     setTimeout(function () {
-      Common.Alert.show('alert', error.message);
+      Common.Alert.show("alert", error.message);
     }, 2000);
     return null;
   }
@@ -449,7 +458,9 @@ const deletefav = async (favID) => {
 
 const propertyByCity = async (id) => {
   try {
-    const response = await Common.axios.get(Constants.API.Dashboard.PROPERTY_BY_CITY + id);
+    const response = await Common.axios.get(
+      Constants.API.Dashboard.PROPERTY_BY_CITY + id
+    );
 
     if (response && response.status == 200) {
       if (response.data && response.data.status == true) {
@@ -459,7 +470,7 @@ const propertyByCity = async (id) => {
       }
     }
   } catch (error) {
-    console.log('error------>', error);
+    console.log("error------>", error);
 
     return null;
   }
@@ -485,5 +496,5 @@ export default {
   addEstates,
   deletefav,
   similarProps,
-  propertyByCity
+  propertyByCity,
 };

@@ -342,13 +342,23 @@ class EstateDetail extends Component {
       // this.loginAlert();
       return;
     }
+
     let userInstance = await User.getInstance();
-    Common.Helper.logEvent("callPropertyOwner", {
-      Customer_Phone_Number: userInstance.getUser().info.mobile,
-      Customer_Name: userInstance.getUser().info.name,
-      Property_Owner_Phone_Number: this.state.propertyDetail.owner_number,
-      Propert_Id: this.state.propertyDetail.id,
+    let eventResponse = await Services.UserServices.eventLogAPI({
+      customer_phone: userInstance.getUser().info.mobile,
+      customer_name: userInstance.getUser().info.name,
+      property_owner_phone_number: this.state.propertyDetail.owner_number,
+      property_id: this.state.propertyDetail.id,
+      event_name: "callPropertyOwner",
     });
+    console.log("Event log API response", eventResponse);
+
+    // Common.Helper.logEvent("callPropertyOwner", {
+    //   Customer_Phone_Number: userInstance.getUser().info.mobile,
+    //   Customer_Name: userInstance.getUser().info.name,
+    //   Property_Owner_Phone_Number: this.state.propertyDetail.owner_number,
+    //   Propert_Id: this.state.propertyDetail.id,
+    // });
     let phone = this.state.propertyDetail.owner_number;
     let phoneNumber = phone;
     if (Platform.OS !== "android") {
@@ -3282,16 +3292,30 @@ class EstateDetail extends Component {
         <TouchableOpacity
           onPress={async () => {
             if (Constants.API.Token == null) {
-              Common.Helper.logEvent("Similar_Property_Click", {
-                Customer_ID: "With_out_login",
-                Propert_Id: value.item.id,
+              let eventResponse = await Services.UserServices.eventLogAPI({
+                customer_id: "With_out_login",
+                property_id: value.item.id,
+                event_name: "Similar_Property_Click",
               });
+              console.log("Event log API response", eventResponse);
+
+              // Common.Helper.logEvent("Similar_Property_Click", {
+              //   Customer_ID: "With_out_login",
+              //   Propert_Id: value.item.id,
+              // });
             } else {
               let userInstance = await User.getInstance();
-              Common.Helper.logEvent("Similar_Property_Click", {
-                Customer_ID: userInstance.getUser().info.id,
-                Propert_Id: value.item.id,
+              let eventResponse = await Services.UserServices.eventLogAPI({
+                customer_id: userInstance.getUser().info.id,
+                property_id: value.item.id,
+                event_name: "Similar_Property_Click",
               });
+              console.log("Event log API response", eventResponse);
+
+              // Common.Helper.logEvent("Similar_Property_Click", {
+              //   Customer_ID: userInstance.getUser().info.id,
+              //   Propert_Id: value.item.id,
+              // });
             }
             this.refreshDetail(value.item.id);
           }}
