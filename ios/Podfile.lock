@@ -404,18 +404,18 @@ PODS:
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
   - React-jsinspector (0.63.3)
-  - react-native-fbsdk-next (11.2.0):
+  - react-native-fbsdk-next (11.2.1):
     - React-Core
-    - react-native-fbsdk-next/Core (= 11.2.0)
-    - react-native-fbsdk-next/Login (= 11.2.0)
-    - react-native-fbsdk-next/Share (= 11.2.0)
-  - react-native-fbsdk-next/Core (11.2.0):
+    - react-native-fbsdk-next/Core (= 11.2.1)
+    - react-native-fbsdk-next/Login (= 11.2.1)
+    - react-native-fbsdk-next/Share (= 11.2.1)
+  - react-native-fbsdk-next/Core (11.2.1):
     - FBSDKCoreKit (~> 15.0.0)
     - React-Core
-  - react-native-fbsdk-next/Login (11.2.0):
+  - react-native-fbsdk-next/Login (11.2.1):
     - FBSDKLoginKit (~> 15.0.0)
     - React-Core
-  - react-native-fbsdk-next/Share (11.2.0):
+  - react-native-fbsdk-next/Share (11.2.1):
     - FBSDKGamingServicesKit (~> 15.0.0)
     - FBSDKShareKit (~> 15.0.0)
     - React-Core
@@ -561,7 +561,7 @@ PODS:
     - Sentry (= 7.11.0)
   - RNShare (7.9.1):
     - React-Core
-  - RNSVG (13.8.0):
+  - RNSVG (13.9.0):
     - React-Core
   - SDWebImage (5.11.1):
     - SDWebImage/Core (= 5.11.1)
@@ -871,7 +871,7 @@ SPEC CHECKSUMS:
   React-jsi: df07aa95b39c5be3e41199921509bfa929ed2b9d
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
-  react-native-fbsdk-next: b2dd3a5cebb2507c09e3ec880e1b94a491dbaece
+  react-native-fbsdk-next: 5291a5d67aab4e649d072c50988033ff0d05b915
   react-native-geocoder: 757427682892bb256f3b3745858cc90eba148a8e
   react-native-google-maps: 915cea64470a6e7581b782d8659bf8a7e2dee302
   react-native-image-picker: c6d75c4ab2cf46f9289f341242b219cb3c1180d3
@@ -912,7 +912,7 @@ SPEC CHECKSUMS:
   RNScreens: 0e91da98ab26d5d04c7b59a9b6bd694124caf88c
   RNSentry: 85f6525b5fe8d2ada065858026b338605b3c09da
   RNShare: a5dc3b9c53ddc73e155b8cd9a94c70c91913c43c
-  RNSVG: c1e76b81c76cdcd34b4e1188852892dc280eb902
+  RNSVG: 53c661b76829783cdaf9b7a57258f3d3b4c28315
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   Sentry: 0c5cd63d714187b4a39c331c1f0eb04ba7868341
@@ -922,4 +922,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 6b99a33e6abee462fdb90adb049dd631498def21
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.11.3
