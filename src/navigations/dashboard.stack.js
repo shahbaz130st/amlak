@@ -9,6 +9,8 @@ import * as Common from "../common/index";
 import Animated from "react-native-reanimated";
 import Dashboard from "../screens/landing/dashboard";
 
+const Tab = createBottomTabNavigator();
+
 const _renderIcon = (routeName, selectedTab) => {
   let icon = "";
 
@@ -95,178 +97,178 @@ const renderTabBar = ({ routeName, selectedTab, navigate }) => {
 };
 
 const DashboardStack = (props) => (
-  <CurvedBottomBarExpo.Navigator
-    type="DOWN"
-    style={styles.bottomBar}
-    shadowStyle={styles.shawdow}
-    height={70}
-    circleWidth={20}
-    bgColor="white"
+  // <CurvedBottomBarExpo.Navigator
+  //   type="DOWN"
+  //   style={styles.bottomBar}
+  //   shadowStyle={styles.shawdow}
+  //   height={70}
+  //   circleWidth={20}
+  //   bgColor="white"
+  //   initialRouteName={Common.Translations.translate(
+  //     Constants.Navigations.Dashboard.MAIN
+  //   )}
+  //   borderTopLeftRight
+  //   renderCircle={({ selectedTab, navigate }) => (
+  //     <Animated.View style={styles.btnCircleUp}>
+  //       <TouchableOpacity
+  //         style={styles.button}
+  //         // onPress={() => props.navigation.push(Screens.AddNew)}
+  //         onPress={
+  //           () => navigate(Constants.Navigations.Dashboard.AddNEW)
+  //           // props.navigation.dispatch(mainApp);
+  //         }
+  //       >
+  //         <Image
+  //           source={Constants.Images.plus}
+  //           style={{ tintColor: "white" }}
+  //         />
+  //       </TouchableOpacity>
+  //     </Animated.View>
+  //   )}
+  //   tabBar={renderTabBar}
+  // >
+  //   <CurvedBottomBarExpo.Screen
+  //     name={Constants.Navigations.Dashboard.MAIN}
+  //     component={Screens.Dashboard}
+  //     position="LEFT"
+  //   />
+
+  //   {Constants.API.Token != null && (
+  //     <CurvedBottomBarExpo.Screen
+  //       name={Common.Translations.translate(
+  //         Constants.Navigations.Dashboard.PROVINCES
+  //       )}
+  //       component={Screens.Provinces}
+  //       position="LEFT"
+  //     />
+  //   )}
+  //   <CurvedBottomBarExpo.Screen
+  //     name={Common.Translations.translate(
+  //       Constants.Navigations.Dashboard.AddNEW
+  //     )}
+  //     component={Screens.AddNew}
+  //     position="CENTER"
+  //   />
+  //   {Constants.API.Token != null && (
+  //     <CurvedBottomBarExpo.Screen
+  //       name={Common.Translations.translate(
+  //         Constants.Navigations.Dashboard.FAVORITE
+  //       )}
+  //       component={Screens.Favorite}
+  //       position="RIGHT"
+  //     />
+  //   )}
+
+  //   <CurvedBottomBarExpo.Screen
+  //     name={Common.Translations.translate(Constants.Navigations.Dashboard.MORE)}
+  //     component={Screens.More}
+  //     position="RIGHT"
+  //   />
+  // </CurvedBottomBarExpo.Navigator>
+  <Tab.Navigator
     initialRouteName={Common.Translations.translate(
       Constants.Navigations.Dashboard.MAIN
     )}
-    borderTopLeftRight
-    renderCircle={({ selectedTab, navigate }) => (
-      <Animated.View style={styles.btnCircleUp}>
-        <TouchableOpacity
-          style={styles.button}
-          // onPress={() => props.navigation.push(Screens.AddNew)}
-          onPress={
-            () => navigate(Constants.Navigations.Dashboard.AddNEW)
-            // props.navigation.dispatch(mainApp);
-          }
-        >
-          <Image
-            source={Constants.Images.plus}
-            style={{ tintColor: "white" }}
-          />
-        </TouchableOpacity>
-      </Animated.View>
-    )}
-    tabBar={renderTabBar}
-  >
-    <CurvedBottomBarExpo.Screen
-      name={Constants.Navigations.Dashboard.MAIN}
-      component={Screens.Dashboard}
-      position="LEFT"
-    />
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+        if (
+          route.name ===
+          Common.Translations.translate(Constants.Navigations.Dashboard.MAIN)
+        ) {
+          iconName = focused
+            ? Constants.Images.mainSelected
+            : Constants.Images.main;
+        } else if (
+          route.name ===
+            Common.Translations.translate(
+              Constants.Navigations.Dashboard.PROVINCES
+            ) &&
+          Constants.API.Token != null
+        ) {
+          iconName = focused
+            ? Constants.Images.provincesSelected
+            : Constants.Images.provinces;
+        } else if (route.name === Constants.Navigations.Dashboard.AddNEW) {
+          iconName = focused ? Constants.Images.plus : Constants.Images.plus;
+        } else if (
+          route.name ===
+            Common.Translations.translate(
+              Constants.Navigations.Dashboard.FAVORITE
+            ) &&
+          Constants.API.Token != null
+        ) {
+          iconName = focused
+            ? Constants.Images.favoriteSelected
+            : Constants.Images.favorite;
+        } else if (
+          route.name ===
+          Common.Translations.translate(Constants.Navigations.Dashboard.MORE)
+        ) {
+          iconName = focused
+            ? Constants.Images.moreSelected
+            : Constants.Images.more;
+        }
 
-    {Constants.API.Token != null && (
-      <CurvedBottomBarExpo.Screen
-        name={Common.Translations.translate(
-          Constants.Navigations.Dashboard.PROVINCES
-        )}
-        component={Screens.Provinces}
-        position="LEFT"
-      />
-    )}
-    <CurvedBottomBarExpo.Screen
-      name={Common.Translations.translate(
-        Constants.Navigations.Dashboard.AddNEW
-      )}
-      component={Screens.AddNew}
-      position="CENTER"
+        // You can return any component that you like here!
+        return route.name != Constants.Navigations.Dashboard.AddNEW ? (
+          <Image source={iconName} />
+        ) : (
+          <View
+            style={{
+              marginTop: 15,
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              backgroundColor: "#006FEB",
+              overflow: "hidden",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Image source={iconName} />
+          </View>
+        );
+      },
+    })}
+    tabBarOptions={{
+      activeTintColor: "#006FEB",
+      inactiveTintColor: "#989898",
+    }}
+  >
+    <Tab.Screen
+      name={Common.Translations.translate(Constants.Navigations.Dashboard.MORE)}
+      component={Screens.More}
     />
     {Constants.API.Token != null && (
-      <CurvedBottomBarExpo.Screen
+      <Tab.Screen
         name={Common.Translations.translate(
           Constants.Navigations.Dashboard.FAVORITE
         )}
         component={Screens.Favorite}
-        position="RIGHT"
       />
     )}
 
-    <CurvedBottomBarExpo.Screen
-      name={Common.Translations.translate(Constants.Navigations.Dashboard.MORE)}
-      component={Screens.More}
-      position="RIGHT"
+    <Tab.Screen
+      options={{ tabBarLabel: "" }}
+      name={Constants.Navigations.Dashboard.AddNEW}
+      component={Screens.AddNew}
     />
-  </CurvedBottomBarExpo.Navigator>
+    {Constants.API.Token != null && (
+      <Tab.Screen
+        name={Common.Translations.translate(
+          Constants.Navigations.Dashboard.PROVINCES
+        )}
+        component={Screens.Provinces}
+      />
+    )}
+
+    <Tab.Screen
+      name={Common.Translations.translate(Constants.Navigations.Dashboard.MAIN)}
+      component={Screens.Dashboard}
+    />
+  </Tab.Navigator>
 );
-// <Tab.Navigator
-//   initialRouteName={Common.Translations.translate(
-//     Constants.Navigations.Dashboard.MAIN
-//   )}
-//   screenOptions={({ route }) => ({
-//     tabBarIcon: ({ focused, color, size }) => {
-//       let iconName;
-//       if (
-//         route.name ===
-//         Common.Translations.translate(Constants.Navigations.Dashboard.MAIN)
-//       ) {
-//         iconName = focused
-//           ? Constants.Images.mainSelected
-//           : Constants.Images.main;
-//       } else if (
-//         route.name ===
-//           Common.Translations.translate(
-//             Constants.Navigations.Dashboard.PROVINCES
-//           ) &&
-//         Constants.API.Token != null
-//       ) {
-//         iconName = focused
-//           ? Constants.Images.provincesSelected
-//           : Constants.Images.provinces;
-//       } else if (route.name === Constants.Navigations.Dashboard.AddNEW) {
-//         iconName = focused ? Constants.Images.plus : Constants.Images.plus;
-//       } else if (
-//         route.name ===
-//           Common.Translations.translate(
-//             Constants.Navigations.Dashboard.FAVORITE
-//           ) &&
-//         Constants.API.Token != null
-//       ) {
-//         iconName = focused
-//           ? Constants.Images.favoriteSelected
-//           : Constants.Images.favorite;
-//       } else if (
-//         route.name ===
-//         Common.Translations.translate(Constants.Navigations.Dashboard.MORE)
-//       ) {
-//         iconName = focused
-//           ? Constants.Images.moreSelected
-//           : Constants.Images.more;
-//       }
-
-//       // You can return any component that you like here!
-//       return route.name != Constants.Navigations.Dashboard.AddNEW ? (
-//         <Image source={iconName} />
-//       ) : (
-//         <View
-//           style={{
-//             marginTop: 15,
-//             width: 40,
-//             height: 40,
-//             borderRadius: 20,
-//             backgroundColor: "#006FEB",
-//             overflow: "hidden",
-//             justifyContent: "center",
-//             alignItems: "center",
-//           }}
-//         >
-//           <Image source={iconName} />
-//         </View>
-//       );
-//     },
-//   })}
-//   tabBarOptions={{
-//     activeTintColor: "#006FEB",
-//     inactiveTintColor: "#989898",
-//   }}
-// >
-//   <Tab.Screen
-//     name={Common.Translations.translate(Constants.Navigations.Dashboard.MORE)}
-//     component={Screens.More}
-//   />
-//   {Constants.API.Token != null && (
-//     <Tab.Screen
-//       name={Common.Translations.translate(
-//         Constants.Navigations.Dashboard.FAVORITE
-//       )}
-//       component={Screens.Favorite}
-//     />
-//   )}
-
-//   <Tab.Screen
-//     options={{ tabBarLabel: "" }}
-//     name={Constants.Navigations.Dashboard.AddNEW}
-//     component={Screens.AddNew}
-//   />
-//   {Constants.API.Token != null && (
-//     <Tab.Screen
-//       name={Common.Translations.translate(
-//         Constants.Navigations.Dashboard.PROVINCES
-//       )}
-//       component={Screens.Provinces}
-//     />
-//   )}
-
-//   <Tab.Screen
-//     name={Common.Translations.translate(Constants.Navigations.Dashboard.MAIN)}
-//     component={Screens.Dashboard}
-//   />
-// </Tab.Navigator>
 
 export const styles = StyleSheet.create({
   container: {

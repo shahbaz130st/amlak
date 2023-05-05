@@ -1576,6 +1576,30 @@ class Dashboard extends Component {
 
   getFilterList = async (item) => {
     console.log("item", item);
+
+    if (Constants.API.Token == null) {
+      let eventResponse = await Services.UserServices.eventLogAPI({
+        customer_id: "With_out_login",
+        event_name: `User clicked on ${item?.name + " " + item?.headerName}`,
+      });
+      // console.log(
+      //   "User Clicked on, ",
+      //   `${item?.name + " " + item?.headerName}`
+      // );
+      console.log("Event log API response", eventResponse);
+    } else {
+      let userInstance = await User.getInstance();
+      let eventResponse = await Services.UserServices.eventLogAPI({
+        customer_id: userInstance.getUser().info.id,
+        event_name: `User clicked on ${item?.name + " " + item?.headerName}`,
+      });
+      // console.log(
+      //   "User Clicked on, ",
+      //   `${item?.name + " " + item?.headerName}`
+      // );
+      // console.log("Event log API response", eventResponse);
+    }
+
     this.props.toggleLoader(true);
     if (item.id == 0) {
       this.refreshList();
