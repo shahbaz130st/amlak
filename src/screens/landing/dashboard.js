@@ -170,7 +170,9 @@ class Dashboard extends Component {
           // });
 
           let eventResponse = await Services.UserServices.eventLogAPI({
-            customer_name: userInstance.getUser().info.name,
+            customer_name: userInstance.getUser().info.name
+              ? userInstance.getUser().info.name
+              : "",
             event_name: "dashboard",
           });
           console.log("Event log API response", eventResponse);
@@ -1006,9 +1008,10 @@ class Dashboard extends Component {
               // });
 
               let eventResponse = await Services.UserServices.eventLogAPI({
-                customer_id: "With_out_login",
+                customer_id: "",
                 event_name: "Dashboard_List_Property_Click",
-                property_id: value.item.id,
+                property_id: value.item.id ? value.item.id : "",
+                vistor: "visitor",
               });
               console.log("Event log API response", eventResponse);
             } else {
@@ -1020,8 +1023,10 @@ class Dashboard extends Component {
               // });
 
               let eventResponse = await Services.UserServices.eventLogAPI({
-                customer_id: userInstance.getUser().info.id,
-                property_id: value.item.id,
+                customer_id: userInstance.getUser().info.id
+                  ? userInstance.getUser().info.id
+                  : "",
+                property_id: value.item.id ? value.item.id : "",
                 event_name: "Dashboard_List_Property_Click",
               });
               console.log("Event log API response", eventResponse);
@@ -1265,9 +1270,10 @@ class Dashboard extends Component {
             //   Propert_Id: e.product.id,
             // });
             let eventResponse = await Services.UserServices.eventLogAPI({
-              customer_id: "With_out_login",
-              property_id: e.product.id,
+              customer_id: "",
+              property_id: e.product.id ? e.product.id : "",
               event_name: "Dashboard_Map_Property_Click",
+              vistor: "visitor",
             });
             console.log("Event log API response", eventResponse);
           } else {
@@ -1277,8 +1283,10 @@ class Dashboard extends Component {
             //   Propert_Id: e.product.id,
             // });
             let eventResponse = await Services.UserServices.eventLogAPI({
-              customer_id: userInstance.getUser().info.id,
-              property_id: e.product.id,
+              customer_id: userInstance.getUser().info.id
+                ? userInstance.getUser().info.id
+                : "",
+              property_id: e.product.id ? e.product.id : "",
               event_name: "Dashboard_Map_Property_Click",
             });
             console.log("Event log API response", eventResponse);
@@ -1579,8 +1587,9 @@ class Dashboard extends Component {
 
     if (Constants.API.Token == null) {
       let eventResponse = await Services.UserServices.eventLogAPI({
-        customer_id: "With_out_login",
+        customer_id: "",
         event_name: `User clicked on ${item?.name + " " + item?.headerName}`,
+        vistor: "visitor",
       });
       // console.log(
       //   "User Clicked on, ",
@@ -1590,7 +1599,9 @@ class Dashboard extends Component {
     } else {
       let userInstance = await User.getInstance();
       let eventResponse = await Services.UserServices.eventLogAPI({
-        customer_id: userInstance.getUser().info.id,
+        customer_id: userInstance.getUser().info.id
+          ? userInstance.getUser().info.id
+          : "",
         event_name: `User clicked on ${item?.name + " " + item?.headerName}`,
       });
       // console.log(

@@ -114,7 +114,9 @@ class Verificaton extends PureComponent {
     //   phone: this.props.route.params.data.mobile,
     // });
     let eventResponse = await Services.UserServices.eventLogAPI({
-      customer_phone: this.props.route.params.data.mobile,
+      customer_phone: this.props.route.params.data.mobile
+        ? this.props.route.params.data.mobile
+        : "",
       event_name: "verification",
     });
     if (

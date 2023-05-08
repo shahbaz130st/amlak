@@ -345,10 +345,18 @@ class EstateDetail extends Component {
 
     let userInstance = await User.getInstance();
     let eventResponse = await Services.UserServices.eventLogAPI({
-      customer_phone: userInstance.getUser().info.mobile,
-      customer_name: userInstance.getUser().info.name,
-      property_owner_phone_number: this.state.propertyDetail.owner_number,
-      property_id: this.state.propertyDetail.id,
+      customer_phone: userInstance.getUser().info.mobile
+        ? userInstance.getUser().info.mobile
+        : "",
+      customer_name: userInstance.getUser().info.name
+        ? userInstance.getUser().info.name
+        : "",
+      property_owner_phone_number: this.state.propertyDetail.owner_number
+        ? this.state.propertyDetail.owner_number
+        : "",
+      property_id: this.state.propertyDetail.id
+        ? this.state.propertyDetail.id
+        : "",
       event_name: "callPropertyOwner",
     });
     console.log("Event log API response", eventResponse);
@@ -3293,9 +3301,10 @@ class EstateDetail extends Component {
           onPress={async () => {
             if (Constants.API.Token == null) {
               let eventResponse = await Services.UserServices.eventLogAPI({
-                customer_id: "With_out_login",
-                property_id: value.item.id,
+                customer_id: "",
+                property_id: value.item.id ? value.item.id : "",
                 event_name: "Similar_Property_Click",
+                vistor: "visitor",
               });
               console.log("Event log API response", eventResponse);
 
@@ -3306,8 +3315,10 @@ class EstateDetail extends Component {
             } else {
               let userInstance = await User.getInstance();
               let eventResponse = await Services.UserServices.eventLogAPI({
-                customer_id: userInstance.getUser().info.id,
-                property_id: value.item.id,
+                customer_id: userInstance.getUser().info.id
+                  ? userInstance.getUser().info.id
+                  : "",
+                property_id: value.item.id ? value.item.id : "",
                 event_name: "Similar_Property_Click",
               });
               console.log("Event log API response", eventResponse);

@@ -52,7 +52,9 @@ class Favorite extends Component {
       // });
 
       let eventResponse = await Services.UserServices.eventLogAPI({
-        customer_name: userInstance.getUser().info.name,
+        customer_name: userInstance.getUser().info.name
+          ? userInstance.getUser().info.name
+          : "",
         event_name: "favorite",
       });
       console.log("Event log API response", eventResponse);

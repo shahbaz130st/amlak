@@ -47,6 +47,8 @@ const eventLogAPI = async (data) => {
     const body = {
       data: data,
     };
+    console.log("body", body);
+    console.log("Constants.API.User.EVENT_LOG", Constants.API.User.EVENT_LOG);
     const response = await Common.axios.post(
       Constants.API.User.EVENT_LOG,
       body
@@ -58,6 +60,7 @@ const eventLogAPI = async (data) => {
       return response.data;
     }
   } catch (error) {
+    console.log("error", error);
     return error.message;
   }
 };

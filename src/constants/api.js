@@ -53,7 +53,7 @@ const Dashboard = {
 const User = {
   USER_INFORMATION: "user/user-info/",
   SET_DEVICE_INFO: "user/set-device-info",
-  EVENT_LOG: "add-events",
+  EVENT_LOG: "add-event",
 };
 
 //estates/by-category/
